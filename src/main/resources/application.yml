@@ -1,0 +1,30 @@
+spring:
+  profiles.active: dev
+
+  application:
+    name: My coach
+
+  endpoints:
+    actuator:
+      enabled: true
+      path: app-health-data
+    autoconfig:
+      enabled: false
+    beans:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    heapdump:
+      enabled: false
+    info:
+      enabled: false
+    mappings:
+      enabled: false
+    metrics:
+      enabled: true
+    trace:
+      enabled: false
+    shutdown:
+      enabled: false

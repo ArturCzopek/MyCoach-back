@@ -1,0 +1,62 @@
+spring:
+  profiles: dev
+
+  datasource:
+    name: my-coach
+    platform: h2
+    url: jdbc:h2:mem:my-coach;DATABASE_TO_UPPER=false;IGNORECASE=true;
+    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    openInView: false
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  h2:
+    console:
+      enabled: true
+      path: /db-console/my-coach
+
+  management.security.enabled: false
+
+  server:
+    address: 192.168.8.200
+    port: 8011
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.sample-test-data.yaml
+    enabled: false
+
+  endpoints:
+    dump:
+      enabled: true
+      sensitive: false
+    liquibase:
+      enabled: false
+      sensitive: false
+    logfile:
+      enabled: true
+      sensitive: false
+    mappings:
+      enabled: true
+      sensitive: false
+    trace:
+      enabled: true
+      sensitive: false
+
+  logging:
+    path: "src/main/resources/logs"
+    level:
+      org:
+        springframework.web: INFO
+        simplecoding.blog: DEBUG
+    pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
+      level: "user:%X{user} %5p"
+      file: "src/main/resources/logs/my-coach-dev.%d{yyyy-MM-dd}.%i.log"
