@@ -1,0 +1,562 @@
+databaseChangeLog:
+
+- include:
+    file: classpath:/db/changelog/db.changelog-master.yaml
+
+- changeSet:
+    id: Insert test weights values
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 80.6
+        - column:
+            name: measurementdate
+            value: '2016-10-03'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 80.4
+        - column:
+            name: measurementdate
+            value: '2016-10-04'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 80
+        - column:
+            name: measurementdate
+            value: '2016-10-05'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 80.4
+        - column:
+            name: measurementdate
+            value: '2016-10-06'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 79.9
+        - column:
+            name: measurementdate
+            value: '2016-10-07'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 79.4
+        - column:
+            name: measurementdate
+            value: '2016-10-08'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 79
+        - column:
+            name: measurementdate
+            value: '2016-10-09'
+        tableName: weights
+
+- changeSet:
+    id: Insert test reports
+    author: Artur Czopek
+    changes:
+    - insert:
+            columns:
+            - column:
+                name: content
+                value: Pierwszy test raportowy
+            - column:
+                name: startdate
+                value: '2016-09-26'
+            - column:
+                name: enddate
+                value: '2016-10-02'
+            tableName: reports
+    - insert:
+        columns:
+        - column:
+            name: content
+            value: Jakby to ujac...moglo to byc lepiej zrobione. Waga jest git. reszta bez zmian
+        - column:
+            name: startdate
+            value: '2016-10-03'
+        - column:
+            name: enddate
+            value: '2016-10-10'
+        tableName: reports
+
+- changeSet:
+    id: Insert test products
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: productname
+            value: Kurczak
+        - column:
+            name: screenurl
+            value: not found
+        tableName: products
+
+- changeSet:
+    id: Insert test prices
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: productid
+            value: 1
+        - column:
+            name: pricedate
+            value: '2016-10-05'
+        - column:
+            name: price
+            value: 15.50
+        - column:
+            name: place
+            value: Auchan
+        tableName: prices
+    - insert:
+        columns:
+        - column:
+            name: productid
+            value: 1
+        - column:
+            name: pricedate
+            value: '2016-10-12'
+        - column:
+            name: price
+            value: 17.50
+        - column:
+            name: place
+            value: M1
+        tableName: prices
+
+- changeSet:
+    id: Insert test cycle
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: startdate
+            value: '2016-08-03'
+        - column:
+            name: enddate
+            value: '2016-10-03'
+        tableName: cycles
+
+- changeSet:
+    id: Insert test set
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: push
+        - column:
+            name: cycleid
+            value: 1
+        tableName: sets
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: pull
+        - column:
+            name: cycleid
+            value: 1
+        tableName: sets
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: legs
+        - column:
+            name: cycleid
+            value: 1
+        tableName: sets
+
+- changeSet:
+    id: Insert test exercises
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 1
+        - column:
+            name: exercisename
+            value: wyciskanie lezac
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 1
+        - column:
+            name: exercisename
+            value: wyciskanie w skosie
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 2
+        - column:
+            name: exercisename
+            value: wioslowanie
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 2
+        - column:
+            name: exercisename
+            value: podciaganie hantli
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 3
+        - column:
+            name: exercisename
+            value: przysiady
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 3
+        - column:
+            name: exercisename
+            value: martwy na prostych
+        tableName: exercises
+
+- changeSet:
+    id: Insert test trainings
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 1
+        - column:
+            name: trainingdate
+            value: '2016-10-07'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 2
+        - column:
+            name: trainingdate
+            value: '2016-10-09'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 3
+        - column:
+            name: trainingdate
+            value: '2016-10-11'
+        tableName: trainings
+
+- changeSet:
+    id: Insert test series
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 1
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 1
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 1
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 2
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 2
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 1
+        - column:
+            name: exerciseid
+            value: 2
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 3
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 3
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 3
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 4
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 4
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 2
+        - column:
+            name: exerciseid
+            value: 4
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 5
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 5
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 5
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 6
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 6
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: trainingid
+            value: 3
+        - column:
+            name: exerciseid
+            value: 6
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series

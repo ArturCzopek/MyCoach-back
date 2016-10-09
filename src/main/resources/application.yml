@@ -1,8 +1,8 @@
-spring:
-  profiles.active: dev
+  spring:
+    profiles.active: dev
 
-  application:
-    name: My coach
+    application:
+      name: My coach
 
   endpoints:
     actuator:
@@ -27,4 +27,8 @@ spring:
     trace:
       enabled: false
     shutdown:
+      enabled: false
+
+  security:
+    basic:
       enabled: false
