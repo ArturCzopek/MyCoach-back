@@ -70,6 +70,15 @@ databaseChangeLog:
             name: measurementdate
             value: '2016-10-09'
         tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: weight
+            value: 79.7
+        - column:
+            name: measurementdate
+            value: '2016-10-10'
+        tableName: weights
 
 - changeSet:
     id: Insert test reports

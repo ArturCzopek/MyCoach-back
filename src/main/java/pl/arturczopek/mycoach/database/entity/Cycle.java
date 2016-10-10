@@ -3,6 +3,8 @@ package pl.arturczopek.mycoach.database.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,5 +39,6 @@ public class Cycle implements Serializable {
     private Timestamp endDate;
 
     @OneToMany(mappedBy = "cycle")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Set> sets;
 }

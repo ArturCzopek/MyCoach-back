@@ -1,8 +1,11 @@
 package pl.arturczopek.mycoach.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +20,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Trainings")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "series"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Training implements Serializable {
 
     private static final long serialVersionUID = 3305548865433699112L;
@@ -29,6 +32,7 @@ public class Training implements Serializable {
     private long trainingId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "setId")
     private Set set;
 
@@ -37,5 +41,7 @@ public class Training implements Serializable {
     private Timestamp trainingDate;
 
     @OneToMany(mappedBy = "training")
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Series> series;
 }

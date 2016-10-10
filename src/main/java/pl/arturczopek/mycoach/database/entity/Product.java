@@ -2,6 +2,8 @@ package pl.arturczopek.mycoach.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,5 +35,6 @@ public class Product implements Serializable{
     private String screenUrl;
 
     @OneToMany(mappedBy = "product")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Price> prices;
 }

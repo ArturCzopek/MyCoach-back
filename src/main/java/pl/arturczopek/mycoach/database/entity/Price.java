@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "Prices")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler, product"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Price implements Serializable{
 
     private static final long serialVersionUID = 4215492868990889864L;
@@ -28,6 +29,7 @@ public class Price implements Serializable{
     private long priceId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "ProductId", nullable = false)
     private Product product;
 

@@ -1,5 +1,6 @@
 package pl.arturczopek.mycoach.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class Series implements Serializable {
     private Training training;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "exerciseId")
     private Exercise exercise;
 

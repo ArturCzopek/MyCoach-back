@@ -1,10 +1,14 @@
 package pl.arturczopek.mycoach.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author Artur Czopek
@@ -31,4 +35,13 @@ public class Set implements Serializable {
     @ManyToOne
     @JoinColumn(name = "CycleId", nullable = false)
     private Cycle cycle;
+
+    @OneToMany(mappedBy = "set")
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Training> trainings;
+
+    @OneToMany(mappedBy = "set")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Exercise> exercises;
 }
