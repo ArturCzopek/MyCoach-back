@@ -6,11 +6,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @Author Artur Czopek
- * @Date 10/9/16
+ * @Date 09-10-2016
  */
 
 @Data
@@ -32,9 +32,9 @@ public class Report implements Serializable{
 
     @Column(name = "StartDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp startDate;
+    private Date startDate;
 
     @Column(name = "EndDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp endDate;
+    private Date endDate;
 }

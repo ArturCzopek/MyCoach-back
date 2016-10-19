@@ -1,8 +1,9 @@
+  myCoach:
+    version: 1.0.0-SANPSHOT
+    application-name: My coach
+
   spring:
     profiles.active: dev
-
-    application:
-      name: My coach
 
   endpoints:
     actuator:

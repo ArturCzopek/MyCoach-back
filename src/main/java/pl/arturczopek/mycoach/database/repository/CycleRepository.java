@@ -6,9 +6,10 @@ import pl.arturczopek.mycoach.database.entity.Cycle;
 import java.util.List;
 
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
+
 public interface CycleRepository extends PagingAndSortingRepository<Cycle, Long> {
 
     @Override

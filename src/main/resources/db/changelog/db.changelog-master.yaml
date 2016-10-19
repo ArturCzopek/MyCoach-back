@@ -23,13 +23,13 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: startdate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         - column:
             constraints:
               constraints:
                 nullable: false
             name: enddate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         tableName: reports
 
 - changeSet:
@@ -50,13 +50,13 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: weight
-            type: DECIMAL(4,2)
+            type: DECIMAL(6,2)
         - column:
             constraints:
               constraints:
                 nullable: false
             name: measurementdate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         tableName: weights
 
 - changeSet:
@@ -77,13 +77,13 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: startdate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         - column:
             constraints:
               constraints:
-                nullable: false
+                nullable: true
             name: enddate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         tableName: cycles
 
 - changeSet:
@@ -137,7 +137,7 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: trainingdate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         tableName: trainings
 
 - changeSet:
@@ -197,7 +197,7 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: weight
-            type: DECIMAL(4,2)
+            type: DECIMAL(6,2)
         - column:
             constraints:
               constraints:
@@ -260,13 +260,13 @@ databaseChangeLog:
               constraints:
                 nullable: false
             name: pricedate
-            type: TIMESTAMP(6) WITHOUT TIME ZONE
+            type: DATE
         - column:
             constraints:
               constraints:
                 nullable: false
             name: price
-            type: DECIMAL(4,2)
+            type: DECIMAL(6,2)
         - column:
             constraints:
               constraints:

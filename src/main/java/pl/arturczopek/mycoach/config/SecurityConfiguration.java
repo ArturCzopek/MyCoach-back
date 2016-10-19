@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
+
 @Configuration
 @ComponentScan(basePackages = { "pl.arturczopek.mycoach" })
 //@EnableWebSecurity

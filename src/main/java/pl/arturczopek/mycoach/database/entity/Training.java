@@ -4,22 +4,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
 
 @Data
 @Entity
 @Table(name = "Trainings")
+@ToString(exclude = {"set", "series"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Training implements Serializable {
 
@@ -38,9 +40,9 @@ public class Training implements Serializable {
 
     @Column(name = "TrainingDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp trainingDate;
+    private Date trainingDate;
 
-    @OneToMany(mappedBy = "training")
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Series> series;

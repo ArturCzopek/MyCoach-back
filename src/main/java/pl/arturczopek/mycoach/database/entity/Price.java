@@ -7,11 +7,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @Author Artur Czopek
- * @Date 10/9/16
+ * @Date 09-10-2016
  */
 
 @Data
@@ -35,7 +35,7 @@ public class Price implements Serializable{
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(name = "PriceDate", nullable = false)
-    private Timestamp priceDate;
+    private Date priceDate;
 
     @Column(name = "Price", nullable = false, length = 100)
     private float price;

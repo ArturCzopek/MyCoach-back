@@ -3,6 +3,7 @@ package pl.arturczopek.mycoach.database.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -12,12 +13,13 @@ import java.util.List;
 
 /**
  * @Author Artur Czopek
- * @Date 10/9/16
+ * @Date 09-10-2016
  */
 
 @Data
 @Entity
 @Table(name = "Sets")
+@ToString(exclude = {"cycle", "trainings"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cycle"})
 public class Set implements Serializable {
 
@@ -33,15 +35,16 @@ public class Set implements Serializable {
     private String setName;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "CycleId", nullable = false)
     private Cycle cycle;
 
-    @OneToMany(mappedBy = "set")
+    @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Training> trainings;
 
-    @OneToMany(mappedBy = "set")
+    @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Exercise> exercises;
 }

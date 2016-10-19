@@ -3,10 +3,10 @@ spring:
 
   datasource:
     name: my-coach
-    username: coach
-    password: 1e36fc21fcaaeb1330cd483ef050d66d
+    username: ${COACH_USERNAME}
+    password: ${COACH_PASSWORD}
+    url: ${COACH_DB_URL}
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/my-coach
     dialect: org.hibernate.dialect.PostgreSQLDialect
 
   jpa:
@@ -16,7 +16,7 @@ spring:
     database: postgresql
 
   server:
-    address: 192.168.8.200
+    address: ${COACH_SERVER_IP}
     port: 8012
 
   liquibase:

@@ -6,11 +6,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @Author Artur Czopek
- * @Date 10/9/16
+ * @Date 09-10-2016
  */
 
 @Data
@@ -32,5 +32,5 @@ public class Weight implements Serializable {
 
     @Column(name = "MeasurementDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp measurementDate;
+    private Date measurementDate;
 }

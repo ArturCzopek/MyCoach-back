@@ -2,20 +2,21 @@ package pl.arturczopek.mycoach.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import pl.arturczopek.mycoach.database.entity.Cycle;
-import pl.arturczopek.mycoach.database.entity.dto.CyclePreview;
-import pl.arturczopek.mycoach.web.service.CycleService;
+import pl.arturczopek.mycoach.dto.preview.CyclePreview;
+import pl.arturczopek.mycoach.dto.add.CycleToAdd;
+import pl.arturczopek.mycoach.dto.update.CycleToUpdate;
+import pl.arturczopek.mycoach.service.CycleService;
 
 import java.util.List;
 
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
+
 @Slf4j
 @RestController
 @RequestMapping("/cycle")
@@ -28,13 +29,31 @@ public class CycleController {
         this.cycleService = cycleService;
     }
 
-    @RequestMapping(value = "/previews", method = RequestMethod.GET)
+    @GetMapping("/previews")
     public List<CyclePreview> getPreviews() {
         return cycleService.getCyclePreviews();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public Cycle getCycleDetails(@PathVariable long id) {
         return cycleService.getCycleById(id);
+    }
+
+    @PostMapping("/add")
+    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano cykl")
+    public void addCycle(@RequestBody CycleToAdd cycleToAdd) {
+        cycleService.addCycle(cycleToAdd);
+    }
+
+    @PostMapping("/end/{id}")
+    @ResponseStatus(value = HttpStatus.CREATED, reason = "Zakończono cykl")
+    public void endCycle(@PathVariable long id) {
+        cycleService.endCycle(id);
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano cykl")
+    public void updateCycle(@RequestBody CycleToUpdate cycleToUpdate) {
+        cycleService.updateCycle(cycleToUpdate);
     }
 }

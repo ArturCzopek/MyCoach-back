@@ -2,19 +2,17 @@ package pl.arturczopek.mycoach.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import pl.arturczopek.mycoach.database.entity.Weight;
-import pl.arturczopek.mycoach.database.entity.dto.WeightDatesPreview;
-import pl.arturczopek.mycoach.web.service.WeightService;
+import pl.arturczopek.mycoach.dto.preview.WeightDatesPreview;
+import pl.arturczopek.mycoach.service.WeightService;
 
 import java.util.List;
 
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
 
 @Slf4j
@@ -29,13 +27,19 @@ public class WeightController {
         this.weightService = weightService;
     }
 
-    @RequestMapping(value = "/previews", method = RequestMethod.GET)
+    @GetMapping("/previews")
     public List<WeightDatesPreview> getPreviews() {
         return weightService.getWeightDatesList();
     }
 
-    @RequestMapping(value = "/forDate/{year}/{month}", method = RequestMethod.GET)
+    @GetMapping("/forDate/{year}/{month}")
     public List<Weight> getMonthWeightDetails(@PathVariable int year, @PathVariable int month) {
         return weightService.getWeightsByYearAndMonth(year, month);
+    }
+
+    @PostMapping("/add")
+    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano pomiar wagi")
+    public void addWeight(@RequestBody Weight weight) {
+        weightService.addWeight(weight);
     }
 }

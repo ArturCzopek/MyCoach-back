@@ -1,26 +1,29 @@
-package pl.arturczopek.mycoach.database.entity.dto;
+package pl.arturczopek.mycoach.dto.preview;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import pl.arturczopek.mycoach.database.entity.Report;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * @Author arturczopek
- * @Date 10/10/16
+ * @Author Artur Czopek
+ * @Date 10-10-2016
  */
 
 @Data
-public class ReportPreview {
+public class ReportPreview implements Serializable{
+
+    private static final long serialVersionUID = -6799302021991715914L;
 
     private long reportId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp startDate;
+    private Date startDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Timestamp endDate;
+    private Date endDate;
 
     public static ReportPreview buildFromReport(Report report) {
         ReportPreview preview = new ReportPreview();

@@ -1,14 +1,13 @@
 package pl.arturczopek.mycoach.database.repository;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.arturczopek.mycoach.database.entity.Report;
 
 import java.util.List;
 
 /**
- * @Author arturczopek
- * @Date 10/9/16
+ * @Author Artur Czopek
+ * @Date 09-10-2016
  */
 
 public interface ReportRepository extends PagingAndSortingRepository<Report, Long> {
@@ -16,5 +15,5 @@ public interface ReportRepository extends PagingAndSortingRepository<Report, Lon
     @Override
     List<Report> findAll();
 
-    List<Report> findAllByOrderByEndDateDesc(Pageable pageable);
+    List<Report> findAllByOrderByEndDateDesc();
 }

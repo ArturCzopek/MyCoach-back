@@ -1,15 +1,19 @@
-package pl.arturczopek.mycoach.database.entity.dto;
+package pl.arturczopek.mycoach.dto.preview;
 
 import lombok.Data;
 import pl.arturczopek.mycoach.database.entity.Product;
 
+import java.io.Serializable;
+
 /**
- * @Author arturczopek
- * @Date 10/10/16
+ * @Author Artur Czopek
+ * @Date 10-10-2016
  */
 
 @Data
-public class ProductPreview {
+public class ProductPreview implements Serializable {
+
+    private static final long serialVersionUID = 1737456229392745343L;
 
     private long productId;
 
