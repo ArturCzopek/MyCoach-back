@@ -31,7 +31,7 @@ public class Product implements Serializable{
     @Column(name = "ProductName", nullable = false, length = 200, unique = true)
     private String productName;
 
-    @Column(name = "ScreenUrl", nullable = false, length = 1903247980)
+    @Column(name = "ScreenUrl", length = 1903247980)
     private String screenUrl;
 
     @OneToMany(mappedBy = "product")

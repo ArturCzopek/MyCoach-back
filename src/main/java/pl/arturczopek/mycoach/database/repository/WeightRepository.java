@@ -3,7 +3,7 @@ package pl.arturczopek.mycoach.database.repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.arturczopek.mycoach.database.entity.Weight;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**

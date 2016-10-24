@@ -5,7 +5,7 @@ import lombok.Data;
 import pl.arturczopek.mycoach.database.entity.Cycle;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @Author Artur Czopek

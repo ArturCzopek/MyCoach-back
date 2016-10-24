@@ -3,9 +3,11 @@ package pl.arturczopek.mycoach.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.database.entity.Weight;
-import pl.arturczopek.mycoach.dto.preview.WeightDatesPreview;
 import pl.arturczopek.mycoach.database.repository.WeightRepository;
+import pl.arturczopek.mycoach.dto.preview.WeightDatesPreview;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -46,19 +48,10 @@ public class WeightService {
 
     public List<Weight> getWeightsByYearAndMonth(int year, int month) {
 
-        int startMonth = month;
-        Date startDate = dateService.buildFirstMonthDay(year, startMonth);
+        LocalDate startDate = dateService.buildFirstMonthDay(year, month);
+        LocalDate endDate = dateService.getNextMonth(startDate);
 
-        int endMonth = startMonth + 1;
-        Date endDate;
-
-        if (startMonth < 12) {
-            endDate = dateService.buildFirstMonthDay(year, endMonth);
-        } else {
-            endDate = dateService.buildFirstMonthDay(year, DateService.FIRST_MONTH);
-        }
-
-        return weightRepository.findByMeasurementDateAfterAndMeasurementDateBefore(startDate, endDate);
+        return weightRepository.findByMeasurementDateAfterAndMeasurementDateBefore(Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
     public void addWeight(Weight weightToAdd) {

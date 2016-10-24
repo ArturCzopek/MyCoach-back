@@ -2,8 +2,8 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * @Author Artur Czopek
@@ -20,24 +20,17 @@ import java.util.Date;
 @Service
 public class DateService {
 
-    public static final int FIRST_MONTH = 1;
+    private static final int FIRST_DAY = 1;
 
     public Date getCurrentDate() {
-        return new Date(Calendar.getInstance().getTime().getTime());
+        return Date.valueOf(LocalDate.now());
     }
 
-    public Date buildFirstMonthDay(int year, int month) {
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month - 1);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-
-        Date endDate;
-        endDate = cal.getTime();
-
-        return endDate;
+    public LocalDate buildFirstMonthDay(int year, int month) {
+        return LocalDate.of(year, month, FIRST_DAY);
     }
 
-
+    public LocalDate getNextMonth(LocalDate date) {
+        return date.plusMonths(1);
+    }
 }

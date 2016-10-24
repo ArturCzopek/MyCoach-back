@@ -120,7 +120,7 @@ databaseChangeLog:
             value: Kurczak
         - column:
             name: screenurl
-            value: not found
+            value: NO_PRODUCT_PHOTO.JPG
         tableName: products
 
 - changeSet:

@@ -1,34 +1,10 @@
   myCoach:
     version: 1.0.0-SANPSHOT
     application-name: My coach
+    default-product-photo: NO_PRODUCT_PHOTO.JPG
 
   spring:
     profiles.active: dev
-
-  endpoints:
-    actuator:
-      enabled: true
-      path: app-health-data
-    autoconfig:
-      enabled: false
-    beans:
-      enabled: true
-    configprops:
-      enabled: true
-    env:
-      enabled: true
-    heapdump:
-      enabled: false
-    info:
-      enabled: false
-    mappings:
-      enabled: false
-    metrics:
-      enabled: true
-    trace:
-      enabled: false
-    shutdown:
-      enabled: false
 
   security:
     basic:

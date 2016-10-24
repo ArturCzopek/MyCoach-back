@@ -41,23 +41,6 @@
     change-log: classpath:/db/changelog/db.changelog-test-data.yaml
     enabled: true
 
-  endpoints:
-    dump:
-      enabled: true
-      sensitive: false
-    liquibase:
-      enabled: false
-      sensitive: false
-    logfile:
-      enabled: true
-      sensitive: false
-    mappings:
-      enabled: true
-      sensitive: false
-    trace:
-      enabled: true
-      sensitive: false
-
   logging:
     path: "src/main/resources/logs"
     level:
@@ -67,4 +50,4 @@
     pattern:
       console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
       level: "user:%X{user} %5p"
-      file: "src/main/resources/logs/my-coach-dev.%d{yyyy-MM-dd}.log"
+      file: "src/main/resources/logs/my-coach-dev.log"

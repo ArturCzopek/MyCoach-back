@@ -463,3 +463,13 @@ databaseChangeLog:
         onUpdate: NO ACTION
         referencedColumnNames: productid
         referencedTableName: products
+
+- changeSet:
+    id: Default value product photo
+    author: Artur Czopek
+    changes:
+    - addDefaultValue:
+        coulmnDataType: VARCHAR(200)
+        columnName: screenUrl
+        defaultValue: NO_PRODUCT_PHOTO.JPG
+        tableName: Products
