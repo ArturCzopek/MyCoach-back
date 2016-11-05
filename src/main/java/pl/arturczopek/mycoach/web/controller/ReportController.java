@@ -14,6 +14,7 @@ import java.util.List;
  * @Author Artur Czopek
  * @Date 10-10-2016
  */
+
 @Slf4j
 @RestController
 @RequestMapping("/report")
@@ -38,7 +39,7 @@ public class ReportController {
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano raport")
-    public void addWeight(@RequestBody Report report) {
+    public void addReport(@RequestBody Report report) {
         reportService.addReport(report);
     }
 }

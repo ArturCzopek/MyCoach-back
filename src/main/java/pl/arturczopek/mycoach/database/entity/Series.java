@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "Series")
-@ToString(exclude  = "exercise")
+@ToString(exclude  = "exerciseSession")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Series implements Serializable {
     private static final long serialVersionUID = 601005672180488637L;
@@ -28,13 +28,9 @@ public class Series implements Serializable {
     private long seriesId;
 
     @ManyToOne
-    @JoinColumn(name = "trainingId")
-    private Training training;
-
-    @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "exerciseId")
-    private Exercise exercise;
+    @JoinColumn(name = "exerciseSessionId")
+    private ExerciseSession exerciseSession;
 
     @Column(name = "Weight", nullable = false)
     private float weight;

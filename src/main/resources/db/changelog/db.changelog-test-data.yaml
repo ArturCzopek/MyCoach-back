@@ -141,6 +141,9 @@ databaseChangeLog:
         - column:
             name: place
             value: Auchan
+        - column:
+            name: quantity
+            value: 1.0
         tableName: prices
     - insert:
         columns:
@@ -156,6 +159,9 @@ databaseChangeLog:
         - column:
             name: place
             value: M1
+        - column:
+            name: quantity
+            value: 1.0
         tableName: prices
 
 - changeSet:
@@ -173,7 +179,7 @@ databaseChangeLog:
         tableName: cycles
 
 - changeSet:
-    id: Insert test set
+    id: Insert test sets
     author: Artur Czopek
     changes:
     - insert:
@@ -264,7 +270,7 @@ databaseChangeLog:
         tableName: exercises
 
 - changeSet:
-    id: Insert test trainings
+    id: Insert test training dates
     author: Artur Czopek
     changes:
     - insert:
@@ -275,7 +281,7 @@ databaseChangeLog:
         - column:
             name: trainingdate
             value: '2016-10-07'
-        tableName: trainings
+        tableName: trainingdates
     - insert:
         columns:
         - column:
@@ -284,7 +290,7 @@ databaseChangeLog:
         - column:
             name: trainingdate
             value: '2016-10-09'
-        tableName: trainings
+        tableName: trainingdates
     - insert:
         columns:
         - column:
@@ -293,7 +299,48 @@ databaseChangeLog:
         - column:
             name: trainingdate
             value: '2016-10-11'
-        tableName: trainings
+        tableName: trainingdates
+
+- changeSet:
+    id: Insert test exercise sessions
+    author: Artur Czopek
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 1
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 2
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 3
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 4
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 5
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 6
+        tableName: exercisesessions
 
 - changeSet:
     id: Insert test series
@@ -302,10 +349,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 1
         - column:
             name: weight
@@ -317,10 +361,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 1
         - column:
             name: weight
@@ -332,10 +373,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 1
         - column:
             name: weight
@@ -347,10 +385,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 2
         - column:
             name: weight
@@ -362,10 +397,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 2
         - column:
             name: weight
@@ -377,10 +409,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 1
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 2
         - column:
             name: weight
@@ -392,10 +421,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 3
         - column:
             name: weight
@@ -407,10 +433,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 3
         - column:
             name: weight
@@ -422,10 +445,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 3
         - column:
             name: weight
@@ -437,10 +457,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 4
         - column:
             name: weight
@@ -452,10 +469,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 4
         - column:
             name: weight
@@ -467,10 +481,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 2
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 4
         - column:
             name: weight
@@ -482,10 +493,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 5
         - column:
             name: weight
@@ -497,10 +505,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 5
         - column:
             name: weight
@@ -512,10 +517,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 5
         - column:
             name: weight
@@ -527,10 +529,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 6
         - column:
             name: weight
@@ -542,10 +541,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 6
         - column:
             name: weight
@@ -557,10 +553,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: trainingid
-            value: 3
-        - column:
-            name: exerciseid
+            name: exercisesessionid
             value: 6
         - column:
             name: weight

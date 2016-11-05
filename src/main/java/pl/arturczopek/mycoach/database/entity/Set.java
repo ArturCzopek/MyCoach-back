@@ -3,7 +3,6 @@ package pl.arturczopek.mycoach.database.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -19,7 +18,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Sets")
-@ToString(exclude = {"cycle", "trainings"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cycle"})
 public class Set implements Serializable {
 
@@ -42,7 +40,7 @@ public class Set implements Serializable {
     @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Training> trainings;
+    private List<TrainingDate> trainingDates;
 
     @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

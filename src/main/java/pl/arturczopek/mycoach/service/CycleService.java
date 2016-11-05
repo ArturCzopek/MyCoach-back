@@ -93,11 +93,11 @@ public class CycleService {
     public void updateCycle(CycleToUpdate cycleToUpdate) {
         Cycle cycle = cycleRepository.findOne(cycleToUpdate.getCycleId());
 
-        if(cycleToUpdate.getStartDate() != null) {
+        if (cycleToUpdate.getStartDate() != null) {
             cycle.setStartDate(cycleToUpdate.getStartDate());
         }
 
-        if(cycleToUpdate.getEndDate() != null) {
+        if (cycleToUpdate.getEndDate() != null) {
             cycle.setEndDate(cycleToUpdate.getEndDate());
         }
 

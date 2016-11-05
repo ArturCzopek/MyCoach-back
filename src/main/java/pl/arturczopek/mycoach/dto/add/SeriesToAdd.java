@@ -14,10 +14,7 @@ import java.io.Serializable;
 public class SeriesToAdd implements Serializable {
 
     private static final long serialVersionUID = 2146480910059109272L;
-
-    @JsonProperty(required = true)
-    private long exerciseId;
-
+    
     @JsonProperty(required = true)
     private float weight;
 

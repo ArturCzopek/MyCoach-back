@@ -41,5 +41,5 @@ public class Exercise implements Serializable {
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Series> series;
+    private List<ExerciseSession> exerciseSessions;
 }

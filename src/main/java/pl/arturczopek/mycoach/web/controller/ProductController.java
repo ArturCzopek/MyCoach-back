@@ -32,15 +32,10 @@ public class ProductController {
     public List<ProductPreview> getPreviews() {
         return productService.getProductPreviews();
     }
-
-    @GetMapping("/{id}")
-    public Product getProductDetails(@PathVariable long id) {
-        return productService.getProductById(id);
-    }
-
+    
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano produkt")
-    public void addWeight(@RequestBody Product productToAdd) {
+    public void addProduct(@RequestBody Product productToAdd) {
         productService.addProduct(productToAdd);
     }
 

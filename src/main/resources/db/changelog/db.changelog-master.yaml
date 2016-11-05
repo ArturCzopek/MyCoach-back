@@ -114,7 +114,7 @@ databaseChangeLog:
         tableName: sets
 
 - changeSet:
-    id: Create entity Trainings
+    id: Create entity Training Dates
     author: Artur Czopek
     changes:
     - createTable:
@@ -123,8 +123,8 @@ databaseChangeLog:
             autoIncrement: true
             constraints:
               primaryKey: true
-              primaryKeyName: trainings_pkey
-            name: trainingid
+              primaryKeyName: trainingdates_pkey
+            name: trainingdateid
             type: BIGSERIAL
         - column:
             constraints:
@@ -138,7 +138,7 @@ databaseChangeLog:
                 nullable: false
             name: trainingdate
             type: DATE
-        tableName: trainings
+        tableName: trainingdates
 
 - changeSet:
     id: Create entity Exercise
@@ -168,6 +168,27 @@ databaseChangeLog:
         tableName: exercises
 
 - changeSet:
+    id: Create entity Exercise Session
+    author: Artur Czopek
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: exercisesessions_pkey
+            name: exercisesessionid
+            type: BIGSERIAL
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: exerciseid
+            type: BIGINT
+        tableName: exercisesessions
+
+- changeSet:
     id: Create entity Series
     author: Artur Czopek
     changes:
@@ -184,13 +205,7 @@ databaseChangeLog:
             constraints:
               constraints:
                 nullable: false
-            name: trainingid
-            type: BIGINT
-        - column:
-            constraints:
-              constraints:
-                nullable: false
-            name: exerciseid
+            name: exercisesessionid
             type: BIGINT
         - column:
             constraints:
@@ -273,6 +288,9 @@ databaseChangeLog:
                 nullable: false
             name: place
             type: VARCHAR(100)
+        - column:
+            name: quantity
+            type: DECIMAL(6,2)
         tableName: prices
 
 - changeSet:
@@ -305,13 +323,13 @@ databaseChangeLog:
     dbms: PostgreSQL
     
 - changeSet:
-    id: Unique for trainingid
+    id: Unique for trainingdateid
     author: Artur Czopek
     changes:
     - addUniqueConstraint:
-        columnNames: trainingid
-        constraintName: uk_trainings_trainingid
-        tableName: trainings
+        columnNames: trainingdateid
+        constraintName: uk_trainingdates_trainingdateid
+        tableName: trainingdates
     dbms: PostgreSQL
     
 - changeSet:
@@ -322,6 +340,16 @@ databaseChangeLog:
         columnNames: exerciseid
         constraintName: uk_exercises_exerciseid
         tableName: exercises
+    dbms: PostgreSQL
+
+- changeSet:
+    id: Unique for exercisesessionid
+    author: Artur Czopek
+    changes:
+    - addUniqueConstraint:
+        columnNames: exercisesessionid
+        constraintName: uk_exercisesessions_exercisesessionid
+        tableName: exercisesessions
     dbms: PostgreSQL
     
 - changeSet:
@@ -390,13 +418,13 @@ databaseChangeLog:
         referencedTableName: cycles
 
 - changeSet:
-    id: Relation Trainings - Sets
+    id: Relation Training Dates - Sets
     author: Artur Czopek
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: setid
-        baseTableName: trainings
-        constraintName: fk_trainings_sets
+        baseTableName: trainingdates
+        constraintName: fk_trainingdates_sets
         deferrable: false
         initiallyDeferred: false
         onDelete: NO ACTION
@@ -420,34 +448,34 @@ databaseChangeLog:
         referencedTableName: sets
 
 - changeSet:
-    id: Relation Series - Trainings
-    author: Artur Czopek
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: trainingid
-        baseTableName: series
-        constraintName: fk_series_trainings
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: trainingid
-        referencedTableName: trainings
-
-- changeSet:
-    id: Relation Series - Exercises
+    id: Relation Exercise sessions - Exercises
     author: Artur Czopek
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: exerciseid
-        baseTableName: series
-        constraintName: fk_series_exercises
+        baseTableName: exercisesessions
+        constraintName: fk_exercisesessions_exercises
         deferrable: false
         initiallyDeferred: false
         onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: exerciseid
         referencedTableName: exercises
+
+- changeSet:
+    id: Relation Series - Exercise sessions
+    author: Artur Czopek
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: exercisesessionid
+        baseTableName: series
+        constraintName: fk_series_exercisesessions
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: exercisesessionid
+        referencedTableName: exercisesessions
 
 - changeSet:
     id: Relation Prices - Products

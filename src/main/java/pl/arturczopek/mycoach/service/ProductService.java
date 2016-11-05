@@ -35,10 +35,6 @@ public class ProductService {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public Product getProductById(long id) {
-        return productRepository.findOne(id);
-    }
-
     public void addProduct(Product productToAdd) {
         Product product = new Product();
         product.setProductName(productToAdd.getProductName());

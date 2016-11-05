@@ -7,7 +7,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @Author Artur Czopek
@@ -42,4 +42,7 @@ public class Price implements Serializable{
 
     @Column(name = "Place", nullable = false)
     private String place;
+
+    @Column(name = "Quantity")
+    private float quantity;
 }

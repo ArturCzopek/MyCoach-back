@@ -23,5 +23,5 @@ public class TrainingToAdd implements Serializable {
     private Date trainingDate;
 
     @JsonProperty(required = true)
-    List<SeriesToAdd> series;
+    List<ExerciseSessionToAdd> exerciseSessions;
 }

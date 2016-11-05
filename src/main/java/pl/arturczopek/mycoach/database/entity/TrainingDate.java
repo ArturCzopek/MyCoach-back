@@ -5,13 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 
 /**
  * @Author Artur Czopek
@@ -20,18 +17,18 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Trainings")
-@ToString(exclude = {"set", "series"})
+@Table(name = "TrainingDates")
+@ToString(exclude = {"set"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Training implements Serializable {
+public class TrainingDate implements Serializable {
 
     private static final long serialVersionUID = 3305548865433699112L;
 
     @Id
-    @Column(name = "TrainingId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "trainings_trainingid_seq")
-    @SequenceGenerator(name = "trainings_trainingid_seq", sequenceName = "trainings_trainingid_seq", allocationSize = 1)
-    private long trainingId;
+    @Column(name = "TrainingDateId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "trainingdates_trainingdateid_seq")
+    @SequenceGenerator(name = "trainingdates_trainingdateid_seq", sequenceName = "trainingdates_trainingdateid_seq", allocationSize = 1)
+    private long trainingDateId;
 
     @ManyToOne
     @JsonIgnore
@@ -41,9 +38,4 @@ public class Training implements Serializable {
     @Column(name = "TrainingDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date trainingDate;
-
-    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Series> series;
 }
