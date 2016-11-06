@@ -49,7 +49,7 @@ databaseChangeLog:
             constraints:
               constraints:
                 nullable: false
-            name: weight
+            name: value
             type: DECIMAL(6,2)
         - column:
             constraints:
@@ -114,7 +114,7 @@ databaseChangeLog:
         tableName: sets
 
 - changeSet:
-    id: Create entity Training Dates
+    id: Create entity Trainings
     author: Artur Czopek
     changes:
     - createTable:
@@ -123,8 +123,8 @@ databaseChangeLog:
             autoIncrement: true
             constraints:
               primaryKey: true
-              primaryKeyName: trainingdates_pkey
-            name: trainingdateid
+              primaryKeyName: trainings_pkey
+            name: trainingid
             type: BIGSERIAL
         - column:
             constraints:
@@ -138,7 +138,7 @@ databaseChangeLog:
                 nullable: false
             name: trainingdate
             type: DATE
-        tableName: trainingdates
+        tableName: trainings
 
 - changeSet:
     id: Create entity Exercise
@@ -280,7 +280,7 @@ databaseChangeLog:
             constraints:
               constraints:
                 nullable: false
-            name: price
+            name: value
             type: DECIMAL(6,2)
         - column:
             constraints:
@@ -323,13 +323,13 @@ databaseChangeLog:
     dbms: PostgreSQL
     
 - changeSet:
-    id: Unique for trainingdateid
+    id: Unique for trainingid
     author: Artur Czopek
     changes:
     - addUniqueConstraint:
-        columnNames: trainingdateid
-        constraintName: uk_trainingdates_trainingdateid
-        tableName: trainingdates
+        columnNames: trainingid
+        constraintName: uk_trainings_trainingid
+        tableName: trainings
     dbms: PostgreSQL
     
 - changeSet:
@@ -418,13 +418,13 @@ databaseChangeLog:
         referencedTableName: cycles
 
 - changeSet:
-    id: Relation Training Dates - Sets
+    id: Relation Trainings - Sets
     author: Artur Czopek
     changes:
     - addForeignKeyConstraint:
         baseColumnNames: setid
-        baseTableName: trainingdates
-        constraintName: fk_trainingdates_sets
+        baseTableName: trainings
+        constraintName: fk_trainings_sets
         deferrable: false
         initiallyDeferred: false
         onDelete: NO ACTION

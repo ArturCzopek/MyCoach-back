@@ -1,11 +1,12 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pl.arturczopek.mycoach.database.entity.Product;
-import pl.arturczopek.mycoach.dto.preview.ProductPreview;
 import pl.arturczopek.mycoach.database.repository.ProductRepository;
+import pl.arturczopek.mycoach.dto.preview.ProductPreview;
 import pl.arturczopek.mycoach.dto.update.ProductToUpdate;
 
 import java.util.LinkedList;
@@ -19,6 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+
+    @Value("${myCoach.default-product-photo}")
+    private String noPhotoUrl;
 
     private ProductRepository productRepository;
 
@@ -38,7 +42,11 @@ public class ProductService {
     public void addProduct(Product productToAdd) {
         Product product = new Product();
         product.setProductName(productToAdd.getProductName());
-        product.setScreenUrl(productToAdd.getScreenUrl());
+        if (StringUtils.isEmpty(productToAdd.getScreenUrl())) {
+            product.setScreenUrl(noPhotoUrl);
+        } else {
+            product.setScreenUrl(productToAdd.getScreenUrl());
+        }
         productRepository.save(product);
     }
 

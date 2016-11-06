@@ -41,7 +41,7 @@ public class PriceService {
 
         Price price = new Price();
         price.setProduct(product);
-        price.setPrice(priceToAdd.getPrice());
+        price.setValue(priceToAdd.getPrice());
         price.setPlace(priceToAdd.getPlace());
 
         if (priceToAdd.getPriceDate() == null) {
@@ -73,8 +73,8 @@ public class PriceService {
             price.setPriceDate(priceToUpdate.getPriceDate());
         }
 
-        if (priceToUpdate.getPrice() != null) {
-            price.setPrice(priceToUpdate.getPrice());
+        if (priceToUpdate.getValue() != null) {
+            price.setValue(priceToUpdate.getValue());
         }
 
         if (!StringUtils.isEmpty(priceToUpdate.getPlace())) {

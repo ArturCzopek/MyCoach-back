@@ -40,7 +40,7 @@ public class Set implements Serializable {
     @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<TrainingDate> trainingDates;
+    private List<Training> trainings;
 
     @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

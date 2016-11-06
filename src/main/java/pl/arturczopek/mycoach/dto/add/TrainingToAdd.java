@@ -20,8 +20,8 @@ public class TrainingToAdd implements Serializable {
     @JsonProperty(required = true)
     private long setId;
 
-    private Date trainingDate;
+    private Date date;
 
     @JsonProperty(required = true)
-    List<ExerciseSessionToAdd> exerciseSessions;
+    private List<ExerciseSessionToAdd> exerciseSessions;
 }

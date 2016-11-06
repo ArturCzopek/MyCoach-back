@@ -6,8 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import pl.arturczopek.mycoach.database.entity.*;
 import pl.arturczopek.mycoach.database.repository.ExerciseRepository;
+import pl.arturczopek.mycoach.database.repository.ExerciseSessionRepository;
 import pl.arturczopek.mycoach.database.repository.SetRepository;
-import pl.arturczopek.mycoach.database.repository.TrainingDateRepository;
+import pl.arturczopek.mycoach.database.repository.TrainingRepository;
 import pl.arturczopek.mycoach.dto.add.ExerciseSessionToAdd;
 import pl.arturczopek.mycoach.dto.add.SeriesToAdd;
 import pl.arturczopek.mycoach.dto.add.TrainingToAdd;
@@ -21,35 +22,37 @@ import java.util.List;
  */
 
 @Service
-public class TrainingDateService {
+public class TrainingService {
 
     private DateService dateService;
     private ExerciseRepository exerciseRepository;
+    private ExerciseSessionRepository exerciseSessionRepository;
     private SetRepository setRepository;
-    private TrainingDateRepository trainingDateRepository;
+    private TrainingRepository trainingRepository;
 
     @Autowired
-    public TrainingDateService(DateService dateService, ExerciseRepository exerciseRepository, SetRepository setRepository, TrainingDateRepository trainingDateRepository) {
+    public TrainingService(DateService dateService, ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SetRepository setRepository, TrainingRepository trainingRepository) {
         this.dateService = dateService;
         this.exerciseRepository = exerciseRepository;
+        this.exerciseSessionRepository = exerciseSessionRepository;
         this.setRepository = setRepository;
-        this.trainingDateRepository = trainingDateRepository;
+        this.trainingRepository = trainingRepository;
     }
 
     @Transactional
     public void addTraining(TrainingToAdd trainingToAdd) {
 
-        TrainingDate trainingDate = new TrainingDate();
+        Training training = new Training();
         Set set = setRepository.findOne(trainingToAdd.getSetId());
 
-        if (trainingToAdd.getTrainingDate() != null) {
-            trainingDate.setTrainingDate(trainingToAdd.getTrainingDate());
+        if (trainingToAdd.getDate() != null) {
+            training.setTrainingDate(trainingToAdd.getDate());
         } else {
-            trainingDate.setTrainingDate(dateService.getCurrentDate());
+            training.setTrainingDate(dateService.getCurrentDate());
         }
 
-        trainingDate.setSet(set);
-        trainingDateRepository.save(trainingDate);
+        training.setSet(set);
+        trainingRepository.save(training);
 
         List<Series> series = new LinkedList<>();
 
@@ -75,13 +78,15 @@ public class TrainingDateService {
             }
 
             exerciseSession.setSeries(series);
+            exerciseSessionRepository.save(exerciseSession);
+
             exercise.getExerciseSessions().add(exerciseSession);
 
             exerciseRepository.save(exercise);
         }
     }
 
-    public List<TrainingDate> getTrainingDatesForSet(long id) {
-        return setRepository.findOne(id).getTrainingDates();
+    public List<Training> getTrainingDatesForSet(long id) {
+        return setRepository.findOne(id).getTrainings();
     }
 }

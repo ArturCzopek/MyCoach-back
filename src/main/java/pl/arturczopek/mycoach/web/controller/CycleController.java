@@ -46,7 +46,7 @@ public class CycleController {
     }
 
     @PostMapping("/end/{id}")
-    @ResponseStatus(value = HttpStatus.CREATED, reason = "Zakończono cykl")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Zakończono cykl")
     public void endCycle(@PathVariable long id) {
         cycleService.endCycle(id);
     }

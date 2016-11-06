@@ -10,7 +10,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 80.6
         - column:
             name: measurementdate
@@ -19,7 +19,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 80.4
         - column:
             name: measurementdate
@@ -28,7 +28,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 80
         - column:
             name: measurementdate
@@ -37,7 +37,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 80.4
         - column:
             name: measurementdate
@@ -46,7 +46,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 79.9
         - column:
             name: measurementdate
@@ -55,7 +55,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 79.4
         - column:
             name: measurementdate
@@ -64,7 +64,7 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 79
         - column:
             name: measurementdate
@@ -73,11 +73,56 @@ databaseChangeLog:
     - insert:
         columns:
         - column:
-            name: weight
+            name: value
             value: 79.7
         - column:
             name: measurementdate
             value: '2016-10-10'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: value
+            value: 79.7
+        - column:
+            name: measurementdate
+            value: '2016-11-01'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: value
+            value: 79.3
+        - column:
+            name: measurementdate
+            value: '2016-11-02'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: value
+            value: 79.5
+        - column:
+            name: measurementdate
+            value: '2016-11-03'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: value
+            value: 79.0
+        - column:
+            name: measurementdate
+            value: '2016-11-04'
+        tableName: weights
+    - insert:
+        columns:
+        - column:
+            name: value
+            value: 79.2
+        - column:
+            name: measurementdate
+            value: '2016-11-05'
         tableName: weights
 
 - changeSet:
@@ -122,6 +167,15 @@ databaseChangeLog:
             name: screenurl
             value: NO_PRODUCT_PHOTO.JPG
         tableName: products
+    - insert:
+        columns:
+        - column:
+            name: productname
+            value: Indyk
+        - column:
+            name: screenurl
+            value: http://www.theinnovationhouse.us/wp-content/uploads/2014/12/Turkey-10.gif
+        tableName: products
 
 - changeSet:
     id: Insert test prices
@@ -136,7 +190,7 @@ databaseChangeLog:
             name: pricedate
             value: '2016-10-05'
         - column:
-            name: price
+            name: value
             value: 15.50
         - column:
             name: place
@@ -154,8 +208,44 @@ databaseChangeLog:
             name: pricedate
             value: '2016-10-12'
         - column:
-            name: price
+            name: value
             value: 17.50
+        - column:
+            name: place
+            value: M1
+        - column:
+            name: quantity
+            value: 1.0
+        tableName: prices
+    - insert:
+        columns:
+        - column:
+            name: productid
+            value: 2
+        - column:
+            name: pricedate
+            value: '2016-10-05'
+        - column:
+            name: value
+            value: 19.50
+        - column:
+            name: place
+            value: Auchan
+        - column:
+            name: quantity
+            value: 1.0
+        tableName: prices
+    - insert:
+        columns:
+        - column:
+            name: productid
+            value: 2
+        - column:
+            name: pricedate
+            value: '2016-10-12'
+        - column:
+            name: value
+            value: 20.50
         - column:
             name: place
             value: M1
@@ -176,6 +266,12 @@ databaseChangeLog:
         - column:
             name: enddate
             value: '2016-10-03'
+        tableName: cycles
+    - insert:
+        columns:
+        - column:
+            name: startdate
+            value: '2016-10-04'
         tableName: cycles
 
 - changeSet:
@@ -209,6 +305,33 @@ databaseChangeLog:
             name: cycleid
             value: 1
         tableName: sets
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: push
+        - column:
+            name: cycleid
+            value: 2
+        tableName: sets
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: pull
+        - column:
+            name: cycleid
+            value: 2
+        tableName: sets
+    - insert:
+        columns:
+        - column:
+            name: setname
+            value: legs
+        - column:
+            name: cycleid
+            value: 2
+        tableName: sets
 
 - changeSet:
     id: Insert test exercises
@@ -221,7 +344,7 @@ databaseChangeLog:
             value: 1
         - column:
             name: exercisename
-            value: wyciskanie lezac
+            value: Wyciskanie lezac
         tableName: exercises
     - insert:
         columns:
@@ -230,7 +353,16 @@ databaseChangeLog:
             value: 1
         - column:
             name: exercisename
-            value: wyciskanie w skosie
+            value: Wyciskanie w skosie
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 1
+        - column:
+            name: exercisename
+            value: Wyciskanie siedząć
         tableName: exercises
     - insert:
         columns:
@@ -239,7 +371,7 @@ databaseChangeLog:
             value: 2
         - column:
             name: exercisename
-            value: wioslowanie
+            value: Wioslowanie
         tableName: exercises
     - insert:
         columns:
@@ -248,7 +380,16 @@ databaseChangeLog:
             value: 2
         - column:
             name: exercisename
-            value: podciaganie hantli
+            value: Podciaganie hantli
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 2
+        - column:
+            name: exercisename
+            value: Uginanie ramion
         tableName: exercises
     - insert:
         columns:
@@ -257,7 +398,7 @@ databaseChangeLog:
             value: 3
         - column:
             name: exercisename
-            value: przysiady
+            value: Przysiady
         tableName: exercises
     - insert:
         columns:
@@ -266,11 +407,101 @@ databaseChangeLog:
             value: 3
         - column:
             name: exercisename
-            value: martwy na prostych
+            value: Martwy na prostych
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 3
+        - column:
+            name: exercisename
+            value: Wypady
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 4
+        - column:
+            name: exercisename
+            value: Wyciskanie lezac hantli
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 4
+        - column:
+            name: exercisename
+            value: Wyciskanie w skosie hantli
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 4
+        - column:
+            name: exercisename
+            value: Wznosy boczne
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 5
+        - column:
+            name: exercisename
+            value: Wioslowanie hantli
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 5
+        - column:
+            name: exercisename
+            value: Podciaganie na drążku
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 5
+        - column:
+            name: exercisename
+            value: Uginanie ramion na modlitewniku
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 6
+        - column:
+            name: exercisename
+            value: Przysiad front
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 6
+        - column:
+            name: exercisename
+            value: Martwy na prostych (sztanga)
+        tableName: exercises
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 6
+        - column:
+            name: exercisename
+            value: Wypady ze sztangą na barkach
         tableName: exercises
 
 - changeSet:
-    id: Insert test training dates
+    id: Insert test trainings
     author: Artur Czopek
     changes:
     - insert:
@@ -280,8 +511,8 @@ databaseChangeLog:
             value: 1
         - column:
             name: trainingdate
-            value: '2016-10-07'
-        tableName: trainingdates
+            value: '2016-09-07'
+        tableName: trainings
     - insert:
         columns:
         - column:
@@ -289,8 +520,8 @@ databaseChangeLog:
             value: 2
         - column:
             name: trainingdate
-            value: '2016-10-09'
-        tableName: trainingdates
+            value: '2016-09-09'
+        tableName: trainings
     - insert:
         columns:
         - column:
@@ -298,8 +529,89 @@ databaseChangeLog:
             value: 3
         - column:
             name: trainingdate
+            value: '2016-09-11'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 1
+        - column:
+            name: trainingdate
+            value: '2016-09-13'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 2
+        - column:
+            name: trainingdate
+            value: '2016-09-15'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 3
+        - column:
+            name: trainingdate
+            value: '2016-09-17'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 4
+        - column:
+            name: trainingdate
+            value: '2016-10-07'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 5
+        - column:
+            name: trainingdate
+            value: '2016-10-09'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 6
+        - column:
+            name: trainingdate
             value: '2016-10-11'
-        tableName: trainingdates
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 4
+        - column:
+            name: trainingdate
+            value: '2016-10-13'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 5
+        - column:
+            name: trainingdate
+            value: '2016-10-15'
+        tableName: trainings
+    - insert:
+        columns:
+        - column:
+            name: setid
+            value: 6
+        - column:
+            name: trainingdate
+            value: '2016-10-17'
+        tableName: trainings
 
 - changeSet:
     id: Insert test exercise sessions
@@ -340,6 +652,186 @@ databaseChangeLog:
         - column:
             name: exerciseId
             value: 6
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 7
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 8
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 9
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 1
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 2
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 3
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 4
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 5
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 6
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 7
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 8
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 9
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 10
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 11
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 12
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 13
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 14
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 15
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 16
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 17
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 18
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 10
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 11
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 12
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 13
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 14
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 15
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 16
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 17
+        tableName: exercisesessions
+    - insert:
+        columns:
+        - column:
+            name: exerciseId
+            value: 18
         tableName: exercisesessions
 
 - changeSet:
@@ -401,7 +893,7 @@ databaseChangeLog:
             value: 2
         - column:
             name: weight
-            value: 5
+            value: 3.75
         - column:
             name: repeats
             value: 12
@@ -413,30 +905,6 @@ databaseChangeLog:
             value: 2
         - column:
             name: weight
-            value: 6.25
-        - column:
-            name: repeats
-            value: 12
-        tableName: series
-    - insert:
-        columns:
-        - column:
-            name: exercisesessionid
-            value: 3
-        - column:
-            name: weight
-            value: 3.75
-        - column:
-            name: repeats
-            value: 12
-        tableName: series
-    - insert:
-        columns:
-        - column:
-            name: exercisesessionid
-            value: 3
-        - column:
-            name: weight
             value: 5
         - column:
             name: repeats
@@ -449,7 +917,31 @@ databaseChangeLog:
             value: 3
         - column:
             name: weight
-            value: 6.25
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 3
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 3
+        - column:
+            name: weight
+            value: 5
         - column:
             name: repeats
             value: 12
@@ -509,7 +1001,7 @@ databaseChangeLog:
             value: 5
         - column:
             name: weight
-            value: 5
+            value: 3.75
         - column:
             name: repeats
             value: 12
@@ -521,7 +1013,7 @@ databaseChangeLog:
             value: 5
         - column:
             name: weight
-            value: 6.25
+            value: 5
         - column:
             name: repeats
             value: 12
@@ -531,6 +1023,42 @@ databaseChangeLog:
         - column:
             name: exercisesessionid
             value: 6
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 6
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 6
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 7
         - column:
             name: weight
             value: 3.75
@@ -542,7 +1070,7 @@ databaseChangeLog:
         columns:
         - column:
             name: exercisesessionid
-            value: 6
+            value: 7
         - column:
             name: weight
             value: 5
@@ -554,10 +1082,406 @@ databaseChangeLog:
         columns:
         - column:
             name: exercisesessionid
-            value: 6
+            value: 7
         - column:
             name: weight
             value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 8
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 8
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 8
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 9
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 9
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 9
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 10
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 10
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 10
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 11
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 11
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 11
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 12
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 12
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 12
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 13
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 13
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 13
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 14
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 14
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 14
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 15
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 15
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 15
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 16
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 16
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 16
+        - column:
+            name: weight
+            value: 6.25
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 17
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 17
+        - column:
+            name: weight
+            value: 3.75
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 17
+        - column:
+            name: weight
+            value: 5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 18
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 18
+        - column:
+            name: weight
+            value: 2.5
+        - column:
+            name: repeats
+            value: 12
+        tableName: series
+    - insert:
+        columns:
+        - column:
+            name: exercisesessionid
+            value: 18
+        - column:
+            name: weight
+            value: 5
         - column:
             name: repeats
             value: 12

@@ -19,7 +19,7 @@ public class PriceToUpdate implements Serializable {
     @JsonProperty(required = true)
     private long priceId;
 
-    private Float price;
+    private Float value;
 
     private String place;
 

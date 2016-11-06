@@ -37,8 +37,8 @@ public class Price implements Serializable{
     @Column(name = "PriceDate", nullable = false)
     private Date priceDate;
 
-    @Column(name = "Price", nullable = false, length = 100)
-    private float price;
+    @Column(name = "Value", nullable = false, length = 100)
+    private float value;
 
     @Column(name = "Place", nullable = false)
     private String place;

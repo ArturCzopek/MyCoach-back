@@ -56,7 +56,7 @@ public class WeightService {
 
     public void addWeight(Weight weightToAdd) {
         Weight weight = new Weight();
-        weight.setWeight(weightToAdd.getWeight());
+        weight.setValue(weightToAdd.getValue());
 
         if(weightToAdd.getMeasurementDate() != null) {
             weight.setMeasurementDate(weight.getMeasurementDate());

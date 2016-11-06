@@ -27,8 +27,8 @@ public class Weight implements Serializable {
     @SequenceGenerator(name = "weights_weightid_seq", sequenceName = "weights_weightid_seq", allocationSize = 1)
     private long weightId;
 
-    @Column(name = "Weight", nullable = false)
-    private float weight;
+    @Column(name = "Value", nullable = false)
+    private float value;
 
     @Column(name = "MeasurementDate", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
