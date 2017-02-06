@@ -10,11 +10,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath group: 'org.postgresql', name: 'postgresql', version: postgres_version
-        classpath group: 'com.h2database', name: 'h2', version: h2_version
         classpath group: 'org.liquibase', name: 'liquibase-gradle-plugin', version: liquibase_gradle_version
         classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: spring_boot_version
-        classpath group: 'org.yaml', name: 'snakeyaml', version: yaml_version
         classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: sonar_version
     }
 }
@@ -43,9 +40,9 @@ liquibase {
     activities {
         prod {
             changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            url 'jdbc:postgresql://localhost:5432/my-coach'
-            username 'coach'
-            password '1e36fc21fcaaeb1330cd483ef050d66d'
+            url System.getenv('COACH_DB_URL')
+            username System.getenv('COACH_USERNAME')
+            password System.getenv('COACH_PASSWORD')
         }
         dev {
             changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
@@ -81,8 +78,6 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: postgres_version
 
     compile group: 'org.projectlombok', name: 'lombok', version: lombok_version
-    compile group: 'io.ratpack', name: 'ratpack-spring-boot', version: '1.1.1'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
-
