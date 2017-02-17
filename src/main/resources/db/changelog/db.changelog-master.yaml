@@ -501,3 +501,150 @@ databaseChangeLog:
         columnName: screenUrl
         defaultValue: NO_PRODUCT_PHOTO.JPG
         tableName: Products
+
+- changeSet:
+    id: Create entity Language
+    author: Artur Czopek
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: language_pkey
+            name: languageid
+            type: BIGSERIAL
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: shortname
+            type: VARCHAR(3)
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: fullname
+            type: VARCHAR(20)
+        tableName: languages
+
+- changeSet:
+    id: Create entity Dictionary
+    author: Artur Czopek
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: dictionaries_pkey
+            name: dictionaryentryid
+            type: BIGSERIAL
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: key
+            type: VARCHAR(60)
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: value
+            type: VARCHAR(60)
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: languageid
+            type: BIGINT
+        tableName: dictionaries
+
+- changeSet:
+    id: Unique for languageid
+    author: Artur Czopek
+    changes:
+    - addUniqueConstraint:
+        columnNames: languageid
+        constraintName: uk_languages_languageid
+        tableName: languages
+    dbms: PostgreSQL
+
+- changeSet:
+    id: Unique for dictionaryentryid
+    author: Artur Czopek
+    changes:
+    - addUniqueConstraint:
+        columnNames: dictionaryentryid
+        constraintName: uk_dictionaries_dictionaryentryid
+        tableName: dictionaries
+    dbms: PostgreSQL
+
+- changeSet:
+    id: Relation Dictionary - Language
+    author: Artur Czopek
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: languageid
+        baseTableName: dictionaries
+        constraintName: fk_dictionaries_languages
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: languageid
+        referencedTableName: languages
+
+- changeSet:
+    id: Create entity User Setting
+    author: Artur Czopek
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: usersettings_pkey
+            name: userid
+            type: BIGSERIAL
+        - column:
+            name: infomail
+            type: VARCHAR(100)
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: languageid
+            type: BIGINT
+        tableName: usersettings
+
+- changeSet:
+    id: Unique for userid
+    author: Artur Czopek
+    changes:
+    - addUniqueConstraint:
+        columnNames: userid
+        constraintName: uk_usersettings_userid
+        tableName: usersettings
+    dbms: PostgreSQL
+
+- changeSet:
+    id: Relation User Setting - Language
+    author: Artur Czopek
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: languageid
+        baseTableName: usersettings
+        constraintName: fk_usersettingss_languages
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: languageid
+        referencedTableName: languages
+
+- include:
+    file: classpath:/db/changelog/db.changelog-dictionary.xml
