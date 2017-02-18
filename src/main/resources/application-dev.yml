@@ -19,7 +19,7 @@
       database-platform: org.hibernate.dialect.H2Dialect
       database: H2
       openInView: false
-      show-sql: false
+      show-sql: true
       generate-ddl: false
       hibernate:
         ddl-auto: none
@@ -38,11 +38,12 @@
     port: 8011
 
   liquibase:
-    change-log: classpath:/db/changelog/db.changelog-test-data.yaml
+    change-log: classpath:/db/changelog/db.changelog-test.xml
     enabled: true
 
   logging:
     path: "src/main/resources/logs"
+    file: "src/main/resources/logs/my-coach-dev.log"
     level:
       org:
         springframework.web: INFO
@@ -50,4 +51,3 @@
     pattern:
       console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
       level: "user:%X{user} %5p"
-      file: "src/main/resources/logs/my-coach-dev.log"

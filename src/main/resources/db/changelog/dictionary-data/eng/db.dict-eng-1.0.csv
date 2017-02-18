@@ -1,0 +1,76 @@
+DCT_KEY;DCT_VAL;DCT_LNG_ID
+global.add.label;Add;2
+global.edit.label;Edit;2
+global.delete.label;Delete;2
+global.close.label;Close;2
+navbar.applicationName.label;My Coach;2
+navbar.weights.label;Weights;2
+navbar.foodPrices.label;Food prices;2
+navbar.trainings.label;Trainings;2
+navbar.reports.label;Reports;2
+navbar.about.label;About;2
+page.weights.add.tooltip;Add measurement;2
+page.weights.edit.tooltip;Edit measurements;2
+page.weights.delete.tooltip;Delete measurements;2
+page.weights.loadFirst.tooltip;Load measurements first!;2
+page.weights.modal.add.title;Add measurement;2
+page.weights.modal.add.weight.label;Weight;2
+page.weights.modal.add.date.label;Date;2
+page.weights.modal.edit.day.label;Day;2
+page.weights.modal.edit.measurement.label;Measurement;2
+page.weights.chart.point.label;Weight [kg]: ;2
+calendar.nextDay.label;Next day;2
+calendar.prevDay.label;Previous day;2
+calendar.monthSelect.label;Select a month;2
+calendar.yearSelect.label;Select a year;2
+calendar.today.label;Today;2
+calendar.clear.label;Clear;2
+calendar.close.label;Close;2
+calendar.day;Day;2
+calendar.month.jan.full;January;2
+calendar.month.feb.full;February;2
+calendar.month.mar.full;March;2
+calendar.month.apr.full;April;2
+calendar.month.may.full;May;2
+calendar.month.jun.full;June;2
+calendar.month.jul.full;July;2
+calendar.month.aug.full;August;2
+calendar.month.sep.full;September;2
+calendar.month.oct.full;October;2
+calendar.month.nov.full;November;2
+calendar.month.dec.full;December;2
+calendar.month.jan.short;Jan;2
+calendar.month.feb.short;Feb;2
+calendar.month.mar.short;Mar;2
+calendar.month.apr.short;Apr;2
+calendar.month.may.short;May;2
+calendar.month.jun.short;Jun;2
+calendar.month.jul.short;Jul;2
+calendar.month.aug.short;Aug;2
+calendar.month.sep.short;Sep;2
+calendar.month.oct.short;Oct;2
+calendar.month.nov.short;Nov;2
+calendar.month.dec.short;Dec;2
+calendar.day.mon.full;Monday;2
+calendar.day.tue.full;Tuesday;2
+calendar.day.wed.full;Wednesday;2
+calendar.day.thu.full;Thursday;2
+calendar.day.fri.full;Friday;2
+calendar.day.sat.full;Saturday;2
+calendar.day.sun.full;Sunday;2
+calendar.day.mon.short;Mon;2
+calendar.day.tue.short;Tue;2
+calendar.day.wed.short;Wed;2
+calendar.day.thu.short;Thu;2
+calendar.day.fri.short;Fri;2
+calendar.day.sat.short;Sat;2
+calendar.day.sun.short;Sun;2
+calendar.day.mon.letter;M;2
+calendar.day.tue.letter;T;2
+calendar.day.wed.letter;W;2
+calendar.day.thu.letter;T;2
+calendar.day.fri.letter;F;2
+calendar.day.sat.letter;S;2
+calendar.day.sun.letter;S;2
+calendar.format;dd mmm yyyy;2
+calendar.format.submit;yyyy-mm-dd;2

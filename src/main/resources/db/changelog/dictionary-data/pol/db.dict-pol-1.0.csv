@@ -1,0 +1,76 @@
+DCT_KEY;DCT_VAL;DCT_LNG_ID
+global.add.label;Dodaj;1
+global.edit.label;Edytuj;1
+global.delete.label;Usuń;1
+global.close.label;Zamknij;1
+navbar.applicationName.label;My Coach;1
+navbar.weights.label;Wagi;1
+navbar.foodPrices.label;Ceny żywności;1
+navbar.trainings.label;Treningi;1
+navbar.reports.label;Raport;1
+navbar.about.label;O aplikacji;1
+page.weights.add.tooltip;Dodaj pomiar;1
+page.weights.edit.tooltip;Edytuj pomiary;1
+page.weights.delete.tooltip;Usuń pomiary;1
+page.weights.loadFirst.tooltip;Wczytaj najpierw pomiary!;1
+page.weights.modal.add.title;Dodaj pomiar;1
+page.weights.modal.add.weight.label;Waga;1
+page.weights.modal.add.date.label;Data;1
+page.weights.modal.edit.day.label;Dzień;1
+page.weights.modal.edit.measurement.label;Pomiar;1
+page.weights.chart.point.label;Waga [kg]: ;1
+calendar.nextDay.label;Następny dzień;1
+calendar.prevDay.label;Poprzedni dzień;1
+calendar.monthSelect.label;Wybierz miesiąc;1
+calendar.yearSelect.label;Wybierz rok;1
+calendar.today.label;Dzisiaj;1
+calendar.clear.label;Czyść;1
+calendar.close.label;Zamknij;1
+calendar.day;Dzień;1
+calendar.month.jan.full;Styczeń;1
+calendar.month.feb.full;Luty;1
+calendar.month.mar.full;Marzec;1
+calendar.month.apr.full;Kwiecień;1
+calendar.month.may.full;Maj;1
+calendar.month.jun.full;Czerwiec;1
+calendar.month.jul.full;Lipiec;1
+calendar.month.aug.full;Sierpień;1
+calendar.month.sep.full;Wrzesień;1
+calendar.month.oct.full;Październik;1
+calendar.month.nov.full;Listopad;1
+calendar.month.dec.full;Grudzień;1
+calendar.month.jan.short;Sty;1
+calendar.month.feb.short;Lut;1
+calendar.month.mar.short;Mar;1
+calendar.month.apr.short;Kwi;1
+calendar.month.may.short;Maj;1
+calendar.month.jun.short;Cze;1
+calendar.month.jul.short;Lip;1
+calendar.month.aug.short;Sie;1
+calendar.month.sep.short;Wrz;1
+calendar.month.oct.short;Paź;1
+calendar.month.nov.short;Lis;1
+calendar.month.dec.short;Gru;1
+calendar.day.mon.full;Poniedziałek;1
+calendar.day.tue.full;Wtorek;1
+calendar.day.wed.full;Środa;1
+calendar.day.thu.full;Czwartek;1
+calendar.day.fri.full;Piątek;1
+calendar.day.sat.full;Sobota;1
+calendar.day.sun.full;Niedziela;1
+calendar.day.mon.short;Pn;1
+calendar.day.tue.short;Wt;1
+calendar.day.wed.short;Śr;1
+calendar.day.thu.short;Czw;1
+calendar.day.fri.short;Pt;1
+calendar.day.sat.short;Sb;1
+calendar.day.sun.short;Ndz;1
+calendar.day.mon.letter;P;1
+calendar.day.tue.letter;W;1
+calendar.day.wed.letter;Ś;1
+calendar.day.thu.letter;C;1
+calendar.day.fri.letter;P;1
+calendar.day.sat.letter;S;1
+calendar.day.sun.letter;N;1
+calendar.format;dd mmm yyyy;1
+calendar.format.submit;yyyy-mm-dd;1

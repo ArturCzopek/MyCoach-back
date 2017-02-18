@@ -16,33 +16,33 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "Prices")
+@Table(name = "PRICES")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Price implements Serializable{
 
     private static final long serialVersionUID = 4215492868990889864L;
 
     @Id
-    @Column(name = "PriceId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "prices_priceid_seq")
-    @SequenceGenerator(name = "prices_priceid_seq", sequenceName = "prices_priceid_seq", allocationSize = 1)
+    @Column(name = "PRC_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "PRICES_PRC_ID_SEQ")
+    @SequenceGenerator(name = "PRICES_PRC_ID_SEQ", sequenceName = "PRICES_PRC_ID_SEQ", allocationSize = 1)
     private long priceId;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "ProductId", nullable = false)
+    @JoinColumn(name = "PRC_PRD_ID", nullable = false)
     private Product product;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "PriceDate", nullable = false)
+    @Column(name = "PRC_DT", nullable = false)
     private Date priceDate;
 
-    @Column(name = "Value", nullable = false, length = 100)
+    @Column(name = "PRC_VAL", nullable = false)
     private float value;
 
-    @Column(name = "Place", nullable = false)
-    private String place;
-
-    @Column(name = "Quantity")
+    @Column(name = "PRC_QNT")
     private float quantity;
+
+    @Column(name = "PRC_PLC", nullable = false, length = 60)
+    private String place;
 }

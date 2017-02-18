@@ -12,20 +12,20 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "Languages")
+@Table(name = "LANGUAGES")
 public class Language implements Serializable {
 
     private static final long serialVersionUID = -597542711641061972L;
 
     @Id
-    @Column(name = "LanguageId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "languages_languageid_seq")
-    @SequenceGenerator(name = "languages_languageid_seq", sequenceName = "languages_languageid_seq", allocationSize = 1)
+    @Column(name = "LNG_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "LANGUAGES_LNG_ID")
+    @SequenceGenerator(name = "LANGUAGES_LNG_ID", sequenceName = "LANGUAGES_LNG_ID", allocationSize = 1)
     private long languageId;
 
-    @Column(name = "ShortName", nullable = false, length = 3)
+    @Column(name = "LNG_SHRT_NAME", nullable = false, length = 3)
     private String shortName;
 
-    @Column(name = "FullName", nullable = false, length = 20)
+    @Column(name = "LNG_FULL_NAME", nullable = false, length = 20)
     private String fullName;
 }

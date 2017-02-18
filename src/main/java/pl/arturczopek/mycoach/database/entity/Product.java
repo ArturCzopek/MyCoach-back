@@ -16,22 +16,22 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Products")
+@Table(name = "PRODUCTS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 5913443781036872464L;
 
     @Id
-    @Column(name = "ProductId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "products_productid_seq")
-    @SequenceGenerator(name = "products_productid_seq", sequenceName = "products_productid_seq", allocationSize = 1)
+    @Column(name = "PRD_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "PRODUCTS_PRD_ID_SEQ")
+    @SequenceGenerator(name = "PRODUCTS_PRD_ID_SEQ", sequenceName = "PRODUCTS_PRD_ID_SEQ", allocationSize = 1)
     private long productId;
 
-    @Column(name = "ProductName", nullable = false, length = 200, unique = true)
+    @Column(name = "PRD_NAME", nullable = false, length = 60)
     private String productName;
 
-    @Column(name = "ScreenUrl", length = 1903247980)
+    @Column(name = "PRD_SCRN_URL", length = 100)
     private String screenUrl;
 
     @OneToMany(mappedBy = "product")

@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <include file="db/changelog/db-structure/db.structure-1.0.xml"/>
+    <include file="db/changelog/languages/db.changelog-languages-1.0.xml"/>
+    <include file="db/changelog/dictionary-data/db.changelog-dictionary-1.0.xml"/>
+    <include file="db/changelog/test-data/db.changelog-test-data-1.0.xml"/>
+</databaseChangeLog>

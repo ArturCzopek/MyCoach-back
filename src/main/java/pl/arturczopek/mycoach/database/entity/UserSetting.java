@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.database.entity;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,20 +13,21 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "UserSettings")
+@Table(name = "USERSETTINGS")
 public class UserSetting implements Serializable {
     private static final long serialVersionUID = -4742374380575086257L;
 
     @Id
-    @Column(name = "UserId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "usersettings_userid_seq")
-    @SequenceGenerator(name = "usersettings_userid_seq", sequenceName = "usersettings_userid_seq", allocationSize = 1)
+    @Column(name = "USS_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "USERSETTINGS_USS_ID_SEQ")
+    @SequenceGenerator(name = "USERSETTINGS_USS_ID_SEQ", sequenceName = "USERSETTINGS_USS_ID_SEQ", allocationSize = 1)
     private long userId;
 
-    @Column(name = "InfoMail", length = 100)
+    @Email
+    @Column(name = "USS_MAIL", length = 100)
     private String infoMail;
 
     @ManyToOne
-    @JoinColumn(name = "languageId")
+    @JoinColumn(name = "USS_LNG_ID")
     private Language language;
 }

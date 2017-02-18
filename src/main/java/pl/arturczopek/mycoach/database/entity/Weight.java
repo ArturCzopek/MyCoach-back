@@ -15,22 +15,22 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "Weights")
+@Table(name = "WEIGHTS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Weight implements Serializable {
 
     private static final long serialVersionUID = -4251427345815202610L;
 
     @Id
-    @Column(name = "WeightId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "weights_weightid_seq")
-    @SequenceGenerator(name = "weights_weightid_seq", sequenceName = "weights_weightid_seq", allocationSize = 1)
+    @Column(name = "WGH_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "WEIGHTS_WGH_ID_SEQ")
+    @SequenceGenerator(name = "WEIGHTS_WGH_ID_SEQ", sequenceName = "WEIGHTS_WGH_ID_SEQ", allocationSize = 1)
     private long weightId;
 
-    @Column(name = "Value", nullable = false)
+    @Column(name = "WGH_VAL", nullable = false)
     private float value;
 
-    @Column(name = "MeasurementDate", nullable = false)
+    @Column(name = "WGH_MSRM_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date measurementDate;
 }

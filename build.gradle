@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: 'liquibase'
 apply plugin: 'org.sonarqube'
 
 buildscript {
@@ -10,7 +9,6 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath group: 'org.liquibase', name: 'liquibase-gradle-plugin', version: liquibase_gradle_version
         classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: spring_boot_version
         classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: sonar_version
     }
@@ -35,25 +33,6 @@ repositories {
 configurations {
     providedRuntime
 }
-
-liquibase {
-    activities {
-        prod {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            url System.getenv('COACH_DB_URL')
-            username System.getenv('COACH_USERNAME')
-            password System.getenv('COACH_PASSWORD')
-        }
-        dev {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            url 'jdbc:h2:mem:my-coach'
-            username 'sa'
-            password ''
-        }
-    }
-    runList = 'dev'
-}
-
 
 sonarqube {
     properties {

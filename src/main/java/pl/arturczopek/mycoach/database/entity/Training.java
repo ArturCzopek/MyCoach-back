@@ -17,7 +17,7 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "TrainingDates")
+@Table(name = "TRAININGS")
 @ToString(exclude = {"set"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Training implements Serializable {
@@ -25,17 +25,17 @@ public class Training implements Serializable {
     private static final long serialVersionUID = 3305548865433699112L;
 
     @Id
-    @Column(name = "TrainingId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "trainings_trainingid_seq")
-    @SequenceGenerator(name = "trainings_trainingid_seq", sequenceName = "trainings_trainingid_seq", allocationSize = 1)
-    private long trainingDateId;
+    @Column(name = "TRN_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TRAININGS_TRN_ID_SEQ")
+    @SequenceGenerator(name = "TRAININGS_TRN_ID_SEQ", sequenceName = "TRAININGS_TRN_ID_SEQ", allocationSize = 1)
+    private long trainingId;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "setId")
+    @JoinColumn(name = "TRN_SET_ID")
     private Set set;
 
-    @Column(name = "Training", nullable = false)
+    @Column(name = "TRN_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date trainingDate;
 }

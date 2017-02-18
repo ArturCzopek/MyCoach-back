@@ -49,9 +49,9 @@ public class WeightService {
     public List<Weight> getWeightsByYearAndMonth(int year, int month) {
 
         LocalDate startDate = dateService.buildFirstMonthDay(year, month);
-        LocalDate endDate = dateService.getNextMonth(startDate);
+        LocalDate endDate = dateService.getLastDayOfTheMonth(startDate);
 
-        return weightRepository.findByMeasurementDateAfterAndMeasurementDateBefore(Date.valueOf(startDate), Date.valueOf(endDate));
+        return weightRepository.findByMeasurementDateBetween(Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
     public void addWeight(Weight weightToAdd) {
@@ -59,7 +59,7 @@ public class WeightService {
         weight.setValue(weightToAdd.getValue());
 
         if(weightToAdd.getMeasurementDate() != null) {
-            weight.setMeasurementDate(weight.getMeasurementDate());
+            weight.setMeasurementDate(weightToAdd.getMeasurementDate());
         } else {
             weight.setMeasurementDate(dateService.getCurrentDate());
         }

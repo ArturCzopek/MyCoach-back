@@ -13,25 +13,25 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "Dictionaries")
+@Table(name = "DICTIONARIES")
 public class DictionaryEntry implements Serializable {
 
     private static final long serialVersionUID = 3911599422311278880L;
 
     @Id
-    @Column(name = "DictionaryEntryId", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "dictionaries_dictionaryentryid_seq")
-    @SequenceGenerator(name = "dictionaries_dictionaryentryid_seq", sequenceName = "dictionaries_dictionaryentryid_seq", allocationSize = 1)
+    @Column(name = "DCT_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "DICTIONARIES_DCT_ID_SEQ")
+    @SequenceGenerator(name = "DICTIONARIES_DCT_ID_SEQ", sequenceName = "DICTIONARIES_DCT_ID_SEQ", allocationSize = 1)
     private long dictionaryEntryId;
 
-    @Column(name = "Key", nullable = false, length = 60)
+    @Column(name = "DCT_KEY", nullable = false, length = 100)
     private String key;
 
-    @Column(name = "Value", nullable = false, length = 60)
+    @Column(name = "DCT_VAL", nullable = false, length = 30)
     private String value;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "languageId")
+    @JoinColumn(name = "DCT_LNG_ID")
     private Language language;
 }

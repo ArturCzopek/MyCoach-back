@@ -1,0 +1,247 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="Create Reports table" author="Artur Czopek">
+        <createTable tableName="REPORTS">
+            <column name="REP_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="REPORTS_PKEY" unique="true"/>
+            </column>
+            <column name="REP_CONT" type="nvarchar(10000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REP_STRT_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REP_END_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="REPORTS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Weights table" author="Artur Czopek">
+        <createTable tableName="WEIGHTS">
+            <column name="WGH_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="WEIGHTS_PKEY" unique="true"/>
+            </column>
+            <column name="WGH_VAL" type="decimal(6,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WGH_MSRM_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="WEIGHTS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Cycles table" author="Artur Czopek">
+        <createTable tableName="CYCLES">
+            <column name="CYC_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="CYCLES_PKEY" unique="true"/>
+            </column>
+            <column name="CYC_STRT_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CYC_END_DT" type="date">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="CYCLES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Sets table" author="Artur Czopek">
+        <createTable tableName="SETS">
+            <column name="SET_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="SETS_PKEY" unique="true"/>
+            </column>
+            <column name="SET_CYC_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_SET_CYCLE" references="CYCLES(CYC_ID)"/>
+            </column>
+            <column name="SET_NAME" type="nvarchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="SETS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Trainings table" author="Artur Czopek">
+        <createTable tableName="TRAININGS">
+            <column name="TRN_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="TRAININGS_PKEY" unique="true"/>
+            </column>
+            <column name="TRN_SET_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_TRAINING_SET" references="SETS(SET_ID)"/>
+            </column>
+            <column name="TRN_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="TRAININGS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Exercise table" author="Artur Czopek">
+        <createTable tableName="EXERCISES">
+            <column name="EXR_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="EXERCISES_PKEY" unique="true"/>
+            </column>
+            <column name="EXR_SET_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_EXERCISE_SET" references="SETS(SET_ID)"/>
+            </column>
+            <column name="EXR_NAME" type="nvarchar(80)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="EXERCISES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Exercise Session table" author="Artur Czopek">
+        <createTable tableName="EXERCISESESSIONS">
+            <column name="EXS_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="EXERCISESESSIONS_PKEY" unique="true"/>
+            </column>
+            <column name="EXS_EXR_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_EXERCISESESSION_EXERCISE"
+                             references="EXERCISES(EXR_ID)"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="EXERCIESESSIONS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Series table" author="Artur Czopek">
+        <createTable tableName="SERIES">
+            <column name="SER_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="SERIES_PKEY" unique="true"/>
+            </column>
+            <column name="SER_EXS_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_SERIES_EXERCISESESSION"
+                             references="EXERCISESESSIONS(EXS_ID)"/>
+            </column>
+            <column name="SER_WGH" type="decimal(6,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SER_REP" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SER_COM" type="nvarchar(250)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="SERIES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Products table" author="Artur Czopek">
+        <createTable tableName="PRODUCTS">
+            <column name="PRD_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PRODUCTS_PKEY" unique="true"/>
+            </column>
+            <column name="PRD_NAME" type="nvarchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRD_SCRN_URL" type="nvarchar(100)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addDefaultValue tableName="PRODUCTS" columnName="PRD_SCRN_URL" defaultValue="NO_PRODUCT_PHOTO.JPG"/>
+        <rollback>
+            <dropTable tableName="PRODUCTS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Prices table" author="Artur Czopek">
+        <createTable tableName="PRICES">
+            <column name="PRC_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="PRICES_PKEY" unique="true"/>
+            </column>
+            <column name="PRC_PRD_ID" type="integer">
+                <constraints nullable="false" foreignKeyName="FK_PRICE_PRODUCT" references="PRODUCTS(PRD_ID)"/>
+            </column>
+            <column name="PRC_DT" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRC_VAL" type="decimal(6,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRC_QNT" type="decimal(6,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRC_PLC" type="nvarchar(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="PRICES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Languages table" author="Artur Czopek">
+        <createTable tableName="LANGUAGES">
+            <column name="LNG_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="LANGUAGES_PKEY" unique="true"/>
+            </column>
+            <column name="LNG_SHRT_NAME" type="nvarchar(3)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="LNG_FULL_NAME" type="nvarchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="LANGUAGES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create Dictionaries table" author="Artur Czopek">
+        <createTable tableName="DICTIONARIES">
+            <column name="DCT_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="DICTIONARIES_PKEY" unique="true"/>
+            </column>
+            <column name="DCT_KEY" type="nvarchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DCT_VAL" type="nvarchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DCT_LNG_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_DICTIONARY_LANGUAGE" references="LANGUAGES(LNG_ID)"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="DICTIONARIES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Create User Settings table" author="Artur Czopek">
+        <createTable tableName="USERSETTINGS">
+            <column name="USS_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="USERSETTINGS_PKEY" unique="true"/>
+            </column>
+            <column name="USS_MAIL" type="nvarchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="USS_LNG_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_USERSETTING_LANGUAGE" references="LANGUAGES(LNG_ID)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

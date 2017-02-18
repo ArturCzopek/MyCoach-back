@@ -30,7 +30,7 @@ public class DateService {
         return LocalDate.of(year, month, FIRST_DAY);
     }
 
-    public LocalDate getNextMonth(LocalDate date) {
-        return date.plusMonths(1);
+    public LocalDate getLastDayOfTheMonth(LocalDate date) {
+        return LocalDate.of(date.getYear(), date.getMonth(), date.lengthOfMonth());
     }
 }
