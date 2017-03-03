@@ -60,3 +60,7 @@ dependencies {
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
+}
