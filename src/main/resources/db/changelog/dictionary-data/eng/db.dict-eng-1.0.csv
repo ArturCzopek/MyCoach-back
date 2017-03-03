@@ -3,12 +3,17 @@ global.add.label;Add;2
 global.edit.label;Edit;2
 global.delete.label;Delete;2
 global.close.label;Close;2
+global.currency.label;zł;2
 navbar.applicationName.label;My Coach;2
 navbar.weights.label;Weights;2
 navbar.foodPrices.label;Food prices;2
 navbar.trainings.label;Trainings;2
 navbar.reports.label;Reports;2
 navbar.about.label;About;2
+page.about.title;My Coach;2
+page.about.content;Aplikacja służąca usprawnieniu twojego zdrowego lifestyle'u. Łatwo możesz notować swoje pomiary, ceny żywności, serie i powtórzenia ćwiczeń...możesz nawet składac w aplikacji raporty! Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na arturcz32@gmail.com. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;2
+page.weights.list.noData.info;Currently, you don't have any measurement;2
+page.weights.list.noData.click.info;Add your first measurement;2
 page.weights.add.tooltip;Add measurement;2
 page.weights.edit.tooltip;Edit measurements;2
 page.weights.delete.tooltip;Delete measurements;2
@@ -19,6 +24,44 @@ page.weights.modal.add.date.label;Date;2
 page.weights.modal.edit.day.label;Day;2
 page.weights.modal.edit.measurement.label;Measurement;2
 page.weights.chart.point.label;Weight [kg]: ;2
+page.reports.list.noData.info;Currently, you don't have any report;2
+page.reports.list.noData.click.info;Add your first report;2
+page.reports.card.title;Report;2
+page.reports.add.tooltip;Add report;2
+page.reports.edit.tooltip;Edit report;2
+page.reports.delete.tooltip;Delete report;2
+page.reports.loadFirst.tooltip;Load report first!;2
+page.reports.modal.startDate.label;Start date;2
+page.reports.modal.endDate.label;End date;2
+page.reports.modal.reportContent.label;Report content;2
+page.reports.modal.add.title;Add report;2
+page.reports.modal.delete.content;Are you sure that you want to delete this report?;2
+page.prices.addProduct.tooltip;Add product;2
+page.prices.editProduct.tooltip;Edit product;2
+page.prices.deleteProduct.tooltip;Dele product;2
+page.prices.addShoppingList.tooltip;Add shopping list;2
+page.prices.addPrice.tooltip;Add price;2
+page.prices.editPrices.tooltip;Edit price;2
+page.prices.deletePrices.tooltip;Delete price;2
+page.prices.list.noData.info;Currently, you don't have any product;2
+page.prices.list.noData.click.info;Add your first product;2
+page.prices.day.label;Day;2
+page.prices.place.label;Place;2
+page.prices.price.label;Price;2
+page.prices.price.label;Quantity;2
+page.prices.avgPrice.label;Average price:;2
+page.prices.productPrices.noData.info;Currently, you don't have any price;2
+page.prices.productPrices.noData.click.info;Add your first price;2
+page.prices.modal.add.addProduct.tite;Add product;2
+page.prices.modal.add.productName.label;Product name;2
+page.prices.modal.add.selectPhoto.label;Select photo;2
+page.prices.modal.add.addPrice.title;Add price;2
+page.prices.modal.add.quantity.label;Quantity;2
+page.prices.modal.add.price.label;Price;2
+page.prices.modal.add.date.label;Date;2
+page.prices.modal.add.place.label;Place;2
+page.prices.modal.edit.title;Edit product;2
+page.prices.modal.deleteProduct.content;Czy na pewno chcesz usunac ten produkt?;1
 calendar.nextDay.label;Next day;2
 calendar.prevDay.label;Previous day;2
 calendar.monthSelect.label;Select a month;2
@@ -73,4 +116,5 @@ calendar.day.fri.letter;F;2
 calendar.day.sat.letter;S;2
 calendar.day.sun.letter;S;2
 calendar.format;dd mmm yyyy;2
+calendar.format.momentjs;DD MMM YYYY;2
 calendar.format.submit;yyyy-mm-dd;2

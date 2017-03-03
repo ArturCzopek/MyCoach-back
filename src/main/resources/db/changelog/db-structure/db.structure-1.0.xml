@@ -10,7 +10,7 @@
             <column name="REP_ID" type="serial" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="REPORTS_PKEY" unique="true"/>
             </column>
-            <column name="REP_CONT" type="nvarchar(10000)">
+            <column name="REP_CONT" type="nvarchar(2000)">
                 <constraints nullable="false"/>
             </column>
             <column name="REP_STRT_DT" type="date">
