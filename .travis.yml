@@ -5,7 +5,7 @@ dist: trusty
 branches:
   only:
    - master
-   - sonar remote
+   - sonar-remote
 
 before_install:
  - gradle wrapper
