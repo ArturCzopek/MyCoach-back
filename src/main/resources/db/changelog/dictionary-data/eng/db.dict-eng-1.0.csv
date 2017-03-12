@@ -48,7 +48,8 @@ page.prices.list.noData.click.info;Add your first product;2
 page.prices.day.label;Day;2
 page.prices.place.label;Place;2
 page.prices.price.label;Price;2
-page.prices.price.label;Quantity;2
+page.prices.product.label;Product;2
+page.prices.quantity.label;Quantity;2
 page.prices.avgPrice.label;Average price:;2
 page.prices.productPrices.noData.info;Currently, you don't have any price;2
 page.prices.productPrices.noData.click.info;Add your first price;2
@@ -61,7 +62,8 @@ page.prices.modal.add.price.label;Price;2
 page.prices.modal.add.date.label;Date;2
 page.prices.modal.add.place.label;Place;2
 page.prices.modal.edit.title;Edit product;2
-page.prices.modal.deleteProduct.content;Czy na pewno chcesz usunac ten produkt?;1
+page.prices.modal.deleteProduct.content;Are you sure that you want to delete this product?;2
+page.prices.modal.add.shoppingList.title;Shopping list;2
 calendar.nextDay.label;Next day;2
 calendar.prevDay.label;Previous day;2
 calendar.monthSelect.label;Select a month;2

@@ -48,7 +48,8 @@ page.prices.list.noData.click.info;Dodaj swój pierwszy produkt;1
 page.prices.day.label;Dzień;1
 page.prices.place.label;Miejsce;1
 page.prices.price.label;Cena;1
-page.prices.price.label;Ilość;1
+page.prices.product.label;Produkt;1
+page.prices.quantity.label;Ilość;1
 page.prices.avgPrice.label;Średnia cena:;1
 page.prices.productPrices.noData.info;Obecnie nie posiadasz żadnych cen;1
 page.prices.productPrices.noData.click.info;Dodaj pierwszą cenę;1
@@ -62,6 +63,7 @@ page.prices.modal.add.date.label;Data;1
 page.prices.modal.add.place.label;Miejsce;1
 page.prices.modal.edit.title;Edytuj produkt;1
 page.prices.modal.deleteProduct.content;Czy na pewno chcesz usunac ten produkt?;1
+page.prices.modal.add.shoppingList.title;Lista zakupów;1
 calendar.nextDay.label;Następny dzień;1
 calendar.prevDay.label;Poprzedni dzień;1
 calendar.monthSelect.label;Wybierz miesiąc;1
