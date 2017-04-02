@@ -5,7 +5,6 @@ dist: trusty
 branches:
   only:
    - master
-   - sonar-remote
 
 before_install:
  - gradle wrapper
@@ -22,6 +21,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
+ - echo Master
  - ./gradlew build
 
 notifications:
