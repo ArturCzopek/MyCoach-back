@@ -31,8 +31,9 @@ public class Product implements Serializable {
     @Column(name = "PRD_NAME", nullable = false, length = 60)
     private String productName;
 
-    @Column(name = "PRD_SCRN_URL", length = 100)
-    private String screenUrl;
+    @Column(name = "PRD_SCRN", length = 100)
+    @Lob
+    private byte[] screen;
 
     @OneToMany(mappedBy = "product")
     @LazyCollection(LazyCollectionOption.FALSE)

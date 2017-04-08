@@ -1,9 +1,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="Create Reports table" author="Artur Czopek">
         <createTable tableName="REPORTS">
@@ -157,11 +155,9 @@
             <column name="PRD_NAME" type="nvarchar(60)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PRD_SCRN_URL" type="nvarchar(100)">
-                <constraints nullable="true"/>
+            <column name="PRD_SCRN" type="blob">
             </column>
         </createTable>
-        <addDefaultValue tableName="PRODUCTS" columnName="PRD_SCRN_URL" defaultValue="NO_PRODUCT_PHOTO.JPG"/>
         <rollback>
             <dropTable tableName="PRODUCTS"/>
         </rollback>

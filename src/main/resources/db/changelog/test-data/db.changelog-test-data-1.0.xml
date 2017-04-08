@@ -3,9 +3,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="Insert test weights" author="Artur Czopek">
         <loadData tableName="WEIGHTS" separator=";" file="db/changelog/test-data/db.weights-1.0.csv">
@@ -25,7 +23,6 @@
     <changeSet id="Insert test products" author="Artur Czopek">
         <loadData tableName="PRODUCTS" separator=";" file="db/changelog/test-data/db.products-1.0.csv">
             <column name="PRD_NAME" type="STRING"/>
-            <column name="PRD_SCRN_URL" type="STRING"/>
         </loadData>
     </changeSet>
 

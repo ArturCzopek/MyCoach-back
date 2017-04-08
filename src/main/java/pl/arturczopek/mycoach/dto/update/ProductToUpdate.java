@@ -20,5 +20,5 @@ public class ProductToUpdate implements Serializable {
 
     private String productName;
 
-    private String screenUrl;
+    private byte[] screen;
 }

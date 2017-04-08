@@ -19,13 +19,13 @@ public class ProductPreview implements Serializable {
 
     private String productName;
 
-    private String screenUrl;
+    private byte[] screen;
 
     public static ProductPreview buildFromProduct(Product product) {
         ProductPreview productPreview = new ProductPreview();
         productPreview.setProductId(product.getProductId());
         productPreview.setProductName(product.getProductName());
-        productPreview.setScreenUrl(product.getScreenUrl());
+        productPreview.setScreen(product.getScreen());
 
         return productPreview;
     }

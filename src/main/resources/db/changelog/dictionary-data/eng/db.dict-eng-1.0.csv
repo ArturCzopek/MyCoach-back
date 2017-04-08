@@ -1,122 +1,168 @@
 DCT_KEY;DCT_VAL;DCT_LNG_ID
-global.add.label;Add;2
-global.edit.label;Edit;2
-global.delete.label;Delete;2
-global.close.label;Close;2
-global.currency.label;zł;2
-navbar.applicationName.label;My Coach;2
-navbar.weights.label;Weights;2
-navbar.foodPrices.label;Food prices;2
-navbar.trainings.label;Trainings;2
-navbar.reports.label;Reports;2
-navbar.about.label;About;2
-page.about.title;My Coach;2
-page.about.content;Aplikacja służąca usprawnieniu twojego zdrowego lifestyle'u. Łatwo możesz notować swoje pomiary, ceny żywności, serie i powtórzenia ćwiczeń...możesz nawet składac w aplikacji raporty! Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na arturcz32@gmail.com. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;2
-page.weights.list.noData.info;Currently, you don't have any measurement;2
-page.weights.list.noData.click.info;Add your first measurement;2
-page.weights.add.tooltip;Add measurement;2
-page.weights.edit.tooltip;Edit measurements;2
-page.weights.delete.tooltip;Delete measurements;2
-page.weights.loadFirst.tooltip;Load measurements first!;2
-page.weights.modal.add.title;Add measurement;2
-page.weights.modal.add.weight.label;Weight;2
-page.weights.modal.add.date.label;Date;2
-page.weights.modal.edit.day.label;Day;2
-page.weights.modal.edit.measurement.label;Measurement;2
-page.weights.chart.point.label;Weight [kg]: ;2
-page.reports.list.noData.info;Currently, you don't have any report;2
-page.reports.list.noData.click.info;Add your first report;2
-page.reports.card.title;Report;2
-page.reports.add.tooltip;Add report;2
-page.reports.edit.tooltip;Edit report;2
-page.reports.delete.tooltip;Delete report;2
-page.reports.loadFirst.tooltip;Load report first!;2
-page.reports.modal.startDate.label;Start date;2
-page.reports.modal.endDate.label;End date;2
-page.reports.modal.reportContent.label;Report content;2
-page.reports.modal.add.title;Add report;2
-page.reports.modal.delete.content;Are you sure that you want to delete this report?;2
-page.prices.addProduct.tooltip;Add product;2
-page.prices.editProduct.tooltip;Edit product;2
-page.prices.deleteProduct.tooltip;Dele product;2
-page.prices.addShoppingList.tooltip;Add shopping list;2
-page.prices.addPrice.tooltip;Add price;2
-page.prices.editPrices.tooltip;Edit price;2
-page.prices.deletePrices.tooltip;Delete price;2
-page.prices.list.noData.info;Currently, you don't have any product;2
-page.prices.list.noData.click.info;Add your first product;2
-page.prices.day.label;Day;2
-page.prices.place.label;Place;2
-page.prices.price.label;Price;2
-page.prices.product.label;Product;2
-page.prices.quantity.label;Quantity;2
-page.prices.avgPrice.label;Average price:;2
-page.prices.productPrices.noData.info;Currently, you don't have any price;2
-page.prices.productPrices.noData.click.info;Add your first price;2
-page.prices.modal.add.addProduct.tite;Add product;2
-page.prices.modal.add.productName.label;Product name;2
-page.prices.modal.add.selectPhoto.label;Select photo;2
-page.prices.modal.add.addPrice.title;Add price;2
-page.prices.modal.add.quantity.label;Quantity;2
-page.prices.modal.add.price.label;Price;2
-page.prices.modal.add.date.label;Date;2
-page.prices.modal.add.place.label;Place;2
-page.prices.modal.edit.title;Edit product;2
-page.prices.modal.deleteProduct.content;Are you sure that you want to delete this product?;2
-page.prices.modal.add.shoppingList.title;Shopping list;2
-calendar.nextDay.label;Next day;2
-calendar.prevDay.label;Previous day;2
-calendar.monthSelect.label;Select a month;2
-calendar.yearSelect.label;Select a year;2
-calendar.today.label;Today;2
 calendar.clear.label;Clear;2
 calendar.close.label;Close;2
 calendar.day;Day;2
-calendar.month.jan.full;January;2
-calendar.month.feb.full;February;2
-calendar.month.mar.full;March;2
-calendar.month.apr.full;April;2
-calendar.month.may.full;May;2
-calendar.month.jun.full;June;2
-calendar.month.jul.full;July;2
-calendar.month.aug.full;August;2
-calendar.month.sep.full;September;2
-calendar.month.oct.full;October;2
-calendar.month.nov.full;November;2
-calendar.month.dec.full;December;2
-calendar.month.jan.short;Jan;2
-calendar.month.feb.short;Feb;2
-calendar.month.mar.short;Mar;2
-calendar.month.apr.short;Apr;2
-calendar.month.may.short;May;2
-calendar.month.jun.short;Jun;2
-calendar.month.jul.short;Jul;2
-calendar.month.aug.short;Aug;2
-calendar.month.sep.short;Sep;2
-calendar.month.oct.short;Oct;2
-calendar.month.nov.short;Nov;2
-calendar.month.dec.short;Dec;2
-calendar.day.mon.full;Monday;2
-calendar.day.tue.full;Tuesday;2
-calendar.day.wed.full;Wednesday;2
-calendar.day.thu.full;Thursday;2
 calendar.day.fri.full;Friday;2
-calendar.day.sat.full;Saturday;2
-calendar.day.sun.full;Sunday;2
-calendar.day.mon.short;Mon;2
-calendar.day.tue.short;Tue;2
-calendar.day.wed.short;Wed;2
-calendar.day.thu.short;Thu;2
-calendar.day.fri.short;Fri;2
-calendar.day.sat.short;Sat;2
-calendar.day.sun.short;Sun;2
-calendar.day.mon.letter;M;2
-calendar.day.tue.letter;T;2
-calendar.day.wed.letter;W;2
-calendar.day.thu.letter;T;2
 calendar.day.fri.letter;F;2
+calendar.day.fri.short;Fri;2
+calendar.day.mon.full;Monday;2
+calendar.day.mon.letter;M;2
+calendar.day.mon.short;Mon;2
+calendar.day.sat.full;Saturday;2
 calendar.day.sat.letter;S;2
+calendar.day.sat.short;Sat;2
+calendar.day.sun.full;Sunday;2
 calendar.day.sun.letter;S;2
+calendar.day.sun.short;Sun;2
+calendar.day.thu.full;Thursday;2
+calendar.day.thu.letter;T;2
+calendar.day.thu.short;Thu;2
+calendar.day.tue.full;Tuesday;2
+calendar.day.tue.letter;T;2
+calendar.day.tue.short;Tue;2
+calendar.day.wed.full;Wednesday;2
+calendar.day.wed.letter;W;2
+calendar.day.wed.short;Wed;2
 calendar.format;dd mmm yyyy;2
 calendar.format.momentjs;DD MMM YYYY;2
 calendar.format.submit;yyyy-mm-dd;2
+calendar.month.apr.full;April;2
+calendar.month.apr.short;Apr;2
+calendar.month.aug.full;August;2
+calendar.month.aug.short;Aug;2
+calendar.month.dec.full;December;2
+calendar.month.dec.short;Dec;2
+calendar.month.feb.full;February;2
+calendar.month.feb.short;Feb;2
+calendar.month.jan.full;January;2
+calendar.month.jan.short;Jan;2
+calendar.month.jul.full;July;2
+calendar.month.jul.short;Jul;2
+calendar.month.jun.full;June;2
+calendar.month.jun.short;Jun;2
+calendar.month.mar.full;March;2
+calendar.month.mar.short;Mar;2
+calendar.month.may.full;May;2
+calendar.month.may.short;May;2
+calendar.month.nov.full;November;2
+calendar.month.nov.short;Nov;2
+calendar.month.oct.full;October;2
+calendar.month.oct.short;Oct;2
+calendar.monthSelect.label;Select a month;2
+calendar.month.sep.full;September;2
+calendar.month.sep.short;Sep;2
+calendar.nextDay.label;Next day;2
+calendar.prevDay.label;Previous day;2
+calendar.today.label;Today;2
+calendar.yearSelect.label;Select a year;2
+global.add.label;Add;2
+global.close.label;Close;2
+global.currency.label;zł;2
+global.delete.label;Delete;2
+global.edit.label;Edit;2
+global.multiply.label;x;2
+global.weight.label;kg;2
+navbar.about.label;About;2
+navbar.applicationName.label;My Coach;2
+navbar.foodPrices.label;Food prices;2
+navbar.reports.label;Reports;2
+navbar.trainings.label;Trainings;2
+navbar.weights.label;Weights;2
+page.about.content.first;Aplikacja służąca usprawnieniu twojego zdrowego lifestyle'u. Łatwo możesz notować swoje pomiary, ceny żywności, serie i powtórzenia ćwiczeń...możesz nawet składac w aplikacji raporty!;2
+page.about.content.second; Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na arturcz32@gmail.com. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;2
+page.about.title;My Coach;2
+page.prices.addPrice.tooltip;Add price;2
+page.prices.addProduct.tooltip;Add product;2
+page.prices.addShoppingList.tooltip;Add shopping list;2
+page.prices.avgPrice.label;Average price:;2
+page.prices.day.label;Day;2
+page.prices.deletePrices.tooltip;Delete price;2
+page.prices.deleteProduct.tooltip;Dele product;2
+page.prices.editPrices.tooltip;Edit price;2
+page.prices.editProduct.tooltip;Edit product;2
+page.prices.list.noData.click.info;Add your first product;2
+page.prices.list.noData.info;Currently, you don't have any product;2
+page.prices.modal.add.addPrice.title;Add price;2
+page.prices.modal.add.addProduct.tite;Add product;2
+page.prices.modal.add.date.label;Date;2
+page.prices.modal.add.imageUrl.label;Image;2
+page.prices.modal.add.place.label;Place;2
+page.prices.modal.add.price.label;Price;2
+page.prices.modal.add.productName.label;Product name;2
+page.prices.modal.add.quantity.label;Quantity;2
+page.prices.modal.add.selectImage.label;Select image;2
+page.prices.modal.add.shoppingList.title;Shopping list;2
+page.prices.modal.deleteProduct.content;Are you sure that you want to delete this product?;2
+page.prices.modal.edit.title;Edit product;2
+page.prices.place.label;Place;2
+page.prices.price.label;Price;2
+page.prices.product.label;Product;2
+page.prices.productPrices.noData.click.info;Add your first price;2
+page.prices.productPrices.noData.info;Currently, you don't have any price;2
+page.prices.quantity.label;Quantity;2
+page.reports.add.tooltip;Add report;2
+page.reports.card.title;Report;2
+page.reports.delete.tooltip;Delete report;2
+page.reports.edit.tooltip;Edit report;2
+page.reports.list.noData.click.info;Add your first report;2
+page.reports.list.noData.info;Currently, you don't have any report;2
+page.reports.loadFirst.tooltip;Load report first!;2
+page.reports.modal.add.title;Add report;2
+page.reports.modal.delete.content;Are you sure that you want to delete this report?;2
+page.reports.modal.endDate.label;End date;2
+page.reports.modal.reportContent.label;Report content;2
+page.reports.modal.startDate.label;Start date;2
+page.trainings.addCycle.tooltip;Add cycle;2
+page.trainings.addExercises.tooltip;Add exercises;2
+page.trainings.addTraining.tooltip;Add training;2
+page.trainings.comment.label;Comment;2
+page.trainings.cycle.card.title;Cycle;2
+page.trainings.cycle.current;Current;2
+page.trainings.cycle.finishAll.tooltip;You have to finish all cycles first!;2
+page.trainings.cycle.notActive.tooltip;You have to own active cycle!;2
+page.trainings.cycle.isFinished;Cycle is finished;2
+page.trainings.cycle.list.noData.click.info;Add your first cycle;2
+page.trainings.cycle.list.noData.info;Currently, you don't have any cycle;2
+page.trainings.deleteExercise.tooltip;Delete exercise;2
+page.trainings.deleteTraining.tooltip;Delete training;2
+page.trainings.editExercise.tooltip;Edit exercise;2
+page.trainings.editTraining.tooltip;Edit training;2
+page.trainings.exercise.label;Exercise;2
+page.trainings.exerciseDesc.label;Description;2
+page.trainings.editCycle.tooltip;Edit cycle;2
+page.trainings.loadFirst.tooltip;Load cycle first!;2
+page.trainings.modal.addSet.label;Add set;2
+page.trainings.modal.addCycle.exercise.name.label;Exercise name;2
+page.trainings.modal.addCycle.exercise.description.label;Description (optional);2
+page.trainings.modal.addCycle.startDate.label;Start date;2
+page.trainings.modal.addCycle.title;Add cycle;2
+page.trainings.modal.addExercises.title;Add exercises;2
+page.trainings.modal.addExercise.label;Add exercise;2
+page.trainings.modal.addSeries.label;Add series;2
+page.trainings.modal.addTraining.title;Add training;2
+page.trainings.modal.addTraining.trainingDate.label;Training date;2
+page.trainings.modal.deleteCycle.content;Are you sure that you want to delete this cycle?;2
+page.trainings.modal.deleteExercise.title;Delete exercise;2
+page.trainings.modal.deleteExercise.content;Are you sure that you want to delete this exercise?;2
+page.trainings.modal.deleteSeries.tooltip;Delete series;2
+page.trainings.modal.deleteSet.tooltip;Delete set;2
+page.trainings.modal.deleteTraining.title;Delete training;2
+page.trainings.modal.deleteTraining.content;Are you sure that you want to delete this training?;2
+page.trainings.modal.editExercise.title;Edit exercise;2
+page.trainings.modal.editTraining.title;Edit training;2
+page.trainings.repeats.label;Repeats;2
+page.trainings.set.label;Set;2
+page.trainings.set.noExercises.info;Currently, you don't have any exercises in this set;2
+page.trainings.set.noExercises.info;Add your first exercise!;2
+page.weights.add.tooltip;Add measurement;2
+page.weights.chart.point.label;Weight [kg]: ;2
+page.weights.delete.tooltip;Delete measurements;2
+page.weights.edit.tooltip;Edit measurements;2
+page.weights.list.noData.click.info;Add your first measurement;2
+page.weights.list.noData.info;Currently, you don't have any measurement;2
+page.weights.loadFirst.tooltip;Load measurements first!;2
+page.weights.modal.add.date.label;Date;2
+page.weights.modal.add.title;Add measurement;2
+page.weights.modal.add.weight.label;Weight;2
+page.weights.modal.edit.day.label;Day;2
+page.weights.modal.edit.measurement.label;Measurement;2

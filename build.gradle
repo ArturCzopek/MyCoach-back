@@ -58,6 +58,7 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: postgres_version
 
     compile group: 'org.projectlombok', name: 'lombok', version: lombok_version
+    compile group: 'net.coobird', name: 'thumbnailator', version: thumbnailator_version
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }

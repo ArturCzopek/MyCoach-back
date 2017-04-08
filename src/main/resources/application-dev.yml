@@ -8,6 +8,8 @@
 
   spring:
     profiles: dev
+    devtools:
+      livereload.enabled: true
 
     datasource:
       name: my-coach
@@ -35,7 +37,7 @@
 
   server:
     address: localhost
-    port: 8011
+    port: 8080
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-test.xml

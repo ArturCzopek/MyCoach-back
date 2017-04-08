@@ -1,10 +1,18 @@
   myCoach:
     version: 1.0.0-SANPSHOT
     application-name: My coach
-    default-product-photo: NO_PRODUCT_PHOTO.JPG
+    default-product-image: /images/DEFAULT_PLACEHOLDER.jpg
+    image-size: 400
+    client-address: http://localhost:4200
+    tmp-product-sign: TMP_PRODUCT
+    edited-product-sign-suffix: EDITED_PRODUCT_
+    image-extension: jpg
 
   spring:
     profiles.active: dev
+    http:
+      multipart.max-file-size: 5MB
+      multipart.max-request-size: 5MB
 
   security:
     basic:

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * @Author Artur Czopek
@@ -42,6 +43,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody public ErrorMessage dataIntegrityViolationHandler(HttpServletRequest req, Exception ex) {
         String message = "Operacja nieudana, prawdopodobnie obiekt juz istnieje";
+        log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
+        return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(IOException.class)
+    @ResponseBody public ErrorMessage IOExceptionHandler(HttpServletRequest req, Exception ex) {
+        String message = "Operacja nieudana, prawdopodobnie plik za duży";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
     }
