@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.arturczopek.mycoach.database.entity.Weight;
-import pl.arturczopek.mycoach.dto.preview.WeightDatesPreview;
+import pl.arturczopek.mycoach.model.database.Weight;
+import pl.arturczopek.mycoach.model.preview.WeightDatesPreview;
 import pl.arturczopek.mycoach.service.WeightService;
 
 import java.util.List;

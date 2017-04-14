@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.database.entity.Product;
-import pl.arturczopek.mycoach.database.repository.ProductRepository;
+import pl.arturczopek.mycoach.model.database.Product;
+import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import java.util.List;
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 08-04-2017
  */
 @Service

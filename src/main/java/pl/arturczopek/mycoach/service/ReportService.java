@@ -2,9 +2,9 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.database.entity.Report;
-import pl.arturczopek.mycoach.dto.preview.ReportPreview;
-import pl.arturczopek.mycoach.database.repository.ReportRepository;
+import pl.arturczopek.mycoach.model.database.Report;
+import pl.arturczopek.mycoach.model.preview.ReportPreview;
+import pl.arturczopek.mycoach.repository.ReportRepository;
 
 import java.util.LinkedList;
 import java.util.List;

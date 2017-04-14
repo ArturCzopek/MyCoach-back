@@ -1,19 +1,19 @@
-EXR_SET_ID;EXR_NAME
-1;Wyciskanie leżąc
-1;Wyciskanie w skosie
-1;Wyciskanie siedząc
-2;Wiosłowanie
-2;Podciąganie hantli
-2;Uginanie ramion
-3;Przysiady
-3;Martwy na prostych
-3;Wypady na nogę
-4;Wyciskanie hantli leżąc
-4;Wyciskanie hantli w skosie
-4;Wznosy boczne
-5;Wiosłowanie hantli
-5;Podciąganie na drązku
-5;Uginanie ramion na modlitewniku
-6;Przysiad front
-6;Martwy na prostych nogach ze sztangą
-6;Wypady ze sztangą na barkach
+EXR_SET_ID;EXR_NAME;EXR_DSCP
+1;Wyciskanie leżąc;Pamiętaj o grubym wycisku
+1;Wyciskanie w skosie;
+1;Wyciskanie siedząc;Sranie w banie
+2;Wiosłowanie;
+2;Podciąganie hantli;
+2;Uginanie ramion;hahahahahahahahahahahahahahahahahaha
+3;Przysiady;
+3;Martwy na prostych;
+3;Wypady na nogę;
+4;Wyciskanie hantli leżąc;
+4;Wyciskanie hantli w skosie;
+4;Wznosy boczne;
+5;Wiosłowanie hantli;
+5;Podciąganie na drązku;
+5;Uginanie ramion na modlitewniku;
+6;Przysiad front;
+6;Martwy na prostych nogach ze sztangą;
+6;Wypady ze sztangą na barkach;

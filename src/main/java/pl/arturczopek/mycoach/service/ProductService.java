@@ -4,21 +4,15 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import pl.arturczopek.mycoach.database.entity.Product;
-import pl.arturczopek.mycoach.database.repository.ProductRepository;
-import pl.arturczopek.mycoach.dto.preview.ProductPreview;
-import pl.arturczopek.mycoach.dto.update.ProductToUpdate;
+import pl.arturczopek.mycoach.model.database.Product;
+import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author Artur Czopek
@@ -50,13 +44,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductPreview> getProductPreviews() {
-        List<Product> products = productRepository.findAllByOrderByProductName();
-
-        return products
-                .stream().map(ProductPreview::buildFromProduct)
-                .collect(Collectors.toCollection(LinkedList::new));
-    }
+//    public List<ProductPreview> getProductPreviews() {
+//        List<Product> products = productRepository.findAllByOrderByProductName();
+//
+//        return products
+//                .stream().map(ProductPreview::buildFromProduct)
+//                .collect(Collectors.toCollection(LinkedList::new));
+//    }
 
     public void addProduct(Product productToAdd) {
         Product product;
@@ -74,23 +68,23 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void updateProduct(ProductToUpdate productToUpdate) {
-        Product product = productRepository.findOne(productToUpdate.getProductId());
-
-        if (!StringUtils.isEmpty(product.getProductName())) {
-            product.setProductName(product.getProductName());
-        }
-
-        String possibleEditProductName = editedProductSignSuffix + productToUpdate.getProductId();
-        Product possibleEditProduct = productRepository.findOneByProductName(possibleEditProductName);
-
-        if (possibleEditProduct != null) {
-            product.setScreen(possibleEditProduct.getScreen());
-            productRepository.delete(possibleEditProduct.getProductId());
-        }
-
-        productRepository.save(product);
-    }
+//    public void updateProduct(ProductToUpdate productToUpdate) {
+//        Product product = productRepository.findOne(productToUpdate.getProductId());
+//
+//        if (!StringUtils.isEmpty(product.getProductName())) {
+//            product.setProductName(product.getProductName());
+//        }
+//
+//        String possibleEditProductName = editedProductSignSuffix + productToUpdate.getProductId();
+//        Product possibleEditProduct = productRepository.findOneByProductName(possibleEditProductName);
+//
+//        if (possibleEditProduct != null) {
+//            product.setScreen(possibleEditProduct.getScreen());
+//            productRepository.delete(possibleEditProduct.getProductId());
+//        }
+//
+//        productRepository.save(product);
+//    }
 
     public Long uploadPhoto(MultipartFile file, long productId) throws IOException {
         final ByteArrayOutputStream productPhotoOutputStream = new ByteArrayOutputStream();

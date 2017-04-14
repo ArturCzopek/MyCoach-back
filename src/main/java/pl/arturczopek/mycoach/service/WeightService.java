@@ -2,9 +2,9 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.database.entity.Weight;
-import pl.arturczopek.mycoach.database.repository.WeightRepository;
-import pl.arturczopek.mycoach.dto.preview.WeightDatesPreview;
+import pl.arturczopek.mycoach.model.database.Weight;
+import pl.arturczopek.mycoach.model.preview.WeightDatesPreview;
+import pl.arturczopek.mycoach.repository.WeightRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;

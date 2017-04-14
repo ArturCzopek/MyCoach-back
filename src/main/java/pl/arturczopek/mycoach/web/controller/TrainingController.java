@@ -2,10 +2,11 @@ package pl.arturczopek.mycoach.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import pl.arturczopek.mycoach.database.entity.Training;
-import pl.arturczopek.mycoach.dto.add.TrainingToAdd;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import pl.arturczopek.mycoach.model.database.Training;
 import pl.arturczopek.mycoach.service.TrainingService;
 
 import java.util.List;
@@ -32,9 +33,9 @@ public class TrainingController {
         return trainingService.getTrainingDatesForSet(id);
     }
 
-    @PostMapping("/add")
-    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano trening")
-    public void addTraining(@RequestBody TrainingToAdd trainingToAdd) {
-        trainingService.addTraining(trainingToAdd);
-    }
+//    @PostMapping("/add")
+//    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano trening")
+//    public void addTraining(@RequestBody TrainingToAdd trainingToAdd) {
+//        trainingService.addTraining(trainingToAdd);
+//    }
 }

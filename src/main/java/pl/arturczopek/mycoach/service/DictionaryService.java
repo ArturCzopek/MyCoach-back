@@ -3,10 +3,10 @@ package pl.arturczopek.mycoach.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.database.entity.DictionaryEntry;
-import pl.arturczopek.mycoach.database.entity.UserSetting;
-import pl.arturczopek.mycoach.database.repository.DictionaryRepository;
-import pl.arturczopek.mycoach.database.repository.UserSettingRepository;
+import pl.arturczopek.mycoach.model.database.DictionaryEntry;
+import pl.arturczopek.mycoach.model.database.UserSetting;
+import pl.arturczopek.mycoach.repository.DictionaryRepository;
+import pl.arturczopek.mycoach.repository.UserSettingRepository;
 
 import java.util.HashMap;
 import java.util.List;

@@ -6,15 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.arturczopek.mycoach.database.entity.Product;
-import pl.arturczopek.mycoach.dto.preview.ProductPreview;
-import pl.arturczopek.mycoach.dto.update.ProductToUpdate;
+import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.service.ProductService;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @Author Artur Czopek
@@ -35,10 +32,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/previews")
-    public List<ProductPreview> getPreviews() {
-        return productService.getProductPreviews();
-    }
+//    @GetMapping("/previews")
+//    public List<ProductPreview> getPreviews() {
+//        return productService.getProductPreviews();
+//    }
 
     @GetMapping("/image/{productId}")
     public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response) throws IOException {
@@ -73,10 +70,10 @@ public class ProductController {
         productService.addProduct(productToAdd);
     }
 
-    @PutMapping("/update")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano produkt")
-    public void updateProduct(@RequestBody ProductToUpdate productToUpdate) {
-        productService.updateProduct(productToUpdate);
-    }
+//    @PutMapping("/update")
+//    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano produkt")
+//    public void updateProduct(@RequestBody ProductToUpdate productToUpdate) {
+//        productService.updateProduct(productToUpdate);
+//    }
 
 }

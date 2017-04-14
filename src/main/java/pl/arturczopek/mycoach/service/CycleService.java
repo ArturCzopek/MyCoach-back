@@ -3,14 +3,13 @@ package pl.arturczopek.mycoach.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.arturczopek.mycoach.database.entity.Cycle;
-import pl.arturczopek.mycoach.database.entity.Exercise;
-import pl.arturczopek.mycoach.database.entity.Set;
-import pl.arturczopek.mycoach.database.repository.CycleRepository;
-import pl.arturczopek.mycoach.dto.add.CycleToAdd;
-import pl.arturczopek.mycoach.dto.add.SetToAdd;
-import pl.arturczopek.mycoach.dto.preview.CyclePreview;
-import pl.arturczopek.mycoach.dto.update.CycleToUpdate;
+import pl.arturczopek.mycoach.model.add.NewCycle;
+import pl.arturczopek.mycoach.model.add.NewSet;
+import pl.arturczopek.mycoach.model.database.Cycle;
+import pl.arturczopek.mycoach.model.database.Exercise;
+import pl.arturczopek.mycoach.model.database.Set;
+import pl.arturczopek.mycoach.model.preview.CyclePreview;
+import pl.arturczopek.mycoach.repository.CycleRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,11 +45,11 @@ public class CycleService {
     }
 
     @Transactional
-    public void addCycle(CycleToAdd cycleToAdd) {
+    public void addCycle(NewCycle newCycle) {
         Cycle cycle = new Cycle();
 
-        if (cycleToAdd.getStartDate() != null) {
-            cycle.setStartDate(cycleToAdd.getStartDate());
+        if (newCycle.getStartDate() != null) {
+            cycle.setStartDate(newCycle.getStartDate());
         } else {
             cycle.setStartDate(dateService.getCurrentDate());
         }
@@ -59,13 +58,13 @@ public class CycleService {
 
         List<Set> sets = new LinkedList<>();
 
-        for (SetToAdd oneSetToAdd : cycleToAdd.getSets()) {
+        for (NewSet oneNewSet : newCycle.getSets()) {
             Set tmpSet = new Set();
-            tmpSet.setSetName(oneSetToAdd.getSetName());
+            tmpSet.setSetName(oneNewSet.getSetName());
 
             List<Exercise> exercises = new LinkedList<>();
 
-            for (String exerciseName : oneSetToAdd.getExercises()) {
+            for (String exerciseName : oneNewSet.getExercises()) {
                 Exercise tmpExercise = new Exercise();
                 tmpExercise.setExerciseName(exerciseName);
                 tmpExercise.setSet(tmpSet);
@@ -90,17 +89,17 @@ public class CycleService {
         }
     }
 
-    public void updateCycle(CycleToUpdate cycleToUpdate) {
-        Cycle cycle = cycleRepository.findOne(cycleToUpdate.getCycleId());
-
-        if (cycleToUpdate.getStartDate() != null) {
-            cycle.setStartDate(cycleToUpdate.getStartDate());
-        }
-
-        if (cycleToUpdate.getEndDate() != null) {
-            cycle.setEndDate(cycleToUpdate.getEndDate());
-        }
-
-        cycleRepository.save(cycle);
-    }
+//    public void updateCycle(CycleToUpdate cycleToUpdate) {
+//        Cycle cycle = cycleRepository.findOne(cycleToUpdate.getCycleId());
+//
+//        if (cycleToUpdate.getStartDate() != null) {
+//            cycle.setStartDate(cycleToUpdate.getStartDate());
+//        }
+//
+//        if (cycleToUpdate.getEndDate() != null) {
+//            cycle.setEndDate(cycleToUpdate.getEndDate());
+//        }
+//
+//        cycleRepository.save(cycle);
+//    }
 }

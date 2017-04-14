@@ -45,6 +45,9 @@
             <column name="CYC_ID" type="serial" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="CYCLES_PKEY" unique="true"/>
             </column>
+            <column name="CYC_FNSHD" type="boolean">
+                <constraints nullable="false"/>
+            </column>
             <column name="CYC_STRT_DT" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -102,6 +105,9 @@
             <column name="EXR_NAME" type="nvarchar(80)">
                 <constraints nullable="false"/>
             </column>
+            <column name="EXR_DSCP" type="nvarchar(300)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="EXERCISES"/>
@@ -116,6 +122,9 @@
             <column name="EXS_EXR_ID" type="int">
                 <constraints nullable="false" foreignKeyName="FK_EXERCISESESSION_EXERCISE"
                              references="EXERCISES(EXR_ID)"/>
+            </column>
+            <column name="EXS_EMP" type="boolean" defaultValue="false">
+                <constraints nullable="true"></constraints>
             </column>
         </createTable>
         <rollback>

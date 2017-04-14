@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Slf4j
-@EntityScan(basePackages = "pl.arturczopek.mycoach.database.entity")
+@EntityScan(basePackages = "pl.arturczopek.mycoach.model.database")
 @SpringBootApplication
 @EnableJpaRepositories
 public class MyCoachInitializer {

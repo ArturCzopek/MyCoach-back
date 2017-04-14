@@ -31,7 +31,7 @@
     h2:
       console:
         enabled: true
-        path: /db-console/my-coach
+        path: /db-console
 
   management.security.enabled: false
 

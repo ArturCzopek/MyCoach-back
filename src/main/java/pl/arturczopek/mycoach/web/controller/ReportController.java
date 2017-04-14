@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.arturczopek.mycoach.database.entity.Report;
-import pl.arturczopek.mycoach.dto.preview.ReportPreview;
+import pl.arturczopek.mycoach.model.database.Report;
+import pl.arturczopek.mycoach.model.preview.ReportPreview;
 import pl.arturczopek.mycoach.service.ReportService;
 
 import java.util.List;

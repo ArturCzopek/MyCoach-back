@@ -2,18 +2,12 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import pl.arturczopek.mycoach.database.entity.*;
-import pl.arturczopek.mycoach.database.repository.ExerciseRepository;
-import pl.arturczopek.mycoach.database.repository.ExerciseSessionRepository;
-import pl.arturczopek.mycoach.database.repository.SetRepository;
-import pl.arturczopek.mycoach.database.repository.TrainingRepository;
-import pl.arturczopek.mycoach.dto.add.ExerciseSessionToAdd;
-import pl.arturczopek.mycoach.dto.add.SeriesToAdd;
-import pl.arturczopek.mycoach.dto.add.TrainingToAdd;
+import pl.arturczopek.mycoach.model.database.Training;
+import pl.arturczopek.mycoach.repository.ExerciseRepository;
+import pl.arturczopek.mycoach.repository.ExerciseSessionRepository;
+import pl.arturczopek.mycoach.repository.SetRepository;
+import pl.arturczopek.mycoach.repository.TrainingRepository;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,52 +33,52 @@ public class TrainingService {
         this.trainingRepository = trainingRepository;
     }
 
-    @Transactional
-    public void addTraining(TrainingToAdd trainingToAdd) {
-
-        Training training = new Training();
-        Set set = setRepository.findOne(trainingToAdd.getSetId());
-
-        if (trainingToAdd.getDate() != null) {
-            training.setTrainingDate(trainingToAdd.getDate());
-        } else {
-            training.setTrainingDate(dateService.getCurrentDate());
-        }
-
-        training.setSet(set);
-        trainingRepository.save(training);
-
-        List<Series> series = new LinkedList<>();
-
-        for (ExerciseSessionToAdd exerciseSessionToAdd : trainingToAdd.getExerciseSessions()) {
-
-            Exercise exercise = exerciseRepository.findOne(exerciseSessionToAdd.getExerciseId());
-
-            ExerciseSession exerciseSession = new ExerciseSession();
-            exerciseSession.setExercise(exercise);
-
-            for (SeriesToAdd seriesToAdd : exerciseSessionToAdd.getSeries()) {
-
-                Series tmpSeries = new Series();
-                tmpSeries.setWeight(seriesToAdd.getWeight());
-                tmpSeries.setRepeats(seriesToAdd.getRepeats());
-                tmpSeries.setExerciseSession(exerciseSession);
-
-                if (!StringUtils.isEmpty(seriesToAdd.getComment())) {
-                    tmpSeries.setComment(seriesToAdd.getComment());
-                }
-
-                series.add(tmpSeries);
-            }
-
-            exerciseSession.setSeries(series);
-            exerciseSessionRepository.save(exerciseSession);
-
-            exercise.getExerciseSessions().add(exerciseSession);
-
-            exerciseRepository.save(exercise);
-        }
-    }
+//    @Transactional
+//    public void addTraining(TrainingToAdd trainingToAdd) {
+//
+//        Training training = new Training();
+//        Set set = setRepository.findOne(trainingToAdd.getSetId());
+//
+//        if (trainingToAdd.getDate() != null) {
+//            training.setTrainingDate(trainingToAdd.getDate());
+//        } else {
+//            training.setTrainingDate(dateService.getCurrentDate());
+//        }
+//
+//        training.setSet(set);
+//        trainingRepository.save(training);
+//
+//        List<Series> series = new LinkedList<>();
+//
+//        for (NewExerciseSession newExerciseSession : trainingToAdd.getExerciseSessions()) {
+//
+//            Exercise exercise = exerciseRepository.findOne(newExerciseSession.getExerciseId());
+//
+//            ExerciseSession exerciseSession = new ExerciseSession();
+//            exerciseSession.setExercise(exercise);
+//
+//            for (NewSeries newSeries : newExerciseSession.getSeries()) {
+//
+//                Series tmpSeries = new Series();
+//                tmpSeries.setWeight(newSeries.getWeight());
+//                tmpSeries.setRepeats(newSeries.getRepeats());
+//                tmpSeries.setExerciseSession(exerciseSession);
+//
+//                if (!StringUtils.isEmpty(newSeries.getComment())) {
+//                    tmpSeries.setComment(newSeries.getComment());
+//                }
+//
+//                series.add(tmpSeries);
+//            }
+//
+//            exerciseSession.setSeries(series);
+//            exerciseSessionRepository.save(exerciseSession);
+//
+//            exercise.getExerciseSessions().add(exerciseSession);
+//
+//            exerciseRepository.save(exercise);
+//        }
+//    }
 
     public List<Training> getTrainingDatesForSet(long id) {
         return setRepository.findOne(id).getTrainings();

@@ -38,6 +38,7 @@
 
     <changeSet id="Insert test cycles" author="Artur Czopek">
         <loadData tableName="CYCLES" separator=";" file="db/changelog/test-data/db.cycles-1.0.csv">
+            <column name="CYC_FNSHD" type="BOOLEAN"/>
             <column name="CYC_STRT_DT" type="DATE"/>
             <column name="CYC_END_DT" type="DATE"/>
         </loadData>
@@ -54,6 +55,7 @@
         <loadData tableName="EXERCISES" separator=";" file="db/changelog/test-data/db.exercises-1.0.csv">
             <column name="EXR_SET_ID" type="NUMERIC"/>
             <column name="EXR_NAME" type="STRING"/>
+            <column name="EXR_DSCP" type="STRING"/>
         </loadData>
     </changeSet>
 
@@ -67,6 +69,7 @@
     <changeSet id="Insert test exercise sessions" author="Artur Czopek">
         <loadData tableName="EXERCISESESSIONS" separator=";" file="db/changelog/test-data/db.exercisesessions-1.0.csv">
             <column name="EXS_EXR_ID" type="NUMERIC"/>
+            <column name="EXS_EMP" type="BOOLEAN"/>
         </loadData>
     </changeSet>
 

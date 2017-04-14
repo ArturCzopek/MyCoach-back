@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.arturczopek.mycoach.database.entity.Price;
-import pl.arturczopek.mycoach.dto.add.PriceToAdd;
-import pl.arturczopek.mycoach.dto.add.ShoppingListToAdd;
-import pl.arturczopek.mycoach.dto.update.PriceToUpdate;
+import pl.arturczopek.mycoach.model.add.NewPrice;
+import pl.arturczopek.mycoach.model.add.ShoppingList;
+import pl.arturczopek.mycoach.model.database.Price;
 import pl.arturczopek.mycoach.service.PriceService;
 
 import java.util.List;
@@ -36,20 +35,20 @@ public class PriceController {
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano cenę")
-    public void addPrice(@RequestBody PriceToAdd priceToAdd) {
-        priceService.addPrice(priceToAdd);
+    public void addPrice(@RequestBody NewPrice newPrice) {
+        priceService.addPrice(newPrice);
     }
 
     @PostMapping("/shopping")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano liste zakupow")
-    public void addShoppingPrices(@RequestBody ShoppingListToAdd shoppingList) {
+    public void addShoppingPrices(@RequestBody ShoppingList shoppingList) {
         priceService.addShoppingList(shoppingList);
     }
 
-    @PutMapping("/update")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano cenę")
-    public void updateProduct(@RequestBody PriceToUpdate priceToUpdate) {
-        priceService.updatePrice(priceToUpdate);
-    }
+//    @PutMapping("/update")
+//    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano cenę")
+//    public void updateProduct(@RequestBody PriceToUpdate priceToUpdate) {
+//        priceService.updatePrice(priceToUpdate);
+//    }
 
 }

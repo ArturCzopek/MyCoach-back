@@ -21,13 +21,13 @@ import org.springframework.web.filter.CorsFilter;
 //@EnableWebSecurity
 public class SecurityConfiguration{
 
+    @Value("${myCoach.client-address}")
+    private String clientAddress;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Value("${myCoach.client-address}")
-    private String clientAddress;
 
     @Bean
     public FilterRegistrationBean corsFilter() {

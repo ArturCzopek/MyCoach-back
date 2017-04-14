@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.arturczopek.mycoach.database.entity.Cycle;
-import pl.arturczopek.mycoach.dto.preview.CyclePreview;
-import pl.arturczopek.mycoach.dto.add.CycleToAdd;
-import pl.arturczopek.mycoach.dto.update.CycleToUpdate;
+import pl.arturczopek.mycoach.model.add.NewCycle;
+import pl.arturczopek.mycoach.model.database.Cycle;
+import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.service.CycleService;
 
 import java.util.List;
@@ -41,8 +40,8 @@ public class CycleController {
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano cykl")
-    public void addCycle(@RequestBody CycleToAdd cycleToAdd) {
-        cycleService.addCycle(cycleToAdd);
+    public void addCycle(@RequestBody NewCycle newCycle) {
+        cycleService.addCycle(newCycle);
     }
 
     @PostMapping("/end/{id}")
@@ -51,9 +50,9 @@ public class CycleController {
         cycleService.endCycle(id);
     }
 
-    @PutMapping("/update")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano cykl")
-    public void updateCycle(@RequestBody CycleToUpdate cycleToUpdate) {
-        cycleService.updateCycle(cycleToUpdate);
-    }
+//    @PutMapping("/update")
+//    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano cykl")
+//    public void updateCycle(@RequestBody CycleToUpdate cycleToUpdate) {
+//        cycleService.updateCycle(cycleToUpdate);
+//    }
 }
