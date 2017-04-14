@@ -2,8 +2,9 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.model.add.NewWeight;
 import pl.arturczopek.mycoach.model.database.Weight;
-import pl.arturczopek.mycoach.model.preview.WeightDatesPreview;
+import pl.arturczopek.mycoach.model.preview.WeightsPreview;
 import pl.arturczopek.mycoach.repository.WeightRepository;
 
 import java.sql.Date;
@@ -27,21 +28,21 @@ public class WeightService {
         this.dateService = dateService;
     }
 
-    public List<WeightDatesPreview> getWeightDatesList() {
+    public List<WeightsPreview> getWeightPreviews() {
         List<Weight> weights = weightRepository.findAllByOrderByMeasurementDateDesc();
 
-        Set<WeightDatesPreview> dates = new HashSet<>();
+        Set<WeightsPreview> dates = new HashSet<>();
 
         Calendar cal = Calendar.getInstance();
 
-        for (Weight weight : weights) {
+        weights.forEach((Weight weight) -> {
             cal.setTime(weight.getMeasurementDate());
 
-            WeightDatesPreview preview = new WeightDatesPreview();
+            WeightsPreview preview = new WeightsPreview();
             preview.setMonth(cal.get(Calendar.MONTH) + 1);
             preview.setYear(cal.get(Calendar.YEAR));
             dates.add(preview);
-        }
+        });
 
         return new LinkedList<>(dates);
     }
@@ -51,19 +52,27 @@ public class WeightService {
         LocalDate startDate = dateService.buildFirstMonthDay(year, month);
         LocalDate endDate = dateService.getLastDayOfTheMonth(startDate);
 
-        return weightRepository.findByMeasurementDateBetween(Date.valueOf(startDate), Date.valueOf(endDate));
+        return weightRepository.findByMeasurementDateBetweenOrderByMeasurementDate(Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
-    public void addWeight(Weight weightToAdd) {
+    public void addWeight(NewWeight weightToAdd) {
         Weight weight = new Weight();
         weight.setValue(weightToAdd.getValue());
 
-        if(weightToAdd.getMeasurementDate() != null) {
+        if (weightToAdd.getMeasurementDate() != null) {
             weight.setMeasurementDate(weightToAdd.getMeasurementDate());
         } else {
             weight.setMeasurementDate(dateService.getCurrentDate());
         }
 
         weightRepository.save(weight);
+    }
+
+    public void updateWeights(List<Weight> weights) {
+        weights.forEach(weight -> weightRepository.save(weight));
+    }
+
+    public void deleteWeights(List<Weight> weights) {
+        weights.forEach(weight -> weightRepository.delete(weight.getWeightId()));
     }
 }

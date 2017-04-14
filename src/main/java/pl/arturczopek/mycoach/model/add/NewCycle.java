@@ -19,7 +19,7 @@ public class NewCycle implements Serializable {
     private static final long serialVersionUID = -4631036331723794177L;
 
     @JsonProperty(required = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @JsonProperty(required = true)

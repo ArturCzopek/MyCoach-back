@@ -31,6 +31,6 @@ public class Weight implements Serializable {
     private float value;
 
     @Column(name = "WGH_MSRM_DT", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date measurementDate;
 }

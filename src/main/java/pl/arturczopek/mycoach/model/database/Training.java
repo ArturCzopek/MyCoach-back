@@ -36,6 +36,6 @@ public class Training implements Serializable {
     private Set set;
 
     @Column(name = "TRN_DT", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date trainingDate;
 }

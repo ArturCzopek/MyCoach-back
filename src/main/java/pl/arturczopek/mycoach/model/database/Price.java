@@ -33,7 +33,7 @@ public class Price implements Serializable{
     @JoinColumn(name = "PRC_PRD_ID", nullable = false)
     private Product product;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "PRC_DT", nullable = false)
     private Date priceDate;
 

@@ -34,11 +34,11 @@ public class Cycle implements Serializable {
     private boolean isFinished;
 
     @Column(name = "CYC_STRT_DT", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @Column(name = "CYC_END_DT")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @OneToMany(mappedBy = "cycle", cascade = CascadeType.ALL)

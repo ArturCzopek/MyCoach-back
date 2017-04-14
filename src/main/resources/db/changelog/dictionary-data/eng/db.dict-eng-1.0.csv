@@ -20,10 +20,11 @@ calendar.day.thu.short;Thu;2
 calendar.day.tue.full;Tuesday;2
 calendar.day.tue.letter;T;2
 calendar.day.tue.short;Tue;2
-calendar.day.wed.full;Wednesday;2
-calendar.day.wed.letter;W;2
-calendar.day.wed.short;Wed;2
+calendar.day.wen.full;Wednesday;2
+calendar.day.wen.letter;W;2
+calendar.day.wen.short;Wed;2
 calendar.format;dd mmm yyyy;2
+calendar.format.fromServer;YYYY-MM-DD;2
 calendar.format.momentjs;DD MMM YYYY;2
 calendar.format.submit;yyyy-mm-dd;2
 calendar.month.apr.full;April;2
@@ -85,7 +86,7 @@ page.prices.list.noData.info;Currently, you don't have any product;2
 page.prices.modal.add.addPrice.title;Add price;2
 page.prices.modal.add.addProduct.tite;Add product;2
 page.prices.modal.add.date.label;Date;2
-page.prices.modal.add.imageUrl.label;Image;2
+page.prices.modal.add.image.label;Image;2
 page.prices.modal.add.place.label;Place;2
 page.prices.modal.add.price.label;Price;2
 page.prices.modal.add.productName.label;Product name;2

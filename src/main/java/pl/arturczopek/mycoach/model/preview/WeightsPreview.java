@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 @Data
-public class WeightDatesPreview implements Serializable {
+public class WeightsPreview implements Serializable {
 
     private static final long serialVersionUID = -6574925549576683940L;
 

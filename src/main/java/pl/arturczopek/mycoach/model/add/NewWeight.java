@@ -18,6 +18,6 @@ public class NewWeight {
     private float value;
 
     @JsonProperty(required = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date measurementDate;
 }
