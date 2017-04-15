@@ -1,6 +1,5 @@
 package pl.arturczopek.mycoach.model.database;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
@@ -31,15 +30,11 @@ public class ExerciseSession implements Serializable {
     @SequenceGenerator(name = "EXERCISESESSIONS_EXS_ID", sequenceName = "EXERCISESESSIONS_EXS_ID", allocationSize = 1)
     private long exerciseSessionId;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "EXS_EXR_ID")
-    private Exercise exercise;
-
     @Column(name = "EXS_EMP")
     private boolean isEmpty;
 
-    @OneToMany(mappedBy = "exerciseSession", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "SER_EXS_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Series> series;
 

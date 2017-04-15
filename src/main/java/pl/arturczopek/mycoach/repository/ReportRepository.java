@@ -15,5 +15,5 @@ public interface ReportRepository extends PagingAndSortingRepository<Report, Lon
     @Override
     List<Report> findAll();
 
-    List<Report> findAllByOrderByEndDateDesc();
+    List<Report> findAllByOrderByEndDate();
 }

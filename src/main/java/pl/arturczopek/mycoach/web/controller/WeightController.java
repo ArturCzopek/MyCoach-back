@@ -29,7 +29,7 @@ public class WeightController {
     }
 
     @GetMapping("/previews")
-    public List<WeightsPreview> getPreviews() {
+    public List<WeightsPreview> getWeightPreviews() {
         return weightService.getWeightPreviews();
     }
 

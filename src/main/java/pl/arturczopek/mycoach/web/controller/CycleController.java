@@ -5,17 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.arturczopek.mycoach.model.add.NewCycle;
-import pl.arturczopek.mycoach.model.database.Cycle;
-import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.service.CycleService;
-
-import java.util.List;
 
 /**
  * @Author Artur Czopek
  * @Date 09-10-2016
  */
 
+//TODO remove controller
 @Slf4j
 @RestController
 @RequestMapping("/cycle")
@@ -26,16 +23,6 @@ public class CycleController {
     @Autowired
     public CycleController(CycleService cycleService) {
         this.cycleService = cycleService;
-    }
-
-    @GetMapping("/previews")
-    public List<CyclePreview> getPreviews() {
-        return cycleService.getCyclePreviews();
-    }
-
-    @GetMapping("/{id}")
-    public Cycle getCycleDetails(@PathVariable long id) {
-        return cycleService.getCycleById(id);
     }
 
     @PostMapping("/add")

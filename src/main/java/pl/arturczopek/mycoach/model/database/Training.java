@@ -1,7 +1,6 @@
 package pl.arturczopek.mycoach.model.database;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
@@ -29,11 +28,6 @@ public class Training implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TRAININGS_TRN_ID_SEQ")
     @SequenceGenerator(name = "TRAININGS_TRN_ID_SEQ", sequenceName = "TRAININGS_TRN_ID_SEQ", allocationSize = 1)
     private long trainingId;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "TRN_SET_ID")
-    private Set set;
 
     @Column(name = "TRN_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

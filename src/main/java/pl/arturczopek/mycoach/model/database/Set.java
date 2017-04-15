@@ -1,6 +1,5 @@
 package pl.arturczopek.mycoach.model.database;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.LazyCollection;
@@ -29,20 +28,21 @@ public class Set implements Serializable {
     @SequenceGenerator(name = "SETS_SET_ID_SEQ", sequenceName = "SETS_SET_ID_SEQ", allocationSize = 1)
     private long setId;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "SET_CYC_ID", nullable = false)
-    private Cycle cycle;
+//    @ManyToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "SET_CYC_ID", nullable = false)
+//    private Cycle cycle;
 
     @Column(name = "SET_NAME", nullable = false, length = 50)
     private String setName;
 
-    @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "TRN_SET_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Training> trainings;
 
-    @OneToMany(mappedBy = "set", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "EXR_SET_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Exercise> exercises;
 }

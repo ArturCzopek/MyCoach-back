@@ -126,8 +126,8 @@ page.trainings.cycle.list.noData.click.info;Dodaj swój pierwszy cykl;1
 page.trainings.cycle.list.noData.info;Obecnie nie posiadasz żadnych cykli;1
 page.trainings.deleteExercise.tooltip;Usuń ćwiczenie;1
 page.trainings.deleteTraining.tooltip;Usuń trening;1
-page.trainings.editExercise.tooltip;Usuń ćwiczenie;1
-page.trainings.editTraining.tooltip;Usuń trening;1
+page.trainings.editExercise.tooltip;Edytuj ćwiczenie;1
+page.trainings.editTraining.tooltip;Edytuj trening;1
 page.trainings.exercise.label;Ćwiczenie;1
 page.trainings.exerciseDesc.label;Opis;1
 page.trainings.editCycle.tooltip;Edytuj cykl;1

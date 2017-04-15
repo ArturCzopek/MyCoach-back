@@ -42,4 +42,16 @@ public class ReportController {
     public void addReport(@RequestBody Report report) {
         reportService.addReport(report);
     }
+
+    @PutMapping("/update")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano raport")
+    public void updateWeights(@RequestBody Report report) {
+        reportService.updateReport(report);
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Usunięto raport")
+    public void deleteWeights(@RequestBody Report report) {
+        reportService.deleteReport(report);
+    }
 }

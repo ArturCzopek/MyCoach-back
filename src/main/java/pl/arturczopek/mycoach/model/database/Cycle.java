@@ -41,7 +41,8 @@ public class Cycle implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @OneToMany(mappedBy = "cycle", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "SET_CYC_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Set> sets;
 }

@@ -32,6 +32,10 @@ public class CycleService {
         this.dateService = dateService;
     }
 
+    public Cycle getActiveCycle() {
+        return cycleRepository.findOneByIsFinishedFalse();
+    }
+
     public List<CyclePreview> getCyclePreviews() {
         List<Cycle> cycles = cycleRepository.findAllByOrderByEndDateDesc();
 
@@ -67,12 +71,10 @@ public class CycleService {
             for (String exerciseName : oneNewSet.getExercises()) {
                 Exercise tmpExercise = new Exercise();
                 tmpExercise.setExerciseName(exerciseName);
-                tmpExercise.setSet(tmpSet);
                 exercises.add(tmpExercise);
             }
 
             tmpSet.setExercises(exercises);
-            tmpSet.setCycle(cycle);
             sets.add(tmpSet);
         }
 

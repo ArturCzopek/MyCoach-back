@@ -32,11 +32,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @GetMapping("/previews")
-//    public List<ProductPreview> getPreviews() {
-//        return productService.getProductPreviews();
-//    }
-
     @GetMapping("/image/{productId}")
     public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response) throws IOException {
         byte productPhoto[] = productService.getProductPhoto(productId);

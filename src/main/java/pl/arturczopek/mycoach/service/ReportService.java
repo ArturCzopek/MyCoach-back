@@ -28,7 +28,7 @@ public class ReportService {
     }
 
     public List<ReportPreview> getReportPreviews() {
-        List<Report> reports = reportRepository.findAllByOrderByEndDateDesc();
+        List<Report> reports = reportRepository.findAllByOrderByEndDate();
 
         return reports
                 .stream().map(ReportPreview::buildFromReport)
@@ -52,5 +52,13 @@ public class ReportService {
 
         reportRepository.save(reportToAdd);
 
+    }
+
+    public void updateReport(Report report) {
+        reportRepository.save(report);
+    }
+
+    public void deleteReport(Report report) {
+        reportRepository.delete(report.getReportId());
     }
 }

@@ -10,6 +10,7 @@ import pl.arturczopek.mycoach.service.SetService;
  * @Date 16-10-2016
  */
 
+//TODO remove controller
 @RestController
 @RequestMapping("/set")
 public class SetController {
