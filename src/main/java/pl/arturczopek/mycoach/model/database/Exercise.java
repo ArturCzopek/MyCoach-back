@@ -36,7 +36,10 @@ public class Exercise implements Serializable {
     @Column(name = "EXR_DSCP", length = 300)
     private String exerciseDescription;
 
-    @OneToMany
+    @Column(name = "EXR_SET_ID")
+    private long setId;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "EXS_EXR_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ExerciseSession> exerciseSessions;

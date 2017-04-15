@@ -78,7 +78,7 @@ page.prices.addShoppingList.tooltip;Add shopping list;2
 page.prices.avgPrice.label;Average price:;2
 page.prices.day.label;Day;2
 page.prices.deletePrices.tooltip;Delete price;2
-page.prices.deleteProduct.tooltip;Dele product;2
+page.prices.deleteProduct.tooltip;Delete product;2
 page.prices.editPrices.tooltip;Edit price;2
 page.prices.editProduct.tooltip;Edit product;2
 page.prices.list.noData.click.info;Add your first product;2
@@ -119,6 +119,8 @@ page.trainings.addTraining.tooltip;Add training;2
 page.trainings.comment.label;Comment;2
 page.trainings.cycle.card.title;Cycle;2
 page.trainings.cycle.current;Current;2
+page.trainings.cycle.delete.tooltip;Delete cycle;2
+page.trainings.cycle.edit.tooltip;Edit cycle;2
 page.trainings.cycle.finishAll.tooltip;You have to finish all cycles first!;2
 page.trainings.cycle.notActive.tooltip;You have to own active cycle!;2
 page.trainings.cycle.isFinished;Cycle is finished;2
@@ -154,7 +156,7 @@ page.trainings.modal.editTraining.title;Edit training;2
 page.trainings.repeats.label;Repeats;2
 page.trainings.set.label;Set;2
 page.trainings.set.noExercises.info;Currently, you don't have any exercises in this set;2
-page.trainings.set.noExercises.info;Add your first exercise!;2
+page.trainings.set.noExercises.click.info;Add your first exercise!;2
 page.weights.add.tooltip;Add measurement;2
 page.weights.chart.point.label;Weight [kg]: ;2
 page.weights.delete.tooltip;Delete measurements;2

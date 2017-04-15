@@ -26,6 +26,9 @@ public class Series implements Serializable {
     @SequenceGenerator(name = "SERIES_SER_ID_SEQ", sequenceName = "SERIES_SER_ID_SEQ", allocationSize = 1)
     private long seriesId;
 
+    @Column(name = "SER_EXS_ID")
+    private long exerciseSessionId;
+
     @Column(name = "SER_WGH", nullable = false)
     private float weight;
 

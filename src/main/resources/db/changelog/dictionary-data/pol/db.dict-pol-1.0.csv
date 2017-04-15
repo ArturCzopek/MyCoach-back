@@ -119,6 +119,8 @@ page.trainings.addTraining.tooltip;Dodaj trening;1
 page.trainings.comment.label;Komentarz;1
 page.trainings.cycle.card.title;Cykl;1
 page.trainings.cycle.current;Obecny;1
+page.trainings.cycle.delete.tooltip;Usuń cykl;1
+page.trainings.cycle.edit.tooltip;Edytuj cykl;1
 page.trainings.cycle.finishAll.tooltip;Musisz najpierw zakończyć wszystkie cykle!;1
 page.trainings.cycle.notActive.tooltip;Musisz posiadać aktywny cykl!;1
 page.trainings.cycle.isFinished;Cykl jest zakończony;1
@@ -154,7 +156,7 @@ page.trainings.modal.editTraining.title;Edytuj trening;1
 page.trainings.repeats.label;Powtórzenia;1
 page.trainings.set.label;Set;1
 page.trainings.set.noExercises.info;Obecnie nie posiadasz żadnych ćwiczeń w tym secie;1
-page.trainings.set.noExercises.info;Dodaj pierwsze ćwiczenie!;1
+page.trainings.set.noExercises.click.info;Dodaj pierwsze ćwiczenie!;1
 page.weights.add.tooltip;Dodaj pomiar;1
 page.weights.chart.point.label;Waga [kg]: ;1
 page.weights.delete.tooltip;Usuń pomiary;1

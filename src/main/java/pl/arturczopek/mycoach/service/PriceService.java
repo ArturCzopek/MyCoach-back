@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.add.NewPrice;
 import pl.arturczopek.mycoach.model.add.ShoppingList;
 import pl.arturczopek.mycoach.model.database.Price;
-import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.repository.PriceRepository;
 import pl.arturczopek.mycoach.repository.ProductRepository;
 
@@ -35,10 +34,9 @@ public class PriceService {
     }
 
     public void addPrice(NewPrice newPrice) {
-        Product product = productRepository.findOne(newPrice.getProductId());
 
         Price price = new Price();
-        price.setProduct(product);
+        price.setProductId(newPrice.getProductId());
         price.setValue(newPrice.getValue());
         price.setPlace(newPrice.getPlace());
 

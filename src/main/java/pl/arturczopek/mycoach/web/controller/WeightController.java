@@ -39,20 +39,20 @@ public class WeightController {
     }
 
     @PostMapping("/add")
-    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano pomiar wagi")
+    @ResponseStatus(value = HttpStatus.CREATED, reason = "Added weight measurement")
     public void addWeight(@RequestBody NewWeight weight) {
         weightService.addWeight(weight);
     }
 
-    @PutMapping("/update")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano pomiary wag")
-    public void updateWeights(@RequestBody List<Weight> weights) {
-        weightService.updateWeights(weights);
-    }
-
     @DeleteMapping("/delete")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Usunięto pomiary wag")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Removed weight measurements")
     public void deleteWeights(@RequestBody List<Weight> weights) {
         weightService.deleteWeights(weights);
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Updated weight measurements")
+    public void updateWeights(@RequestBody List<Weight> weights) {
+        weightService.updateWeights(weights);
     }
 }

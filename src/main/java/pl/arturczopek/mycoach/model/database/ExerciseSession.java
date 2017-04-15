@@ -33,7 +33,10 @@ public class ExerciseSession implements Serializable {
     @Column(name = "EXS_EMP")
     private boolean isEmpty;
 
-    @OneToMany
+    @Column(name = "EXS_EXR_ID")
+    private long exerciseId;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "SER_EXS_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Series> series;

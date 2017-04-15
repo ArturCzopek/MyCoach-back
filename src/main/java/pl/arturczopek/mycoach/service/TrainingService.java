@@ -2,13 +2,18 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.model.database.Training;
-import pl.arturczopek.mycoach.repository.ExerciseRepository;
-import pl.arturczopek.mycoach.repository.ExerciseSessionRepository;
-import pl.arturczopek.mycoach.repository.SetRepository;
-import pl.arturczopek.mycoach.repository.TrainingRepository;
+import pl.arturczopek.mycoach.model.add.NewSeries;
+import pl.arturczopek.mycoach.model.add.NewTraining;
+import pl.arturczopek.mycoach.model.database.*;
+import pl.arturczopek.mycoach.model.requestDTO.ExerciseForTrainingPreview;
+import pl.arturczopek.mycoach.repository.*;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author Artur Czopek
@@ -18,69 +23,177 @@ import java.util.List;
 @Service
 public class TrainingService {
 
-    private DateService dateService;
-    private ExerciseRepository exerciseRepository;
     private ExerciseSessionRepository exerciseSessionRepository;
+    private ExerciseRepository exerciseRepository;
+    private SeriesRepository seriesRepository;
     private SetRepository setRepository;
     private TrainingRepository trainingRepository;
 
     @Autowired
-    public TrainingService(DateService dateService, ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SetRepository setRepository, TrainingRepository trainingRepository) {
-        this.dateService = dateService;
-        this.exerciseRepository = exerciseRepository;
+    public TrainingService(ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository) {
         this.exerciseSessionRepository = exerciseSessionRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.seriesRepository = seriesRepository;
         this.setRepository = setRepository;
         this.trainingRepository = trainingRepository;
     }
 
-//    @Transactional
-//    public void addTraining(TrainingToAdd trainingToAdd) {
-//
-//        Training training = new Training();
-//        Set set = setRepository.findOne(trainingToAdd.getSetId());
-//
-//        if (trainingToAdd.getDate() != null) {
-//            training.setTrainingDate(trainingToAdd.getDate());
-//        } else {
-//            training.setTrainingDate(dateService.getCurrentDate());
-//        }
-//
-//        training.setSet(set);
-//        trainingRepository.save(training);
-//
-//        List<Series> series = new LinkedList<>();
-//
-//        for (NewExerciseSession newExerciseSession : trainingToAdd.getExerciseSessions()) {
-//
-//            Exercise exercise = exerciseRepository.findOne(newExerciseSession.getExerciseId());
-//
-//            ExerciseSession exerciseSession = new ExerciseSession();
-//            exerciseSession.setExercise(exercise);
-//
-//            for (NewSeries newSeries : newExerciseSession.getSeries()) {
-//
-//                Series tmpSeries = new Series();
-//                tmpSeries.setWeight(newSeries.getWeight());
-//                tmpSeries.setRepeats(newSeries.getRepeats());
-//                tmpSeries.setExerciseSession(exerciseSession);
-//
-//                if (!StringUtils.isEmpty(newSeries.getComment())) {
-//                    tmpSeries.setComment(newSeries.getComment());
-//                }
-//
-//                series.add(tmpSeries);
-//            }
-//
-//            exerciseSession.setSeries(series);
-//            exerciseSessionRepository.save(exerciseSession);
-//
-//            exercise.getExerciseSessions().add(exerciseSession);
-//
-//            exerciseRepository.save(exercise);
-//        }
-//    }
+    @Transactional
+    public void addTraining(NewTraining newTraining) {
+        Training training = new Training();
+        training.setSetId(newTraining.getSetId());
+        training.setTrainingDate(newTraining.getTrainingDate());
 
-    public List<Training> getTrainingDatesForSet(long id) {
-        return setRepository.findOne(id).getTrainings();
+        trainingRepository.save(training);
+
+        Set set = setRepository.findOne(newTraining.getSetId());
+
+        for (int i = 0; i < newTraining.getExerciseSessions().size(); i++) {
+            List<ExerciseSession> sessions = new LinkedList<>();
+            ExerciseSession session = new ExerciseSession();
+            session.setExerciseId(set.getExercises().get(i).getExerciseId());
+            session.setEmpty(newTraining.getExerciseSessions().get(i).getSeries().isEmpty());
+
+            exerciseSessionRepository.save(session);
+
+            List<Series> seriesList = new LinkedList<>();
+
+            List<NewSeries> newSeries = newTraining.getExerciseSessions().get(i).getSeries();
+
+            for (int j = 0; j < newSeries.size(); j++) {
+
+                Series series = new Series();
+                series.setExerciseSessionId(session.getExerciseSessionId());
+                series.setComment(newSeries.get(j).getComment());
+                series.setRepeats(newSeries.get(j).getRepeats());
+                series.setWeight(newSeries.get(j).getWeight());
+                seriesList.add(series);
+            }
+
+            session.setSeries(seriesList);
+            sessions.add(session);
+
+            set.getExercises().get(i).getExerciseSessions().addAll(sessions);
+        }
+
+        setRepository.save(set);
+    }
+
+    @Transactional
+    public List<ExerciseForTrainingPreview> findExercisesByTrainingId(long trainingId) {
+        Training training = trainingRepository.findOne(trainingId);
+        Set set = setRepository.findOneByTrainingsContains(training);
+
+        List<ExerciseForTrainingPreview> exercisesWithSessionsForTraining = new LinkedList<>();
+
+        for (int i = 0; i < set.getTrainings().size(); i++) {
+            if (set.getTrainings().get(i).getTrainingId() == trainingId) {
+                final int trainingIndex = i;
+                set.getExercises().forEach((Exercise exercise) -> {
+                    ExerciseForTrainingPreview exerciseForPreview = new ExerciseForTrainingPreview();
+
+                    exerciseForPreview.setExerciseId(exercise.getExerciseId());
+                    exerciseForPreview.setExerciseName(exercise.getExerciseName());
+                    exerciseForPreview.setExerciseDescription(exercise.getExerciseDescription());
+                    exerciseForPreview.setExerciseSessions(Collections.singletonList(exercise.getExerciseSessions().get(trainingIndex)));
+
+                    exercisesWithSessionsForTraining.add(exerciseForPreview);
+                });
+
+                break;
+            }
+        }
+
+        return exercisesWithSessionsForTraining;
+    }
+
+    public void deleteTraining(Training training) {
+
+        Set set = setRepository.findOneByTrainingsContains(training);
+
+        for (int i = 0; i < set.getTrainings().size(); i++) {
+            if (set.getTrainings().get(i).getTrainingId() == training.getTrainingId()) {
+                final int trainingIndex = i;
+
+                set.getExercises().forEach((Exercise exercise) -> {
+
+                    ExerciseSession session = exercise.getExerciseSessions().get(trainingIndex);
+                    session.getSeries().forEach((Series series) -> seriesRepository.delete(series.getSeriesId()));
+                    exerciseSessionRepository.delete(session.getExerciseSessionId());
+
+                });
+            }
+        }
+
+        trainingRepository.delete(training.getTrainingId());
+    }
+
+    //    @Transactional
+    public void updateTraining(Training training, List<Exercise> exercises) {
+        Training trainingToUpdate = trainingRepository.findOne(training.getTrainingId());
+        trainingToUpdate.setTrainingDate(training.getTrainingDate());
+        trainingRepository.save(training);
+
+        Set set = setRepository.findOneByTrainingsContains(training);
+
+        int trainingIndex = 0;
+
+        for (int i = 0; i < set.getTrainings().size(); i++) {
+            if (set.getTrainings().get(i).getTrainingId() == training.getTrainingId()) {
+                trainingIndex = i;
+                break;
+            }
+        }
+
+        final int finalTrainingIndex = trainingIndex;
+
+        exercises.forEach((Exercise exercise) -> {
+            Exercise exerciseToUpdate = exerciseRepository.findOne(exercise.getExerciseId());
+            ExerciseSession session = exercise.getExerciseSessions().get(0);
+
+            java.util.Set<Long> idsForLeftSeries = new HashSet<>();
+
+            ExerciseSession sessionToUpdate = exerciseToUpdate.getExerciseSessions().get(finalTrainingIndex);
+            sessionToUpdate.setEmpty(exercise.getExerciseSessions().get(0).isEmpty());
+
+            if (!sessionToUpdate.isEmpty()) {
+
+                for (int i = 0; i < session.getSeries().size(); i++) {
+                    Series series;
+
+                    if (session.getSeries().get(i).getSeriesId() > 0) {
+                        series = sessionToUpdate.getSeries().get(i);
+                    } else {
+                        series = new Series();
+                    }
+
+                    series.setWeight(session.getSeries().get(i).getWeight());
+                    series.setRepeats(session.getSeries().get(i).getRepeats());
+                    series.setComment(session.getSeries().get(i).getComment());
+                    series.setExerciseSessionId(sessionToUpdate.getExerciseSessionId());
+
+                    if (series.getSeriesId() == 0) {
+                        sessionToUpdate.getSeries().add(series);
+                    }
+
+                    seriesRepository.save(series);
+                    idsForLeftSeries.add(series.getSeriesId());
+                }
+            }
+
+            sessionToUpdate.getSeries().stream()
+                    .filter(series -> !idsForLeftSeries.contains(series.getSeriesId()))
+                    .forEach(series -> seriesRepository.delete(series.getSeriesId()));
+
+            sessionToUpdate.setSeries(
+                    sessionToUpdate.getSeries().stream()
+                            .filter(series -> idsForLeftSeries.contains(series.getSeriesId()))
+                            .collect(Collectors.toList())
+            );
+
+
+            exerciseRepository.save(exerciseToUpdate);
+        });
+
     }
 }

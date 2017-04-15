@@ -29,6 +29,9 @@ public class Training implements Serializable {
     @SequenceGenerator(name = "TRAININGS_TRN_ID_SEQ", sequenceName = "TRAININGS_TRN_ID_SEQ", allocationSize = 1)
     private long trainingId;
 
+    @Column(name = "TRN_SET_ID")
+    private long setId;
+
     @Column(name = "TRN_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date trainingDate;

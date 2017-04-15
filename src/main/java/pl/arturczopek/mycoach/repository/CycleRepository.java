@@ -15,7 +15,9 @@ public interface CycleRepository extends PagingAndSortingRepository<Cycle, Long>
     @Override
     List<Cycle> findAll();
 
-    List<Cycle> findAllByOrderByEndDateDesc();
+    List<Cycle> findAllByOrderByIsFinishedDescEndDateAsc();
+
+    long countByIsFinishedFalse();
 
     Cycle findOneByIsFinishedFalse();
 }

@@ -2,15 +2,13 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewSet;
-import pl.arturczopek.mycoach.model.database.Cycle;
-import pl.arturczopek.mycoach.model.database.Exercise;
-import pl.arturczopek.mycoach.model.database.Set;
+import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
-import pl.arturczopek.mycoach.repository.CycleRepository;
+import pl.arturczopek.mycoach.repository.*;
 
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,11 +23,21 @@ public class CycleService {
 
     private CycleRepository cycleRepository;
     private DateService dateService;
+    private ExerciseSessionRepository exerciseSessionRepository;
+    private ExerciseRepository exerciseRepository;
+    private TrainingRepository trainingRepository;
+    private SeriesRepository seriesRepository;
+    private SetRepository setRepository;
 
     @Autowired
-    public CycleService(CycleRepository cycleRepository, DateService dateService) {
+    public CycleService(CycleRepository cycleRepository, DateService dateService, ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository, TrainingRepository trainingRepository, SeriesRepository seriesRepository, SetRepository setRepository) {
         this.cycleRepository = cycleRepository;
         this.dateService = dateService;
+        this.exerciseSessionRepository = exerciseSessionRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.trainingRepository = trainingRepository;
+        this.seriesRepository = seriesRepository;
+        this.setRepository = setRepository;
     }
 
     public Cycle getActiveCycle() {
@@ -37,7 +45,7 @@ public class CycleService {
     }
 
     public List<CyclePreview> getCyclePreviews() {
-        List<Cycle> cycles = cycleRepository.findAllByOrderByEndDateDesc();
+        List<Cycle> cycles = cycleRepository.findAllByOrderByIsFinishedDescEndDateAsc();
 
         return cycles
                 .stream().map(CyclePreview::buildFromCycle)
@@ -46,6 +54,10 @@ public class CycleService {
 
     public Cycle getCycleById(long id) {
         return cycleRepository.findOne(id);
+    }
+
+    public boolean hashUserEveryCycleFinished() {
+        return cycleRepository.countByIsFinishedFalse() == 0;
     }
 
     @Transactional
@@ -60,48 +72,56 @@ public class CycleService {
 
         cycle.setEndDate(null);
 
+        cycleRepository.save(cycle);
+
         List<Set> sets = new LinkedList<>();
 
-        for (NewSet oneNewSet : newCycle.getSets()) {
-            Set tmpSet = new Set();
-            tmpSet.setSetName(oneNewSet.getSetName());
-
-            List<Exercise> exercises = new LinkedList<>();
-
-            for (String exerciseName : oneNewSet.getExercises()) {
-                Exercise tmpExercise = new Exercise();
-                tmpExercise.setExerciseName(exerciseName);
-                exercises.add(tmpExercise);
-            }
-
-            tmpSet.setExercises(exercises);
-            sets.add(tmpSet);
+        for (NewSet setToAdd : newCycle.getSets()) {
+            Set newSet = new Set();
+            newSet.setSetName(setToAdd.getSetName());
+            newSet.setCycleId(cycle.getCycleId());
+            sets.add(newSet);
         }
 
         cycle.setSets(sets);
         cycleRepository.save(cycle);
     }
 
-    public void endCycle(long id) {
-        Cycle cycle = cycleRepository.findOne(id);
+    @Transactional
+    public void deleteCycle(Cycle cycle) {
 
-        if (cycle.getEndDate() == null) {
-            cycle.setEndDate(dateService.getCurrentDate());
-            cycleRepository.save(cycle);
-        }
+        cycle.getSets().forEach((Set set) -> {
+            set.getTrainings().forEach( (Training training) -> trainingRepository.delete(training.getTrainingId()));
+
+            set.getExercises().forEach((Exercise exercise) -> {
+                exercise.getExerciseSessions().forEach((ExerciseSession session) -> {
+                    session.getSeries().forEach((Series series) -> seriesRepository.delete(series.getSeriesId()));
+                    exerciseSessionRepository.delete(session.getExerciseSessionId());
+                });
+                exerciseRepository.delete(exercise.getExerciseId());
+            });
+
+            setRepository.delete(set.getSetId());
+        });
+
+        cycleRepository.delete(cycle.getCycleId());
     }
 
-//    public void updateCycle(CycleToUpdate cycleToUpdate) {
-//        Cycle cycle = cycleRepository.findOne(cycleToUpdate.getCycleId());
-//
-//        if (cycleToUpdate.getStartDate() != null) {
-//            cycle.setStartDate(cycleToUpdate.getStartDate());
-//        }
-//
-//        if (cycleToUpdate.getEndDate() != null) {
-//            cycle.setEndDate(cycleToUpdate.getEndDate());
-//        }
-//
-//        cycleRepository.save(cycle);
-//    }
+    public void updateCycle(Cycle cycle) {
+        Cycle cycleToEdit = cycleRepository.findOne(cycle.getCycleId());
+        cycleToEdit.setStartDate(cycle.getStartDate());
+
+        cycleToEdit.setFinished(cycle.isFinished());
+
+        if (cycleToEdit.isFinished() && cycleToEdit.getEndDate() != null) {
+            cycleToEdit.setEndDate(cycleToEdit.getEndDate());
+        } else if (cycleToEdit.isFinished()) {
+            cycleToEdit.setEndDate(dateService.getCurrentDate());
+        } else {
+            cycleToEdit.setEndDate(null);
+        }
+
+        cycleRepository.save(cycleToEdit);
+
+    }
 }

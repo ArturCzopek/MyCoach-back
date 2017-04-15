@@ -38,19 +38,19 @@ public class ReportController {
     }
 
     @PostMapping("/add")
-    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano raport")
+    @ResponseStatus(value = HttpStatus.CREATED, reason = "Added report")
     public void addReport(@RequestBody Report report) {
         reportService.addReport(report);
     }
 
     @PutMapping("/update")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano raport")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Updated report")
     public void updateWeights(@RequestBody Report report) {
         reportService.updateReport(report);
     }
 
     @DeleteMapping("/delete")
-    @ResponseStatus(value = HttpStatus.OK, reason = "Usunięto raport")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Removed report")
     public void deleteWeights(@RequestBody Report report) {
         reportService.deleteReport(report);
     }

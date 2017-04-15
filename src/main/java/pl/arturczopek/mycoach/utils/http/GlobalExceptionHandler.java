@@ -22,35 +22,35 @@ import java.io.IOException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Nie znaleziono strony")
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Not found page")
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     ErrorMessage handleOtherExceptions(HttpServletRequest req, Exception ex) {
-        String message = "Nie znaleziono strony";
+        String message = "Not found page";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
     }
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Nie znaleziono obiektu")
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Not found object")
     @ExceptionHandler({EntityNotFoundException.class, EmptyResultDataAccessException.class })
     @ResponseBody ErrorMessage notFoundEntityHandler(HttpServletRequest req, Exception ex) {
-        String message = "Nie znaleziono obiektu";
+        String message = "Not found object";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
     }
 
-    @ResponseStatus(value= HttpStatus.CONFLICT)
+    @ResponseStatus(value= HttpStatus.CONFLICT, reason = "Operation failed. Probably object already exists")
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody public ErrorMessage dataIntegrityViolationHandler(HttpServletRequest req, Exception ex) {
-        String message = "Operacja nieudana, prawdopodobnie obiekt juz istnieje";
+        String message = "Operation failed. Probably object already exists";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
     }
 
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE, reason = "Operation failed. Probably ile is too big")
     @ExceptionHandler(IOException.class)
     @ResponseBody public ErrorMessage IOExceptionHandler(HttpServletRequest req, Exception ex) {
-        String message = "Operacja nieudana, prawdopodobnie plik za duży";
+        String message = "Operation failed. Probably ile is too big";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
     }

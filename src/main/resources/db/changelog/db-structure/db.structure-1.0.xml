@@ -124,7 +124,7 @@
                              references="EXERCISES(EXR_ID)"/>
             </column>
             <column name="EXS_EMP" type="boolean" defaultValue="false">
-                <constraints nullable="true"></constraints>
+                <constraints nullable="false"></constraints>
             </column>
         </createTable>
         <rollback>

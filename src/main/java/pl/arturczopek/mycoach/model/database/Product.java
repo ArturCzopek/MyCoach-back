@@ -38,7 +38,7 @@ public class Product implements Serializable {
     // not column!!
     private float average = 0;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Price> prices;
 

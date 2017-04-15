@@ -1,7 +1,6 @@
 package pl.arturczopek.mycoach.model.database;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -28,10 +27,8 @@ public class Price implements Serializable{
     @SequenceGenerator(name = "PRICES_PRC_ID_SEQ", sequenceName = "PRICES_PRC_ID_SEQ", allocationSize = 1)
     private long priceId;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "PRC_PRD_ID", nullable = false)
-    private Product product;
+    @Column(name = "PRC_PRD_ID", nullable = false)
+    private long productId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "PRC_DT", nullable = false)
