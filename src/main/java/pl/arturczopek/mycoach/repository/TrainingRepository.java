@@ -9,4 +9,6 @@ import pl.arturczopek.mycoach.model.database.Training;
  */
 
 public interface TrainingRepository extends CrudRepository<Training, Long> {
+
+    void deleteBySetId(long setId);
 }

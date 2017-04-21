@@ -20,7 +20,7 @@ public class PhotosWatcher {
 
     private ProductRepository productRepository;
 
-    @Value("$myCoach.tmp-product-sign")
+    @Value("${myCoach.tmp-product-sign}")
     private String tmpProductSign;
 
     @Autowired

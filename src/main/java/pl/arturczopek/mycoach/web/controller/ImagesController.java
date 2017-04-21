@@ -2,11 +2,9 @@ package pl.arturczopek.mycoach.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.service.ProductService;
 
 import javax.servlet.ServletOutputStream;
@@ -20,55 +18,42 @@ import java.io.IOException;
 
 @Slf4j
 @RestController
-@RequestMapping("/product")
-public class ProductController {
+@RequestMapping("/images")
+public class ImagesController {
 
     @Value("${myCoach.default-product-image}")
     private String noImageUrl;
 
     private ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ImagesController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping("/image/{productId}")
+    @GetMapping(value = "/product/{productId}", produces = "image/jpeg")
     public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response) throws IOException {
-        byte productPhoto[] = productService.getProductPhoto(productId);
+        byte[] productPhoto = productService.getProductPhoto(productId);
 
-        if (productPhoto == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
+        response = getResponseParams(response);
 
-        response.setHeader("Cache-Control", "no-store");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
         ServletOutputStream responseOutputStream = response.getOutputStream();
         responseOutputStream.write(productPhoto);
         responseOutputStream.flush();
         responseOutputStream.close();
     }
 
-    @PostMapping("/image/upload")
+    @PostMapping("/product/upload")
     public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) throws IOException {
-
         Long updatedProductId = productService.uploadPhoto(file, productId);
-
         return ResponseEntity.ok(updatedProductId);
     }
-    
-    @PostMapping("/add")
-    @ResponseStatus(value = HttpStatus.CREATED, reason = "Dodano produkt")
-    public void addProduct(@RequestBody Product productToAdd) {
-        productService.addProduct(productToAdd);
+
+    private HttpServletResponse getResponseParams(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+
+        return response;
     }
-
-//    @PutMapping("/update")
-//    @ResponseStatus(value = HttpStatus.OK, reason = "Zaaktualizowano produkt")
-//    public void updateProduct(@RequestBody ProductToUpdate productToUpdate) {
-//        productService.updateProduct(productToUpdate);
-//    }
-
 }

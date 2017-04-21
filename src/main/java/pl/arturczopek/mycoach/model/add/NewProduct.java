@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class NewProduct {
 
+    private long productId;
+
     @JsonProperty(required = true)
     private String productName;
 

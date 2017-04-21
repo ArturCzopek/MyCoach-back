@@ -1,5 +1,6 @@
 package pl.arturczopek.mycoach.model.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.LazyCollection;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -36,21 +38,32 @@ public class Product implements Serializable {
     private byte[] screen;
 
     // not column!!
+    @Transient
     private float average = 0;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PRC_PRD_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Price> prices;
 
     public void countAveragePrice() {
-        this.average = 0;
+
+
+        BigDecimal pricesSum = new BigDecimal(0).setScale(2, BigDecimal.ROUND_UP);
+        BigDecimal quantitySum = new BigDecimal(0).setScale(2, BigDecimal.ROUND_UP);
 
         if (!prices.isEmpty()) {
             for (Price price : prices) {
-                this.average += price.getValue();
+                pricesSum = pricesSum.add(new BigDecimal(price.getValue()));
+                quantitySum = quantitySum.add(new BigDecimal(price.getQuantity()));
             }
+        }
 
-            this.average /= this.prices.size();
+        if (prices.isEmpty()) {
+            this.average = 0;
+        } else {
+            this.average = pricesSum.divide(quantitySum, 2, BigDecimal.ROUND_UP).floatValue();
         }
     }
 }

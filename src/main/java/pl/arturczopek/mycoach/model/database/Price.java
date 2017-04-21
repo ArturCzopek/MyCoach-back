@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @Author Artur Czopek
@@ -30,8 +30,8 @@ public class Price implements Serializable{
     @Column(name = "PRC_PRD_ID", nullable = false)
     private long productId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "PRC_DT", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date priceDate;
 
     @Column(name = "PRC_VAL", nullable = false)

@@ -12,4 +12,6 @@ import pl.arturczopek.mycoach.model.database.Training;
 public interface SetRepository extends CrudRepository<Set, Long> {
 
     Set findOneByTrainingsContains(Training training);
+
+    void deleteByCycleId(long cycleId);
 }

@@ -1,7 +1,9 @@
 package pl.arturczopek.mycoach.config;
 
 import com.google.common.base.Predicate;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,26 +24,23 @@ import static springfox.documentation.builders.PathSelectors.regex;
  */
 
 @Profile("dev")
+@Getter
+@Setter
 @Configuration
 @EnableSwagger2
+@ConfigurationProperties(prefix = "myCoach.swagger")
 public class SwaggerConfiguration {
 
-    @Value("${myCoach.doc-title}")
     private String title;
 
-    @Value("${myCoach.version}")
     private String version;
 
-    @Value("${myCoach.doc-description}")
     private String description;
 
-    @Value("${myCoach.contact-name}")
     private String contactName;
 
-    @Value("${myCoach.contact-address}")
     private String contactAddress;
 
-    @Value("${myCoach.contact-url}")
     private String contactUrl;
 
     private static final String NO_JSON_REGEX = "^(?!.*json).*$";

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.arturczopek.mycoach.model.add.NewProduct;
 import pl.arturczopek.mycoach.model.database.Product;
+import pl.arturczopek.mycoach.repository.PriceRepository;
 import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import javax.imageio.ImageIO;
@@ -13,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author Artur Czopek
@@ -28,31 +31,32 @@ public class ProductService {
     @Value("${myCoach.image-size}")
     private int imageSize;
 
-    @Value("$myCoach.tmp-product-sign")
+    @Value("${myCoach.tmp-product-sign}")
     private String tmpProductSign;
 
-    @Value("$myCoach.edited-product-sign-suffix")
+    @Value("${myCoach.edited-product-sign-suffix}")
     private String editedProductSignSuffix;
 
-    @Value("$myCoach.image-extension")
+    @Value("${myCoach.image-extension}")
     private String imageExtension;
 
     private ProductRepository productRepository;
 
+    private PriceRepository priceRepository;
+
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, PriceRepository priceRepository) {
         this.productRepository = productRepository;
+        this.priceRepository = priceRepository;
     }
 
-//    public List<ProductPreview> getProductPreviews() {
-//        List<Product> products = productRepository.findAllByOrderByProductName();
-//
-//        return products
-//                .stream().map(ProductPreview::buildFromProduct)
-//                .collect(Collectors.toCollection(LinkedList::new));
-//    }
+    public List<Product> getProductPreviews() {
+        List<Product> products = productRepository.findValidProducts(tmpProductSign, editedProductSignSuffix + "%");
+        products.forEach(product -> product.countAveragePrice());
+        return products;
+    }
 
-    public void addProduct(Product productToAdd) {
+    public void addProduct(NewProduct productToAdd) {
         Product product;
 
         // It is possible that product has already id because of earlier uploading photo
@@ -67,24 +71,6 @@ public class ProductService {
 
         productRepository.save(product);
     }
-
-//    public void updateProduct(ProductToUpdate productToUpdate) {
-//        Product product = productRepository.findOne(productToUpdate.getProductId());
-//
-//        if (!StringUtils.isEmpty(product.getProductName())) {
-//            product.setProductName(product.getProductName());
-//        }
-//
-//        String possibleEditProductName = editedProductSignSuffix + productToUpdate.getProductId();
-//        Product possibleEditProduct = productRepository.findOneByProductName(possibleEditProductName);
-//
-//        if (possibleEditProduct != null) {
-//            product.setScreen(possibleEditProduct.getScreen());
-//            productRepository.delete(possibleEditProduct.getProductId());
-//        }
-//
-//        productRepository.save(product);
-//    }
 
     public Long uploadPhoto(MultipartFile file, long productId) throws IOException {
         final ByteArrayOutputStream productPhotoOutputStream = new ByteArrayOutputStream();
@@ -101,24 +87,29 @@ public class ProductService {
         // Copy file will be when user want to really update photo
 
         if (productId > 0) {
-            String editProductName = editedProductSignSuffix + productId;
-            Product inEditModeProduct = productRepository.findOneByProductName(editProductName);
-
-            if (inEditModeProduct != null) {
-                product = inEditModeProduct;
-            } else {
-                product.setProductName(editProductName);
-            }
+            product = getProperSpecialProductWithImage(editedProductSignSuffix + productId, product);
         } else {
-            product.setProductName(tmpProductSign);
+            product = getProperSpecialProductWithImage(tmpProductSign, product);
         }
 
-        productRepository.save(product);
+//        productRepository.save(product);
 
         product.setScreen(productPhotoOutputStream.toByteArray());
         productRepository.save(product);
 
         return product.getProductId();
+    }
+
+    private Product getProperSpecialProductWithImage(String name, Product product) {
+        Product tmpProduct = productRepository.findOneByProductName(name);
+
+        if (tmpProduct != null) {
+            product = tmpProduct;
+        } else {
+            product.setProductName(name);
+        }
+
+        return product;
     }
 
     public byte[] getProductPhoto(long productId) throws IOException {
@@ -129,13 +120,38 @@ public class ProductService {
         }
 
         if (product.getScreen() == null) {
-            ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
+            BufferedImage image = ImageIO.read(this.getClass().getResource(noImageUrl));
 
-            BufferedImage image = ImageIO.read(getClass().getResource(noImageUrl));
+            ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
+            jpegOutputStream.reset();
+
             ImageIO.write(image, imageExtension, jpegOutputStream);
+            jpegOutputStream.flush();
+            jpegOutputStream.close();
             return jpegOutputStream.toByteArray();
         }
 
         return product.getScreen();
+    }
+
+    public void deleteProduct(Product product) {
+        priceRepository.deleteByProductIdOrderByPriceDate(product.getProductId());
+        productRepository.delete(product.getProductId());
+    }
+
+    public void updateProduct(Product product) {
+        Product productToUpdate = productRepository.findOne(product.getProductId());
+        productToUpdate.setProductName(product.getProductName());
+
+        String editProductName = editedProductSignSuffix + product.getProductId();
+
+        Product productWithUpdatedImage = productRepository.findOneByProductName(editProductName);
+
+        if (productWithUpdatedImage != null) {
+            productToUpdate.setScreen(productWithUpdatedImage.getScreen());
+            productRepository.delete(productWithUpdatedImage.getProductId());
+        }
+
+        productRepository.save(productToUpdate);
     }
 }

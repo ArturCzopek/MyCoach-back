@@ -1,10 +1,11 @@
   myCoach:
-    doc-title: My coach API
-    doc-description: My coach rest API. If you cannot use it, contact admin
-    contact-name: Artur Czopek
-    contact-address: artur@simplecoding.pl
-    contact-url: http://simplecoding.pl
-    swagger-path: rest-api
+    swagger:
+      title: My coach API
+      description: My coach rest API. If you cannot use it, contact admin
+      contact-name: Artur Czopek
+      contact-address: artur@simplecoding.pl
+      contact-url: http://simplecoding.pl
+      path: rest-api
 
   spring:
     profiles: dev

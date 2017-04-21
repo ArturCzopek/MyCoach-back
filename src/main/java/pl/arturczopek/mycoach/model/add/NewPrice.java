@@ -1,10 +1,12 @@
 package pl.arturczopek.mycoach.model.add;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @Author Artur Czopek
@@ -12,6 +14,7 @@ import java.util.Date;
  */
 
 @Data
+@AllArgsConstructor
 public class NewPrice implements Serializable {
 
     private static final long serialVersionUID = -2267814709244502404L;
@@ -27,5 +30,6 @@ public class NewPrice implements Serializable {
 
     private String place;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date priceDate;
 }

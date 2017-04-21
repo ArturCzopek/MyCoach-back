@@ -29,8 +29,8 @@ public class PriceService {
         this.dateService = dateService;
     }
 
-    public List<Price> getPricesForProduct(long productId) {
-        return productRepository.findOne(productId).getPrices();
+    public List<Price> getPricesByProductId(long productId) {
+        return priceRepository.findByProductIdOrderByPriceDate(productId);
     }
 
     public void addPrice(NewPrice newPrice) {
@@ -39,9 +39,12 @@ public class PriceService {
         price.setProductId(newPrice.getProductId());
         price.setValue(newPrice.getValue());
         price.setPlace(newPrice.getPlace());
+        price.setQuantity(newPrice.getQuantity());
 
         if (newPrice.getPriceDate() == null) {
             price.setPriceDate(dateService.getCurrentDate());
+        } else {
+            price.setPriceDate(newPrice.getPriceDate());
         }
 
         priceRepository.save(price);
@@ -49,32 +52,24 @@ public class PriceService {
 
     public void addShoppingList(ShoppingList shoppingList) {
 
-        for (NewPrice shoppingPrice : shoppingList.getPrices()) {
-            shoppingPrice.setPriceDate(shoppingList.getShoppingDate());
-            shoppingPrice.setPlace(shoppingList.getPlace());
-            addPrice(shoppingPrice);
-        }
+        shoppingList.getPrices().stream()
+                .map(position -> new NewPrice(position.getProductId(), position.getValue(), position.getQuantity(),
+                        shoppingList.getPlace(), shoppingList.getShoppingDate()))
+                .forEach(price -> this.addPrice(price));
     }
 
-//    public void updatePrice(PriceToUpdate priceToUpdate) {
-//        Price price = priceRepository.findOne(priceToUpdate.getPriceId());
-//
-//        if (priceToUpdate.getPriceDate() != null) {
-//            price.setPriceDate(priceToUpdate.getPriceDate());
-//        }
-//
-//        if (priceToUpdate.getValue() != null) {
-//            price.setValue(priceToUpdate.getValue());
-//        }
-//
-//        if (!StringUtils.isEmpty(priceToUpdate.getPlace())) {
-//            price.setPlace(priceToUpdate.getPlace());
-//        }
-//
-//        if (priceToUpdate.getQuantity() != null) {
-//            price.setQuantity(priceToUpdate.getQuantity());
-//        }
-//
-//        priceRepository.save(price);
-//    }
+    public void deletePrices(List<Price> prices) {
+        prices.forEach(price -> priceRepository.delete(price.getPriceId()));
+    }
+
+    public void updatePrices(List<Price> prices) {
+        prices.forEach(price -> {
+            Price priceToEdit = priceRepository.findOne(price.getPriceId());
+            priceToEdit.setQuantity(price.getQuantity());
+            priceToEdit.setPriceDate(price.getPriceDate());
+            priceToEdit.setPlace(price.getPlace());
+            priceToEdit.setValue(price.getValue());
+            priceRepository.save(priceToEdit);
+        });
+    }
 }

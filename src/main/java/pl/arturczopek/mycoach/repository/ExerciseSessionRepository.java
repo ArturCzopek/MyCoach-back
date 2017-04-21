@@ -8,4 +8,6 @@ import pl.arturczopek.mycoach.model.database.ExerciseSession;
  * @Date 06-11-2016
  */
 public interface ExerciseSessionRepository extends CrudRepository<ExerciseSession, Long> {
+
+    void deleteByExerciseId(long exerciseId);
 }
