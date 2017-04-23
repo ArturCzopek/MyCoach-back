@@ -61,6 +61,7 @@ global.close.label;Zamknij;1
 global.currency.label;zł;1
 global.delete.label;Usuń;1
 global.edit.label;Edytuj;1
+global.error.message;Ooops! Coś poszło nie tak...Jeśli nie wiesz co, skontaktuj się z adminem;1
 global.multiply.label;x;1
 global.weight.label;kg;1
 global.endDate.label;Data końcowa;1
@@ -127,6 +128,8 @@ page.trainings.cycle.current;Obecny;1
 page.trainings.cycle.finishAll.tooltip;Musisz najpierw zakończyć wszystkie cykle!;1
 page.trainings.cycle.finished;Skończony;1
 page.trainings.cycle.notActive.tooltip;Musisz posiadać aktywny cykl!;1
+page.trainings.cycle.invalidDate.message;Data początkowa musi być późniejsza niż ostatnia data końcowa!;1
+page.trainings.cycle.invalidSetNames.message;Nazwy setów muszą być parami różne!;1
 page.trainings.cycle.isFinished;Cykl jest zakończony;1
 page.trainings.cycle.list.noData.click.info;Dodaj swój pierwszy cykl;1
 page.trainings.cycle.list.noData.info;Obecnie nie posiadasz żadnych cykli;1

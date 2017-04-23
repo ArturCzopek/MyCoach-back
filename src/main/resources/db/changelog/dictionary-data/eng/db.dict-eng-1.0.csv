@@ -61,6 +61,7 @@ global.close.label;Close;2
 global.currency.label;zł;2
 global.delete.label;Delete;2
 global.edit.label;Edit;2
+global.error.message;Ooops! Something went wrong...if you not sure what, please, contact admin;2
 global.multiply.label;x;2
 global.weight.label;kg;2
 global.endDate.label;End date;2
@@ -127,6 +128,8 @@ page.trainings.cycle.current;Current;2
 page.trainings.cycle.finishAll.tooltip;You have to finish all cycles first!;2
 page.trainings.cycle.notActive.tooltip;You have to own active cycle!;2
 page.trainings.cycle.finished;Finished;2
+page.trainings.cycle.invalidDate.message;Start date must be later than last end date!;2
+page.trainings.cycle.invalidSetNames.message;Set names must be different!;2
 page.trainings.cycle.isFinished;Cycle is finished;2
 page.trainings.cycle.list.noData.click.info;Add your first cycle;2
 page.trainings.cycle.list.noData.info;Currently, you don't have any cycle;2

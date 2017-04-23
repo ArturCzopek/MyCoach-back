@@ -20,4 +20,6 @@ public interface CycleRepository extends PagingAndSortingRepository<Cycle, Long>
     long countByIsFinishedFalse();
 
     Cycle findOneByIsFinishedFalse();
+
+    Cycle findFirstByOrderByEndDateDesc();
 }

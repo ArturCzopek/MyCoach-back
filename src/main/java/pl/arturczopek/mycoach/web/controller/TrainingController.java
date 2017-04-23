@@ -17,6 +17,7 @@ import pl.arturczopek.mycoach.service.CycleService;
 import pl.arturczopek.mycoach.service.ExerciseService;
 import pl.arturczopek.mycoach.service.TrainingService;
 
+import javax.management.InvalidAttributeValueException;
 import java.util.List;
 
 /**
@@ -67,7 +68,7 @@ public class TrainingController {
 
     @PostMapping("cycle/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added cycle")
-    public void addCycle(@RequestBody NewCycle cycle) {
+    public void addCycle(@RequestBody NewCycle cycle) throws InvalidAttributeValueException {
         cycleService.addCycle(cycle);
     }
 

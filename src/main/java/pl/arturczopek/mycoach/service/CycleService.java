@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewSet;
@@ -8,7 +9,9 @@ import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.repository.*;
 
+import javax.management.InvalidAttributeValueException;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,7 +64,7 @@ public class CycleService {
     }
 
     @Transactional
-    public void addCycle(NewCycle newCycle) {
+    public void addCycle(NewCycle newCycle) throws InvalidAttributeValueException {
         Cycle cycle = new Cycle();
 
         if (newCycle.getStartDate() != null) {
@@ -71,6 +74,14 @@ public class CycleService {
         }
 
         cycle.setEndDate(null);
+
+        if (!isNewCycleDateValid(cycle)) {
+            throw new InvalidAttributeValueException("Start date must be later than last end date");
+        }
+
+        if (!areNewSetsNamesValid(newCycle.getSets())) {
+            throw new DuplicateKeyException("Sets must have different names");
+        }
 
         cycleRepository.save(cycle);
 
@@ -85,6 +96,18 @@ public class CycleService {
 
         cycle.setSets(sets);
         cycleRepository.save(cycle);
+    }
+
+    private boolean areNewSetsNamesValid(List<NewSet> sets) {
+        for (int i = 0; i < sets.size(); i++) {
+            for(int j = i + 1; j < sets.size(); j++) {
+                if (sets.get(j).getSetName().equalsIgnoreCase(sets.get(i).getSetName())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public void deleteCycle(Cycle cycle) {
@@ -112,15 +135,31 @@ public class CycleService {
 
         cycleToEdit.setFinished(cycle.isFinished());
 
-        if (cycleToEdit.isFinished() && cycleToEdit.getEndDate() != null) {
-            cycleToEdit.setEndDate(cycleToEdit.getEndDate());
-        } else if (cycleToEdit.isFinished()) {
+        if (cycle.isFinished() && cycle.getEndDate() != null) {
+            cycleToEdit.setEndDate(cycle.getEndDate());
+        } else if (cycle.isFinished()) {
             cycleToEdit.setEndDate(dateService.getCurrentDate());
         } else {
             cycleToEdit.setEndDate(null);
         }
 
         cycleRepository.save(cycleToEdit);
+    }
 
+    private boolean isNewCycleDateValid(Cycle cycle) {
+        Cycle cycleFromDb = cycleRepository.findFirstByOrderByEndDateDesc();
+
+        if (cycle.getStartDate().before(cycleFromDb.getEndDate())) {
+            return false;
+        }
+
+        LocalDate cycleStartDate = cycle.getStartDate().toLocalDate();
+        LocalDate cycleFromDbEndDate = cycleFromDb.getEndDate().toLocalDate();
+
+        if (cycleStartDate.equals(cycleFromDbEndDate)) {
+            return false;
+        }
+
+        return true;
     }
 }
