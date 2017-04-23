@@ -2,7 +2,6 @@ package pl.arturczopek.mycoach.model.database;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +14,6 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "SERIES")
-@ToString(exclude  = "exerciseSession")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Series implements Serializable {
     private static final long serialVersionUID = 601005672180488637L;

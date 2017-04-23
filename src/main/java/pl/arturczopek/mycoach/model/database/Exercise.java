@@ -2,7 +2,6 @@ package pl.arturczopek.mycoach.model.database;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -18,7 +17,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "EXERCISES")
-@ToString(exclude = "set")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Exercise implements Serializable {
 

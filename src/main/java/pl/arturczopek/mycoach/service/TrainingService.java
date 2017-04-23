@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.add.NewSeries;
 import pl.arturczopek.mycoach.model.add.NewTraining;
 import pl.arturczopek.mycoach.model.database.*;
-import pl.arturczopek.mycoach.model.requestDTO.ExerciseForTrainingPreview;
+import pl.arturczopek.mycoach.model.request.dto.ExerciseForTrainingPreview;
 import pl.arturczopek.mycoach.repository.*;
 
 import javax.transaction.Transactional;
@@ -128,7 +128,6 @@ public class TrainingService {
         trainingRepository.delete(training.getTrainingId());
     }
 
-    //    @Transactional
     public void updateTraining(Training training, List<Exercise> exercises) {
         Training trainingToUpdate = trainingRepository.findOne(training.getTrainingId());
         trainingToUpdate.setTrainingDate(training.getTrainingDate());
@@ -136,18 +135,11 @@ public class TrainingService {
 
         Set set = setRepository.findOneByTrainingsContains(training);
 
-        int trainingIndex = 0;
-
-        for (int i = 0; i < set.getTrainings().size(); i++) {
-            if (set.getTrainings().get(i).getTrainingId() == training.getTrainingId()) {
-                trainingIndex = i;
-                break;
-            }
-        }
+        int trainingIndex = findTrainingIndex(training, set);
 
         final int finalTrainingIndex = trainingIndex;
 
-        exercises.forEach((Exercise exercise) -> {
+        for (Exercise exercise : exercises) {
             Exercise exerciseToUpdate = exerciseRepository.findOne(exercise.getExerciseId());
             ExerciseSession session = exercise.getExerciseSessions().get(0);
 
@@ -157,28 +149,7 @@ public class TrainingService {
             sessionToUpdate.setEmpty(exercise.getExerciseSessions().get(0).isEmpty());
 
             if (!sessionToUpdate.isEmpty()) {
-
-                for (int i = 0; i < session.getSeries().size(); i++) {
-                    Series series;
-
-                    if (session.getSeries().get(i).getSeriesId() > 0) {
-                        series = sessionToUpdate.getSeries().get(i);
-                    } else {
-                        series = new Series();
-                    }
-
-                    series.setWeight(session.getSeries().get(i).getWeight());
-                    series.setRepeats(session.getSeries().get(i).getRepeats());
-                    series.setComment(session.getSeries().get(i).getComment());
-                    series.setExerciseSessionId(sessionToUpdate.getExerciseSessionId());
-
-                    if (series.getSeriesId() == 0) {
-                        sessionToUpdate.getSeries().add(series);
-                    }
-
-                    seriesRepository.save(series);
-                    idsForLeftSeries.add(series.getSeriesId());
-                }
+                updateSeries(session, idsForLeftSeries, sessionToUpdate);
             }
 
             sessionToUpdate.getSeries().stream()
@@ -193,7 +164,43 @@ public class TrainingService {
 
 
             exerciseRepository.save(exerciseToUpdate);
-        });
+        }
 
+    }
+
+    private void updateSeries(ExerciseSession session, java.util.Set<Long> idsForLeftSeries, ExerciseSession sessionToUpdate) {
+        for (int i = 0; i < session.getSeries().size(); i++) {
+            Series series;
+
+            if (session.getSeries().get(i).getSeriesId() > 0) {
+                series = sessionToUpdate.getSeries().get(i);
+            } else {
+                series = new Series();
+            }
+
+            series.setWeight(session.getSeries().get(i).getWeight());
+            series.setRepeats(session.getSeries().get(i).getRepeats());
+            series.setComment(session.getSeries().get(i).getComment());
+            series.setExerciseSessionId(sessionToUpdate.getExerciseSessionId());
+
+            if (series.getSeriesId() == 0) {
+                sessionToUpdate.getSeries().add(series);
+            }
+
+            seriesRepository.save(series);
+            idsForLeftSeries.add(series.getSeriesId());
+        }
+    }
+
+    private int findTrainingIndex(Training training, Set set) {
+        int trainingIndex = 0;
+
+        for (int i = 0; i < set.getTrainings().size(); i++) {
+            if (set.getTrainings().get(i).getTrainingId() == training.getTrainingId()) {
+                trainingIndex = i;
+                break;
+            }
+        }
+        return trainingIndex;
     }
 }

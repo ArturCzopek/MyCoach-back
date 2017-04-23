@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class MyCoachInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MyCoachInitializer.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MyCoachInitializer.class, args);
+    }
 }

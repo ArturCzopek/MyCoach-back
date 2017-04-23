@@ -1,4 +1,4 @@
-package pl.arturczopek.mycoach.model.requestDTO;
+package pl.arturczopek.mycoach.model.request.dto;
 
 import lombok.Data;
 import pl.arturczopek.mycoach.model.database.ExerciseSession;

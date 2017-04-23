@@ -74,9 +74,7 @@ public class ExerciseService {
         exerciseRepository.delete(exercise.getExerciseId());
 
         if (isLastExercise) {
-            setWithExercise.getTrainings().forEach((Training training) -> {
-                trainingRepository.delete(training.getTrainingId());
-            });
+            setWithExercise.getTrainings().forEach((Training training) -> trainingRepository.delete(training.getTrainingId()));
         }
     }
 

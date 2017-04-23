@@ -3,7 +3,6 @@ package pl.arturczopek.mycoach.model.database;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import java.sql.Date;
 @Data
 @Entity
 @Table(name = "TRAININGS")
-@ToString(exclude = {"set"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Training implements Serializable {
 

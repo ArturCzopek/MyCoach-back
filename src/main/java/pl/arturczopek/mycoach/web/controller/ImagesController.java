@@ -34,9 +34,9 @@ public class ImagesController {
     public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response) throws IOException {
         byte[] productPhoto = productService.getProductPhoto(productId);
 
-        response = getResponseParams(response);
+        HttpServletResponse configuredResponse = getResponseParams(response);
 
-        ServletOutputStream responseOutputStream = response.getOutputStream();
+        ServletOutputStream responseOutputStream = configuredResponse.getOutputStream();
         responseOutputStream.write(productPhoto);
         responseOutputStream.flush();
         responseOutputStream.close();

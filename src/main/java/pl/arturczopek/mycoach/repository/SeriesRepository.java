@@ -10,5 +10,4 @@ import pl.arturczopek.mycoach.model.database.Series;
 
 public interface SeriesRepository extends CrudRepository<Series, Long> {
 
-    void deleteByExerciseSessionId(long exerciseSessionId);
 }

@@ -52,7 +52,7 @@ public class ProductService {
 
     public List<Product> getProductPreviews() {
         List<Product> products = productRepository.findValidProducts(tmpProductSign, editedProductSignSuffix + "%");
-        products.forEach(product -> product.countAveragePrice());
+        products.forEach((Product product) -> product.countAveragePrice());
         return products;
     }
 
@@ -92,8 +92,6 @@ public class ProductService {
             product = getProperSpecialProductWithImage(tmpProductSign, product);
         }
 
-//        productRepository.save(product);
-
         product.setScreen(productPhotoOutputStream.toByteArray());
         productRepository.save(product);
 
@@ -102,21 +100,23 @@ public class ProductService {
 
     private Product getProperSpecialProductWithImage(String name, Product product) {
         Product tmpProduct = productRepository.findOneByProductName(name);
+        Product productToReturn;
 
         if (tmpProduct != null) {
-            product = tmpProduct;
+            productToReturn = tmpProduct;
         } else {
-            product.setProductName(name);
+            productToReturn = product;
+            productToReturn.setProductName(name);
         }
 
-        return product;
+        return productToReturn;
     }
 
     public byte[] getProductPhoto(long productId) throws IOException {
         Product product = productRepository.findOne(productId);
 
         if (product == null) {
-            return null;
+            return new byte[]{};
         }
 
         if (product.getScreen() == null) {

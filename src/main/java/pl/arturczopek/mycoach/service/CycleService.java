@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewSet;
-import pl.arturczopek.mycoach.model.database.Cycle;
-import pl.arturczopek.mycoach.model.database.Exercise;
-import pl.arturczopek.mycoach.model.database.ExerciseSession;
-import pl.arturczopek.mycoach.model.database.Set;
+import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.repository.*;
 
@@ -90,21 +87,22 @@ public class CycleService {
         cycleRepository.save(cycle);
     }
 
-    @Transactional
     public void deleteCycle(Cycle cycle) {
 
         cycle.getSets().forEach((Set set) -> {
-            trainingRepository.deleteBySetId(set.getSetId());
+            set.getTrainings().forEach((Training training) -> trainingRepository.delete(training.getTrainingId()));
 
             set.getExercises().forEach((Exercise exercise) -> {
-                exercise.getExerciseSessions().forEach((ExerciseSession session) -> seriesRepository.deleteByExerciseSessionId(session.getExerciseSessionId()));
-                exerciseSessionRepository.deleteByExerciseId(exercise.getExerciseId());
+                exercise.getExerciseSessions().forEach((ExerciseSession session) -> {
+                    session.getSeries().forEach((Series series) -> seriesRepository.delete(series.getSeriesId()));
+                    exerciseSessionRepository.delete(session.getExerciseSessionId());
+                });
+                exerciseRepository.delete(exercise.getExerciseId());
             });
 
-            exerciseRepository.deleteBySetId(set.getSetId());
+            setRepository.delete(set.getSetId());
         });
 
-        setRepository.deleteByCycleId(cycle.getCycleId());
         cycleRepository.delete(cycle.getCycleId());
     }
 

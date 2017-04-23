@@ -1,6 +1,6 @@
 DCT_KEY;DCT_VAL;DCT_LNG_ID
 calendar.clear.label;Czyść;1
-calendar.close.label;Zamknij;1
+calendar.close.label;Wyjdź;1
 calendar.day;Dzień;1
 calendar.day.fri.full;Piątek;1
 calendar.day.fri.letter;P;1
@@ -63,43 +63,46 @@ global.delete.label;Usuń;1
 global.edit.label;Edytuj;1
 global.multiply.label;x;1
 global.weight.label;kg;1
+global.endDate.label;Data końcowa;1
+global.startDate.label;Data początkowa;1
 navbar.about.label;O aplikacji;1
 navbar.applicationName.label;My Coach;1
 navbar.foodPrices.label;Ceny żywności;1
-navbar.reports.label;Raport;1
+navbar.reports.label;Raporty;1
 navbar.trainings.label;Treningi;1
 navbar.weights.label;Wagi;1
 page.about.content.first;Aplikacja służąca usprawnieniu twojego zdrowego lifestyle'u. Łatwo możesz notować swoje pomiary, ceny żywności, serie i powtórzenia ćwiczeń...możesz nawet składac w aplikacji raporty!;1
-page.about.content.second; Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na arturcz32@gmail.com. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;1
+page.about.content.second; Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na artur@simplecoding.pl. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;1
 page.about.title;My Coach;1
-page.prices.addPrice.tooltip;Dodaj cenę;1
-page.prices.addProduct.tooltip;Dodaj produkt;1
-page.prices.addShoppingList.tooltip;Dodaj listę zakupów;1
+page.prices.add.price.tooltip;Dodaj cenę;1
+page.prices.add.product.tooltip;Dodaj produkt;1
+page.prices.add.shoppingList.tooltip;Dodaj listę zakupów;1
 page.prices.avgPrice.label;Średnia cena:;1
 page.prices.day.label;Dzień;1
-page.prices.deletePrices.tooltip;Usuń ceny;1
-page.prices.deleteProduct.tooltip;Usuń produkt;1
-page.prices.editPrices.tooltip;Edytuj ceny;1
-page.prices.editProduct.tooltip;Edytuj produkt;1
+page.prices.delete.price.tooltip;Usuń cenę;1
+page.prices.delete.prices.tooltip;Usuń ceny;1
+page.prices.delete.product.tooltip;Usuń produkt;1
+page.prices.edit.prices.tooltip;Edytuj ceny;1
+page.prices.edit.product.tooltip;Edytuj produkt;1
 page.prices.list.noData.click.info;Dodaj swój pierwszy produkt;1
 page.prices.list.noData.info;Obecnie nie posiadasz żadnych produktów;1
-page.prices.modal.add.addPrice.title;Dodaj cenę;1
-page.prices.modal.add.addProduct.tite;Dodaj produkt;1
+page.prices.modal.add.price.title;Dodaj cenę;1
+page.prices.modal.add.product.title;Dodaj produkt;1
 page.prices.modal.add.date.label;Data;1
 page.prices.modal.add.image.label;Zdjęcie;1
 page.prices.modal.add.place.label;Miejsce;1
 page.prices.modal.add.price.label;Cena;1
-page.prices.modal.add.productName.label;Nazwa produktu;1
+page.prices.modal.add.name.label;Nazwa produktu;1
 page.prices.modal.add.quantity.label;Ilość;1
 page.prices.modal.add.selectImage.label;Wybierz zdjęcie;1
 page.prices.modal.add.shoppingList.title;Lista zakupów;1
-page.prices.modal.deleteProduct.content;Czy na pewno chcesz usunac ten produkt?;1
+page.prices.modal.delete.product.content;Jesteś pewien, że chcesz usunac ten produkt?;1
 page.prices.modal.edit.title;Edytuj produkt;1
 page.prices.place.label;Miejsce;1
 page.prices.price.label;Cena;1
 page.prices.product.label;Produkt;1
-page.prices.productPrices.noData.click.info;Dodaj pierwszą cenę;1
-page.prices.productPrices.noData.info;Obecnie nie posiadasz żadnych cen;1
+page.prices.noData.click.info;Dodaj pierwszą cenę;1
+page.prices.noData.info;Obecnie nie posiadasz żadnych cen;1
 page.prices.quantity.label;Ilość;1
 page.reports.add.tooltip;Dodaj raport;1
 page.reports.card.title;Raport;1
@@ -109,56 +112,55 @@ page.reports.list.noData.click.info;Dodaj swój pierwszy raport;1
 page.reports.list.noData.info;Obecnie nie posiadasz żadnych raportów;1
 page.reports.loadFirst.tooltip;Wczytaj najpierw raport!;1
 page.reports.modal.add.title;Dodaj raport;1
-page.reports.modal.delete.content;Czy na pewno chcesz usunac ten raport?;1
-page.reports.modal.endDate.label;Data końcowa;1
+page.reports.modal.delete.content;Jesteś pewien, że chcesz usunac ten raport?;1
 page.reports.modal.reportContent.label;Treść raportu;1
-page.reports.modal.startDate.label;Data początkowa;1
-page.trainings.addCycle.tooltip;Dodaj cykl;1
-page.trainings.addExercises.tooltip;Dodaj ćwiczenia;1
-page.trainings.addTraining.tooltip;Dodaj trening;1
+page.trainings.add.cycle.tooltip;Dodaj cykl;1
+page.trainings.add.exercises.tooltip;Dodaj ćwiczenia;1
+page.trainings.add.training.tooltip;Dodaj trening;1
 page.trainings.comment.label;Komentarz;1
 page.trainings.cycle.card.title;Cykl;1
 page.trainings.cycle.current;Obecny;1
-page.trainings.cycle.delete.tooltip;Usuń cykl;1
-page.trainings.cycle.edit.tooltip;Edytuj cykl;1
 page.trainings.cycle.finishAll.tooltip;Musisz najpierw zakończyć wszystkie cykle!;1
+page.trainings.cycle.finished;Skończony;1
 page.trainings.cycle.notActive.tooltip;Musisz posiadać aktywny cykl!;1
 page.trainings.cycle.isFinished;Cykl jest zakończony;1
 page.trainings.cycle.list.noData.click.info;Dodaj swój pierwszy cykl;1
 page.trainings.cycle.list.noData.info;Obecnie nie posiadasz żadnych cykli;1
-page.trainings.deleteExercise.tooltip;Usuń ćwiczenie;1
-page.trainings.deleteTraining.tooltip;Usuń trening;1
-page.trainings.editExercise.tooltip;Edytuj ćwiczenie;1
-page.trainings.editTraining.tooltip;Edytuj trening;1
+page.trainings.cycle.active.noData.click.info;Dodaj swój aktywny cykl;1
+page.trainings.cycle.active.noData.info;Obecnie nie posiadasz aktywnego cyklu;1
+page.trainings.delete.cycle.tooltip;Usuń cykl;1
+page.trainings.delete.exercise.tooltip;Usuń ćwiczenie;1
+page.trainings.delete.training.tooltip;Usuń trening;1
+page.trainings.edit.exercise.tooltip;Edytuj ćwiczenie;1
+page.trainings.edit.cycle.tooltip;Edytuj cykl;1
+page.trainings.edit.training.tooltip;Edytuj trening;1
 page.trainings.exercise.label;Ćwiczenie;1
 page.trainings.exerciseDesc.label;Opis;1
-page.trainings.editCycle.tooltip;Edytuj cykl;1
 page.trainings.loadFirst.tooltip;Wczytaj najpierw cykl!;1
-page.trainings.modal.addSet.label;Dodaj set;1
-page.trainings.modal.addCycle.exercise.name.label;Nazwa ćwiczenia;1
-page.trainings.modal.addCycle.exercise.name.label;Opis (opcjonalny);1
-page.trainings.modal.addCycle.startDate.label;Data początkowa;1
-page.trainings.modal.addCycle.title;Dodaj cykl;1
-page.trainings.modal.addExercises.title;Dodaj ćwiczenia;1
-page.trainings.modal.addExercise.label;Dodaj ćwiczenie;1
-page.trainings.modal.addSeries.label;Dodaj serię;1
-page.trainings.modal.addTraining.title;Dodaj trening;1
-page.trainings.modal.addTraining.trainingDate.label;Data treningu;1
-page.trainings.modal.deleteCycle.content;Czy na pewno chcesz usunąć ten cykl?;1
-page.trainings.modal.deleteExercise.title;Usuń ćwiczenie;1
-page.trainings.modal.deleteExercise.content;Jesteś pewien, że chcesz usunąć to ćwiczenie?;1
-page.trainings.modal.deleteSeries.tooltip;Usuń serie;1
-page.trainings.modal.deleteSet.tooltip;Usuń set;1
-page.trainings.modal.deleteTraining.title;Usuń trening;1
-page.trainings.modal.deleteTraining.content;Jesteś pewien, że chcesz usunąć ten trening?;1
-page.trainings.modal.editExercise.title;Edytuj ćwiczenie;1
-page.trainings.modal.editTraining.title;Edytuj trening;1
+page.trainings.modal.add.set.label;Dodaj set;1
+page.trainings.modal.add.cycle.exercise.name.label;Nazwa ćwiczenia;1
+page.trainings.modal.add.cycle.exercise.name.label;Opis (opcjonalny);1
+page.trainings.modal.add.cycle.title;Dodaj cykl;1
+page.trainings.modal.add.exercises.title;Dodaj ćwiczenia;1
+page.trainings.modal.add.exercise.label;Dodaj ćwiczenie;1
+page.trainings.modal.add.series.label;Dodaj serię;1
+page.trainings.modal.add.training.title;Dodaj trening;1
+page.trainings.modal.add.training.trainingDate.label;Data treningu;1
+page.trainings.modal.delete.cycle.content;Jesteś pewien, że chcesz usunąć ten cykl?;1
+page.trainings.modal.delete.exercise.title;Usuń ćwiczenie;1
+page.trainings.modal.delete.exercise.content;Jesteś pewien, że chcesz usunąć to ćwiczenie?;1
+page.trainings.modal.delete.series.tooltip;Usuń serie;1
+page.trainings.modal.delete.set.tooltip;Usuń set;1
+page.trainings.modal.delete.training.title;Usuń trening;1
+page.trainings.modal.delete.training.content;Jesteś pewien, że chcesz usunąć ten trening?;1
+page.trainings.modal.edit.exercise.title;Edytuj ćwiczenie;1
+page.trainings.modal.edit.training.title;Edytuj trening;1
 page.trainings.repeats.label;Powtórzenia;1
 page.trainings.set.label;Set;1
 page.trainings.set.noExercises.info;Obecnie nie posiadasz żadnych ćwiczeń w tym secie;1
 page.trainings.set.noExercises.click.info;Dodaj pierwsze ćwiczenie!;1
 page.weights.add.tooltip;Dodaj pomiar;1
-page.weights.chart.point.label;Waga [kg]: ;1
+page.weights.chart.point.label;Waga [kg];1
 page.weights.delete.tooltip;Usuń pomiary;1
 page.weights.edit.tooltip;Edytuj pomiary;1
 page.weights.list.noData.click.info;Dodaj swój pierwszy pomiar;1

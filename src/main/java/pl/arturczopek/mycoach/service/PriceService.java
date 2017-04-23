@@ -6,7 +6,6 @@ import pl.arturczopek.mycoach.model.add.NewPrice;
 import pl.arturczopek.mycoach.model.add.ShoppingList;
 import pl.arturczopek.mycoach.model.database.Price;
 import pl.arturczopek.mycoach.repository.PriceRepository;
-import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import java.util.List;
 
@@ -19,13 +18,11 @@ import java.util.List;
 public class PriceService {
 
     private PriceRepository priceRepository;
-    private ProductRepository productRepository;
     private DateService dateService;
 
     @Autowired
-    public PriceService(PriceRepository priceRepository, ProductRepository productRepository, DateService dateService) {
+    public PriceService(PriceRepository priceRepository,  DateService dateService) {
         this.priceRepository = priceRepository;
-        this.productRepository = productRepository;
         this.dateService = dateService;
     }
 
@@ -55,21 +52,14 @@ public class PriceService {
         shoppingList.getPrices().stream()
                 .map(position -> new NewPrice(position.getProductId(), position.getValue(), position.getQuantity(),
                         shoppingList.getPlace(), shoppingList.getShoppingDate()))
-                .forEach(price -> this.addPrice(price));
+                .forEach((NewPrice price) -> this.addPrice(price));
     }
 
     public void deletePrices(List<Price> prices) {
-        prices.forEach(price -> priceRepository.delete(price.getPriceId()));
+        prices.forEach((Price price) -> priceRepository.delete(price.getPriceId()));
     }
 
     public void updatePrices(List<Price> prices) {
-        prices.forEach(price -> {
-            Price priceToEdit = priceRepository.findOne(price.getPriceId());
-            priceToEdit.setQuantity(price.getQuantity());
-            priceToEdit.setPriceDate(price.getPriceDate());
-            priceToEdit.setPlace(price.getPlace());
-            priceToEdit.setValue(price.getValue());
-            priceRepository.save(priceToEdit);
-        });
+        prices.forEach((Price price) -> priceRepository.save(price));
     }
 }

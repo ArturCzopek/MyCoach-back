@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE, reason = "Operation failed. Probably ile is too big")
     @ExceptionHandler(IOException.class)
-    @ResponseBody public ErrorMessage IOExceptionHandler(HttpServletRequest req, Exception ex) {
+    @ResponseBody public ErrorMessage ioExceptionHandler(HttpServletRequest req, Exception ex) {
         String message = "Operation failed. Probably ile is too big";
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
         return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());

@@ -55,8 +55,8 @@ public class Product implements Serializable {
 
         if (!prices.isEmpty()) {
             for (Price price : prices) {
-                pricesSum = pricesSum.add(new BigDecimal(price.getValue()));
-                quantitySum = quantitySum.add(new BigDecimal(price.getQuantity()));
+                pricesSum = pricesSum.add(BigDecimal.valueOf(price.getValue()));
+                quantitySum = quantitySum.add(BigDecimal.valueOf(price.getQuantity()));
             }
         }
 

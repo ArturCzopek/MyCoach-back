@@ -68,11 +68,11 @@ public class WeightService {
         weightRepository.save(weight);
     }
 
-    public void updateWeights(List<Weight> weights) {
-        weights.forEach(weight -> weightRepository.save(weight));
+    public void deleteWeights(List<Weight> weights) {
+        weights.forEach((Weight weight) -> weightRepository.delete(weight.getWeightId()));
     }
 
-    public void deleteWeights(List<Weight> weights) {
-        weights.forEach(weight -> weightRepository.delete(weight.getWeightId()));
+    public void updateWeights(List<Weight> weights) {
+        weights.forEach((Weight weight) -> weightRepository.save(weight));
     }
 }
