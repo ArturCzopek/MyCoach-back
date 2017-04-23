@@ -68,12 +68,16 @@ global.startDate.label;Start date;2
 navbar.about.label;About;2
 navbar.applicationName.label;My Coach;2
 navbar.foodPrices.label;Food prices;2
+navbar.navigation.label;Navigation;2
 navbar.reports.label;Reports;2
 navbar.trainings.label;Trainings;2
 navbar.weights.label;Weights;2
 page.about.content.first;Application for improving your lifestyle. You can easily write down your measurements,food prices, exercises, repeats...you can event type your reports!;2
-page.about.content.second; if you have any problems or observations about app, feel free to mail me artur@simplecoding.pl. If you want to improve my app, you can send me pull request;2
-page.about.title;My Coach;2
+page.about.content.second; if you have any problems or observations about app, feel free to contact with me by channels below. If you want to improve my app, you can send me pull request;2
+page.about.title;My Coach - about;2
+page.notFound.content;Wrong address buddy...shit happens...but you can convert;2
+page.notFound.link;Go to main page;2
+page.notFound.title;Ooops!;2
 page.prices.add.price.tooltip;Add price;2
 page.prices.add.product.tooltip;Add product;2
 page.prices.add.shoppingList.tooltip;Add shopping list;2

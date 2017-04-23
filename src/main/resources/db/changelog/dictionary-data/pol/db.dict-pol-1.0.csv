@@ -68,12 +68,16 @@ global.startDate.label;Data początkowa;1
 navbar.about.label;O aplikacji;1
 navbar.applicationName.label;My Coach;1
 navbar.foodPrices.label;Ceny żywności;1
+navbar.navigation.label;Nawigacja;1
 navbar.reports.label;Raporty;1
 navbar.trainings.label;Treningi;1
 navbar.weights.label;Wagi;1
 page.about.content.first;Aplikacja służąca usprawnieniu twojego zdrowego lifestyle'u. Łatwo możesz notować swoje pomiary, ceny żywności, serie i powtórzenia ćwiczeń...możesz nawet składac w aplikacji raporty!;1
-page.about.content.second; Jeżeli widzisz rzeczy, które można usprawnić, pisz śmiało na artur@simplecoding.pl. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na githubie;1
-page.about.title;My Coach;1
+page.about.content.second; Jeżeli widzisz rzeczy, które można usprawnić, zapraszam do kontaktu poprzez dowolny z kanałów zamieszczonych poniżej. Jeżeli chcesz usprawnić aplikację, zapraszam do pull requestów na GitHubie;1
+page.about.title;My Coach - o aplikacji;1
+page.notFound.content;Pomyliłeś adresy kolego...każdemu się zdarza. Możesz jeszcze się nawrócić.;1
+page.notFound.link;Przejdź do głównej strony;1
+page.notFound.title;Ooops!;1
 page.prices.add.price.tooltip;Dodaj cenę;1
 page.prices.add.product.tooltip;Dodaj produkt;1
 page.prices.add.shoppingList.tooltip;Dodaj listę zakupów;1
