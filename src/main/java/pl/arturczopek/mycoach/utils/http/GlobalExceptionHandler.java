@@ -5,10 +5,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityNotFoundException;
@@ -24,45 +24,28 @@ import java.io.IOException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Not found page")
     @ExceptionHandler(Throwable.class)
-    @ResponseBody
-    ErrorMessage handleOtherExceptions(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Not found page");
+    @ResponseBody public ResponseEntity<ErrorMessage>  handleOtherExceptions(HttpServletRequest req, Exception ex) {
+        return getErrorMessage(req, ex, HttpStatus.NOT_FOUND);
     }
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Not found object")
     @ExceptionHandler({EntityNotFoundException.class, EmptyResultDataAccessException.class })
-    @ResponseBody ErrorMessage notFoundEntityHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Not found object");
+    @ResponseBody public ResponseEntity<ErrorMessage>  notFoundEntityHandler(HttpServletRequest req, Exception ex) {
+        return getErrorMessage(req, ex, HttpStatus.NOT_FOUND);
     }
 
-    @ResponseStatus(value= HttpStatus.NOT_ACCEPTABLE, reason = "Operation failed. Probably object already exists")
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseBody public ErrorMessage dataIntegrityViolationHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Operation failed. Probably object already exists");
-    }
-
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE, reason = "Operation failed. Probably file is too big")
-    @ExceptionHandler(IOException.class)
-    @ResponseBody public ErrorMessage ioExceptionHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Operation failed. Probably file is too big");
-    }
-
-    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Operation failed. Probably params are wrong")
     @ExceptionHandler(InvalidAttributeValueException.class)
-    @ResponseBody public ErrorMessage invalidAttributeValueExceptionHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Operation failed. Probably params are wrong");
+    @ResponseBody public ResponseEntity<ErrorMessage> invalidAttributeValueExceptionHandler(HttpServletRequest req, Exception ex) {
+        return getErrorMessage(req, ex, HttpStatus.CONFLICT);
     }
 
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE, reason = "Operation failed. Probably params are duplicated")
-    @ExceptionHandler(DuplicateKeyException.class)
-    @ResponseBody public ErrorMessage duplicateKeyExceptionHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, "Operation failed. Probably params are duplicated");
+    @ExceptionHandler({DuplicateKeyException.class, IOException.class, DataIntegrityViolationException.class})
+    @ResponseBody public ResponseEntity<ErrorMessage> duplicateKeyExceptionHandler(HttpServletRequest req, Exception ex) {
+        return getErrorMessage(req, ex, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    private ErrorMessage getErrorMessage(HttpServletRequest req, Exception ex, String message) {
+    private ResponseEntity<ErrorMessage> getErrorMessage(HttpServletRequest req, Exception ex, HttpStatus httpStatus) {
         log.error(req.getMethod() + " " + req.getRequestURL().toString(), ex);
-        return new ErrorMessage(message, req.getRequestURL().toString(), ex.toString());
+        return ResponseEntity.status(httpStatus).body(new ErrorMessage(ex.getMessage(), req.getRequestURL().toString(), ex.toString()));
     }
 }

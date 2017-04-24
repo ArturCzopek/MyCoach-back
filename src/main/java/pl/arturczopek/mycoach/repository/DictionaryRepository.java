@@ -13,4 +13,6 @@ import java.util.List;
 public interface DictionaryRepository extends CrudRepository<DictionaryEntry, Long> {
 
     List<DictionaryEntry> findAllByLanguage(Language language);
+
+    DictionaryEntry findOneByLanguageAndAndKey(Language language, String key);
 }

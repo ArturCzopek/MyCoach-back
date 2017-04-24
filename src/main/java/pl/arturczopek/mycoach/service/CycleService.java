@@ -31,9 +31,12 @@ public class CycleService {
     private TrainingRepository trainingRepository;
     private SeriesRepository seriesRepository;
     private SetRepository setRepository;
+    private DictionaryService dictionaryService;
 
     @Autowired
-    public CycleService(CycleRepository cycleRepository, DateService dateService, ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository, TrainingRepository trainingRepository, SeriesRepository seriesRepository, SetRepository setRepository) {
+    public CycleService(CycleRepository cycleRepository, DateService dateService, ExerciseSessionRepository exerciseSessionRepository,
+                        ExerciseRepository exerciseRepository, TrainingRepository trainingRepository, SeriesRepository seriesRepository,
+                        SetRepository setRepository, DictionaryService dictionaryService) {
         this.cycleRepository = cycleRepository;
         this.dateService = dateService;
         this.exerciseSessionRepository = exerciseSessionRepository;
@@ -41,6 +44,7 @@ public class CycleService {
         this.trainingRepository = trainingRepository;
         this.seriesRepository = seriesRepository;
         this.setRepository = setRepository;
+        this.dictionaryService = dictionaryService;
     }
 
     public Cycle getActiveCycle() {
@@ -65,6 +69,19 @@ public class CycleService {
 
     @Transactional
     public void addCycle(NewCycle newCycle) throws InvalidAttributeValueException {
+
+        if (!isNewCycleDateValid(newCycle)) {
+            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message").getValue());
+        }
+
+        if (!areNewSetsNamesValid(newCycle.getSets())) {
+            throw new DuplicateKeyException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message").getValue());
+        }
+
+        if (!canCycleBeActive()) {
+            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+        }
+
         Cycle cycle = new Cycle();
 
         if (newCycle.getStartDate() != null) {
@@ -74,14 +91,6 @@ public class CycleService {
         }
 
         cycle.setEndDate(null);
-
-        if (!isNewCycleDateValid(cycle)) {
-            throw new InvalidAttributeValueException("Start date must be later than last end date");
-        }
-
-        if (!areNewSetsNamesValid(newCycle.getSets())) {
-            throw new DuplicateKeyException("Sets must have different names");
-        }
 
         cycleRepository.save(cycle);
 
@@ -96,18 +105,6 @@ public class CycleService {
 
         cycle.setSets(sets);
         cycleRepository.save(cycle);
-    }
-
-    private boolean areNewSetsNamesValid(List<NewSet> sets) {
-        for (int i = 0; i < sets.size(); i++) {
-            for(int j = i + 1; j < sets.size(); j++) {
-                if (sets.get(j).getSetName().equalsIgnoreCase(sets.get(i).getSetName())) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     public void deleteCycle(Cycle cycle) {
@@ -129,7 +126,17 @@ public class CycleService {
         cycleRepository.delete(cycle.getCycleId());
     }
 
-    public void updateCycle(Cycle cycle) {
+    public void updateCycle(Cycle cycle) throws InvalidAttributeValueException {
+
+        if (!isCycleToUpdateDateValid(cycle)) {
+            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
+        }
+
+        // if we want to active cycle we need to make sure if there is any active cycle
+        if (!cycle.isFinished() && !canCycleBeActive()) {
+            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+        }
+
         Cycle cycleToEdit = cycleRepository.findOne(cycle.getCycleId());
         cycleToEdit.setStartDate(cycle.getStartDate());
 
@@ -146,18 +153,84 @@ public class CycleService {
         cycleRepository.save(cycleToEdit);
     }
 
-    private boolean isNewCycleDateValid(Cycle cycle) {
+    private boolean isNewCycleDateValid(NewCycle newCycle) {
         Cycle cycleFromDb = cycleRepository.findFirstByOrderByEndDateDesc();
 
-        if (cycle.getStartDate().before(cycleFromDb.getEndDate())) {
+        if (newCycle.getStartDate().before(cycleFromDb.getEndDate())) {
             return false;
         }
 
-        LocalDate cycleStartDate = cycle.getStartDate().toLocalDate();
+        LocalDate cycleStartDate = newCycle.getStartDate().toLocalDate();
         LocalDate cycleFromDbEndDate = cycleFromDb.getEndDate().toLocalDate();
 
         if (cycleStartDate.equals(cycleFromDbEndDate)) {
             return false;
+        }
+
+        return true;
+    }
+
+    private boolean canCycleBeActive() {
+        Cycle currentActiveCycle = getActiveCycle();
+
+        if (currentActiveCycle != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isCycleToUpdateDateValid(Cycle updateCycle) {
+
+        Cycle currentCycle = cycleRepository.findOne(updateCycle.getCycleId());
+
+        Cycle currentPreviousCycle = cycleRepository.findFirstByEndDateBeforeOrderByEndDateDesc(currentCycle.getStartDate());
+        Cycle currentNextCycle = null;
+
+        if (currentCycle.getEndDate() != null) {
+            currentNextCycle = cycleRepository.findFirstByStartDateAfterOrderByStartDate(currentCycle.getEndDate());
+        }
+
+        // it's first cycle, we can set dates as we want
+        if (currentPreviousCycle == null && currentNextCycle == null) {
+            return true;
+        }
+
+        // new next/previous cycles should be the same, otherwise we would have covering dates or swap cycles, but for now it
+        // is not handled
+        Cycle newPreviousCycle = cycleRepository.findFirstByEndDateBeforeOrderByEndDateDesc(updateCycle.getStartDate());
+
+        if ((currentPreviousCycle == null && newPreviousCycle != null) ||
+            (currentPreviousCycle != null && newPreviousCycle == null)
+                ) {
+            return false;
+        }
+
+        // both are not null and has different ids
+        if (currentPreviousCycle != null && currentPreviousCycle.getCycleId() != newPreviousCycle.getCycleId()) {
+            return false;
+        }
+
+        Cycle newNextCycle = null;
+
+        if (updateCycle.getEndDate() != null) {
+            newNextCycle = cycleRepository.findFirstByStartDateAfterOrderByStartDate(updateCycle.getEndDate());
+        }
+
+        if (currentNextCycle != null && newNextCycle != null && currentNextCycle.getCycleId() != newNextCycle.getCycleId()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean areNewSetsNamesValid(List<NewSet> sets) {
+        for (int i = 0; i < sets.size(); i++) {
+            for (int j = i + 1; j < sets.size(); j++) {
+                if (sets.get(j).getSetName().equalsIgnoreCase(sets.get(i).getSetName())) {
+                    return false;
+                }
+            }
         }
 
         return true;

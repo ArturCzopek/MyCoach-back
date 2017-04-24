@@ -45,4 +45,9 @@ public class DictionaryService {
 
         return dictionary;
     }
+
+    public DictionaryEntry translate(String key) {
+        UserSetting userSetting = userSettingRepository.findOne(1l);
+        return dictionaryRepository.findOneByLanguageAndAndKey(userSetting.getLanguage(), key);
+    }
 }

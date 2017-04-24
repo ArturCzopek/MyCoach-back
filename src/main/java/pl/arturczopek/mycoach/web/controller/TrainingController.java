@@ -104,7 +104,7 @@ public class TrainingController {
 
     @PutMapping("cycle/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated cycle")
-    public void updateCycle(@RequestBody Cycle cycle) {
+    public void updateCycle(@RequestBody Cycle cycle) throws InvalidAttributeValueException {
         cycleService.updateCycle(cycle);
     }
 
