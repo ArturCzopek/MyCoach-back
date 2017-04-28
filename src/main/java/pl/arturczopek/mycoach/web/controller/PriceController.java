@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.model.add.NewPrice;
 import pl.arturczopek.mycoach.model.add.NewProduct;
 import pl.arturczopek.mycoach.model.add.ShoppingList;
@@ -45,7 +46,7 @@ public class PriceController {
 
     @PostMapping("product/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added product")
-    public void addProduct(@RequestBody NewProduct product) {
+    public void addProduct(@RequestBody NewProduct product) throws DuplicatedNameException {
         productService.addProduct(product);
     }
 
@@ -81,7 +82,7 @@ public class PriceController {
 
     @PutMapping("/product/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated product")
-    public void updateProduct(@RequestBody Product product) {
+    public void updateProduct(@RequestBody Product product) throws DuplicatedNameException {
         productService.updateProduct(product);
     }
 }

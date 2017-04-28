@@ -1,9 +1,12 @@
 package pl.arturczopek.mycoach.web.controller;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.arturczopek.mycoach.exception.InvalidImageExtension;
 import pl.arturczopek.mycoach.service.ProductService;
 
 import javax.servlet.ServletOutputStream;
@@ -16,12 +19,14 @@ import java.io.IOException;
  */
 
 @Slf4j
+@Setter
 @RestController
 @RequestMapping("/images")
 public class ImagesController {
 
     private ProductService productService;
 
+    @Autowired
     public ImagesController(ProductService productService) {
         this.productService = productService;
     }
@@ -39,7 +44,7 @@ public class ImagesController {
     }
 
     @PostMapping("/product/upload")
-    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) throws IOException {
+    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) throws IOException, InvalidImageExtension {
         Long updatedProductId = productService.uploadPhoto(file, productId);
         return ResponseEntity.ok(updatedProductId);
     }

@@ -106,6 +106,8 @@ page.prices.modal.edit.title;Edit product;2
 page.prices.place.label;Place;2
 page.prices.price.label;Price;2
 page.prices.product.label;Product;2
+page.prices.product.error.duplicateName.message;Product with the same name already exist!;2
+page.prices.product.error.wrongImageExtension.message;Images can have only .jpeg extension!;2
 page.prices.noData.click.info;Add your first price;2
 page.prices.noData.info;Currently, you don't have any price;2
 page.prices.quantity.label;Quantity;2

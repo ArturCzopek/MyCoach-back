@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import pl.arturczopek.mycoach.model.database.Product;
 
 import java.util.List;
@@ -15,8 +16,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     @Override
     List<Product> findAll();
 
-    @Query("select p from Product p where p.productName not like ?1 and p.productName not like ?2 order by p.productName desc")
-    List<Product> findValidProducts(String tmpProduct, String editedProduct);
+    @Query("select p from Product p where UPPER(p.productName) not like upper(:tmpProduct) and upper(p.productName) not like upper(:editedProduct) order by p.productName desc")
+    List<Product> findValidProducts(@Param("tmpProduct") String tmpProduct, @Param("editedProduct") String editedProduct);
 
-    Product findOneByProductName(String productName);
+    Product findOneByProductNameIgnoreCase(String productName);
+
+    Product findOneByProductNameIgnoreCaseAndProductIdNot(String productName, long productId);
 }

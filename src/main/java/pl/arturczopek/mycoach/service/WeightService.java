@@ -93,22 +93,14 @@ public class WeightService {
     }
 
     private boolean isUpdateMeasurementDateValid(Date measurementDate, long weightId) {
-        Weight otherWeightInTheSameDay = weightRepository.findOneByMeasurementDateAndWeightIdNot(measurementDate, weightId);
+        Weight duplicatedWeight = weightRepository.findOneByMeasurementDateAndWeightIdNot(measurementDate, weightId);
 
-        if (otherWeightInTheSameDay != null) {
-            return false;
-        }
-
-        return true;
+        return duplicatedWeight == null;
     }
 
     private boolean isNewMeasurementDateValid(Date measurementDate) {
-        Weight otherWeightInTheSameDay = weightRepository.findOneByMeasurementDate(measurementDate);
+        Weight duplicatedWeight = weightRepository.findOneByMeasurementDate(measurementDate);
 
-        if (otherWeightInTheSameDay != null) {
-            return false;
-        }
-
-        return true;
+        return duplicatedWeight == null;
     }
 }

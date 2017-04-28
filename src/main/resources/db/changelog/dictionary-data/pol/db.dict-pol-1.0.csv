@@ -106,6 +106,8 @@ page.prices.modal.edit.title;Edytuj produkt;1
 page.prices.place.label;Miejsce;1
 page.prices.price.label;Cena;1
 page.prices.product.label;Produkt;1
+page.prices.product.error.duplicateName.message;Już istnieje produkt o takiej nazwie!;1
+page.prices.product.error.wrongImageExtension.message;Zdjęcia mogą być tylko w formacie .jpeg!;1
 page.prices.noData.click.info;Dodaj pierwszą cenę;1
 page.prices.noData.info;Obecnie nie posiadasz żadnych cen;1
 page.prices.quantity.label;Ilość;1

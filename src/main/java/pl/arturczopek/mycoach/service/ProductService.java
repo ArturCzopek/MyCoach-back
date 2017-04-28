@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.arturczopek.mycoach.exception.DuplicatedNameException;
+import pl.arturczopek.mycoach.exception.InvalidImageExtension;
 import pl.arturczopek.mycoach.model.add.NewProduct;
 import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.repository.PriceRepository;
@@ -42,10 +44,13 @@ public class ProductService {
 
     private PriceRepository priceRepository;
 
+    private DictionaryService dictionaryService;
+
     @Autowired
-    public ProductService(ProductRepository productRepository, PriceRepository priceRepository) {
+    public ProductService(ProductRepository productRepository, PriceRepository priceRepository, DictionaryService dictionaryService) {
         this.productRepository = productRepository;
         this.priceRepository = priceRepository;
+        this.dictionaryService = dictionaryService;
     }
 
     public List<Product> getProductPreviews() {
@@ -54,7 +59,12 @@ public class ProductService {
         return products;
     }
 
-    public void addProduct(NewProduct productToAdd) {
+    public void addProduct(NewProduct productToAdd) throws DuplicatedNameException {
+
+        if (!isNewProductNameValid(productToAdd.getProductName())) {
+            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message").getValue());
+        }
+
         Product product;
 
         // It is possible that product has already id because of earlier uploading photo
@@ -70,7 +80,11 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public Long uploadPhoto(MultipartFile file, long productId) throws IOException {
+    public Long uploadPhoto(MultipartFile file, long productId) throws IOException, InvalidImageExtension {
+        if (!("image/" + imageExtension).equalsIgnoreCase(file.getContentType())) {
+            throw new InvalidImageExtension(dictionaryService.translate("page.prices.product.error.wrongImageExtension.message").getValue());
+        }
+
         final ByteArrayOutputStream productPhotoOutputStream = new ByteArrayOutputStream();
 
         Thumbnails.of(new ByteArrayInputStream(file.getBytes()))
@@ -97,7 +111,7 @@ public class ProductService {
     }
 
     private Product getProperSpecialProductWithImage(String name, Product product) {
-        Product tmpProduct = productRepository.findOneByProductName(name);
+        Product tmpProduct = productRepository.findOneByProductNameIgnoreCase(name);
         Product productToReturn;
 
         if (tmpProduct != null) {
@@ -137,13 +151,18 @@ public class ProductService {
         productRepository.delete(product.getProductId());
     }
 
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product) throws DuplicatedNameException {
+
+        if (!isUpdateProductNameValid(product.getProductName(), product.getProductId())) {
+            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message").getValue());
+        }
+
         Product productToUpdate = productRepository.findOne(product.getProductId());
         productToUpdate.setProductName(product.getProductName());
 
         String editProductName = editedProductSignSuffix + product.getProductId();
 
-        Product productWithUpdatedImage = productRepository.findOneByProductName(editProductName);
+        Product productWithUpdatedImage = productRepository.findOneByProductNameIgnoreCase(editProductName);
 
         if (productWithUpdatedImage != null) {
             productToUpdate.setScreen(productWithUpdatedImage.getScreen());
@@ -151,5 +170,17 @@ public class ProductService {
         }
 
         productRepository.save(productToUpdate);
+    }
+
+    public boolean isNewProductNameValid(String productName) {
+        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCase(productName.trim());
+
+        return duplicatedProduct == null;
+    }
+
+    public boolean isUpdateProductNameValid(String productName, long productId) {
+        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCaseAndProductIdNot(productName.trim(), productId);
+
+        return duplicatedProduct == null;
     }
 }
