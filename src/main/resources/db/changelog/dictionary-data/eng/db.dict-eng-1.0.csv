@@ -113,6 +113,7 @@ page.reports.add.tooltip;Add report;2
 page.reports.card.title;Report;2
 page.reports.delete.tooltip;Delete report;2
 page.reports.edit.tooltip;Edit report;2
+page.reports.error.invalidDate.message;Report dates cannot be within other reports!;2
 page.reports.list.noData.click.info;Add your first report;2
 page.reports.list.noData.info;Currently, you don't have any report;2
 page.reports.loadFirst.tooltip;Load report first!;2

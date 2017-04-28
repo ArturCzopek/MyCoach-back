@@ -113,6 +113,7 @@ page.reports.add.tooltip;Dodaj raport;1
 page.reports.card.title;Raport;1
 page.reports.delete.tooltip;Usuń raport;1
 page.reports.edit.tooltip;Edytuj raport;1
+page.reports.error.invalidDate.message;Daty raportu nie mogą zawierać się w datach innych raportów!;1
 page.reports.list.noData.click.info;Dodaj swój pierwszy raport;1
 page.reports.list.noData.info;Obecnie nie posiadasz żadnych raportów;1
 page.reports.loadFirst.tooltip;Wczytaj najpierw raport!;1

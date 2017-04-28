@@ -225,7 +225,7 @@ public class TrainingService {
         return trainingIndex;
     }
 
-    // Long - because trainingId can be nullable (in case if it's a new exercise)
+    // Long - because trainingId can be nullable (in case if it's a new training)
     private boolean isTrainingDateCorrect(Date trainingDate, Long setId, Long trainingId) {
         Cycle cycle = cycleRepository.findOneBySetsContains(
                 setRepository.findOne(setId)

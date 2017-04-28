@@ -3,6 +3,7 @@ package pl.arturczopek.mycoach.repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.arturczopek.mycoach.model.database.Report;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -16,4 +17,8 @@ public interface ReportRepository extends PagingAndSortingRepository<Report, Lon
     List<Report> findAll();
 
     List<Report> findAllByOrderByEndDate();
+
+    Report findFirstByEndDateBeforeAndReportIdNotOrderByEndDateDesc(Date date, long reportId);
+
+    Report findFirstByStartDateAfterAndReportIdNotOrderByStartDate(Date date, long reportId);
 }
