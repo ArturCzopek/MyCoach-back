@@ -143,6 +143,7 @@ page.trainings.delete.training.tooltip;Delete training;2
 page.trainings.edit.exercise.tooltip;Edit exercise;2
 page.trainings.edit.cycle.tooltip;Edit cycle;2
 page.trainings.edit.training.tooltip;Edit training;2
+page.trainings.exercise.error.invalidExerciseName.message;Exercise name must be unique within set!;2
 page.trainings.exercise.label;Exercise;2
 page.trainings.exerciseDesc.label;Description;2
 page.trainings.loadFirst.tooltip;Load cycle first!;2
@@ -168,6 +169,7 @@ page.trainings.repeats.label;Repeats;2
 page.trainings.set.label;Set;2
 page.trainings.set.noExercises.info;Currently, you don't have any exercises in this set;2
 page.trainings.set.noExercises.click.info;Add your first exercise!;2
+page.trainings.training.error.invalidDate.message;Training date must be within cycle dates and must be unique!;2
 page.weights.add.tooltip;Add measurement;2
 page.weights.chart.point.label;Weight [kg];2
 page.weights.delete.tooltip;Delete measurements;2

@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.model.add.NewSeries;
 import pl.arturczopek.mycoach.model.add.NewTraining;
 import pl.arturczopek.mycoach.model.database.*;
@@ -9,6 +10,7 @@ import pl.arturczopek.mycoach.model.request.dto.ExerciseForTrainingPreview;
 import pl.arturczopek.mycoach.repository.*;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -28,18 +30,32 @@ public class TrainingService {
     private SeriesRepository seriesRepository;
     private SetRepository setRepository;
     private TrainingRepository trainingRepository;
+    private CycleRepository cycleRepository;
+    private DictionaryService dictionaryService;
+
+    private final static long NEW_TRAINING_ID = -1;
 
     @Autowired
-    public TrainingService(ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository) {
+    public TrainingService(ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository,
+                           SeriesRepository seriesRepository, SetRepository setRepository,
+                           TrainingRepository trainingRepository, CycleRepository cycleRepository,
+                           DictionaryService dictionaryService) {
         this.exerciseSessionRepository = exerciseSessionRepository;
         this.exerciseRepository = exerciseRepository;
         this.seriesRepository = seriesRepository;
         this.setRepository = setRepository;
         this.trainingRepository = trainingRepository;
+        this.cycleRepository = cycleRepository;
+        this.dictionaryService = dictionaryService;
     }
 
     @Transactional
-    public void addTraining(NewTraining newTraining) {
+    public void addTraining(NewTraining newTraining) throws InvalidDateException {
+
+        if (!isTrainingDateCorrect(newTraining.getTrainingDate(), newTraining.getSetId(), null)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
+        }
+
         Training training = new Training();
         training.setSetId(newTraining.getSetId());
         training.setTrainingDate(newTraining.getTrainingDate());
@@ -128,7 +144,12 @@ public class TrainingService {
         trainingRepository.delete(training.getTrainingId());
     }
 
-    public void updateTraining(Training training, List<Exercise> exercises) {
+    public void updateTraining(Training training, List<Exercise> exercises) throws InvalidDateException {
+
+        if (!isTrainingDateCorrect(training.getTrainingDate(), training.getSetId(), training.getTrainingId())) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
+        }
+
         Training trainingToUpdate = trainingRepository.findOne(training.getTrainingId());
         trainingToUpdate.setTrainingDate(training.getTrainingDate());
         trainingRepository.save(training);
@@ -202,5 +223,37 @@ public class TrainingService {
             }
         }
         return trainingIndex;
+    }
+
+    // Long - because trainingId can be nullable (in case if it's a new exercise)
+    private boolean isTrainingDateCorrect(Date trainingDate, Long setId, Long trainingId) {
+        Cycle cycle = cycleRepository.findOneBySetsContains(
+                setRepository.findOne(setId)
+        );
+
+        if (cycle.getStartDate().after(trainingDate)) {
+            return false;
+        }
+
+        if (cycle.getEndDate() != null && cycle.getEndDate().before(trainingDate)) {
+            return false;
+        }
+
+        List<Training> trainingsInSet = setRepository.findOne(setId).getTrainings();
+
+        long validationTrainingId;
+
+        if (trainingId == null) {
+            validationTrainingId = NEW_TRAINING_ID;
+        } else {
+            validationTrainingId = trainingId;
+        }
+
+        return !trainingsInSet
+                .stream()
+                .anyMatch(
+                        trainingFromDb -> trainingFromDb.getTrainingDate().toLocalDate().equals(trainingDate.toLocalDate())
+                                && trainingFromDb.getTrainingId() != validationTrainingId
+                );
     }
 }

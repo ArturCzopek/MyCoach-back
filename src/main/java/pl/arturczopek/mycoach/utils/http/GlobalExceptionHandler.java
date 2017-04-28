@@ -1,16 +1,14 @@
 package pl.arturczopek.mycoach.utils.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.arturczopek.mycoach.exception.InvalidPropsException;
 
-import javax.management.InvalidAttributeValueException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -34,12 +32,7 @@ public class GlobalExceptionHandler {
         return getErrorMessage(req, ex, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(InvalidAttributeValueException.class)
-    @ResponseBody public ResponseEntity<ErrorMessage> invalidAttributeValueExceptionHandler(HttpServletRequest req, Exception ex) {
-        return getErrorMessage(req, ex, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler({DuplicateKeyException.class, IOException.class, DataIntegrityViolationException.class})
+    @ExceptionHandler({IOException.class, InvalidPropsException.class})
     @ResponseBody public ResponseEntity<ErrorMessage> duplicateKeyExceptionHandler(HttpServletRequest req, Exception ex) {
         return getErrorMessage(req, ex, HttpStatus.NOT_ACCEPTABLE);
     }

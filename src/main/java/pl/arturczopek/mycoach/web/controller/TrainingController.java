@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.arturczopek.mycoach.exception.DuplicatedNameException;
+import pl.arturczopek.mycoach.exception.InvalidDateException;
+import pl.arturczopek.mycoach.exception.InvalidPropsException;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewExercise;
 import pl.arturczopek.mycoach.model.add.NewTraining;
@@ -17,7 +20,6 @@ import pl.arturczopek.mycoach.service.CycleService;
 import pl.arturczopek.mycoach.service.ExerciseService;
 import pl.arturczopek.mycoach.service.TrainingService;
 
-import javax.management.InvalidAttributeValueException;
 import java.util.List;
 
 /**
@@ -68,19 +70,19 @@ public class TrainingController {
 
     @PostMapping("cycle/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added cycle")
-    public void addCycle(@RequestBody NewCycle cycle) throws InvalidAttributeValueException {
+    public void addCycle(@RequestBody NewCycle cycle) throws InvalidPropsException {
         cycleService.addCycle(cycle);
     }
 
     @PostMapping("exercise/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added exercises")
-    public void addExercise(@RequestBody List<NewExercise> exercises) {
+    public void addExercise(@RequestBody List<NewExercise> exercises) throws DuplicatedNameException {
         exerciseService.addExercises(exercises);
     }
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added training")
-    public void addTraining(@RequestBody NewTraining training) {
+    public void addTraining(@RequestBody NewTraining training) throws InvalidDateException {
         trainingService.addTraining(training);
     }
 
@@ -104,19 +106,19 @@ public class TrainingController {
 
     @PutMapping("cycle/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated cycle")
-    public void updateCycle(@RequestBody Cycle cycle) throws InvalidAttributeValueException {
+    public void updateCycle(@RequestBody Cycle cycle) throws InvalidPropsException {
         cycleService.updateCycle(cycle);
     }
 
     @PutMapping("exercise/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated exercise")
-    public void updateExercise(@RequestBody Exercise exercise) {
+    public void updateExercise(@RequestBody Exercise exercise) throws DuplicatedNameException {
         exerciseService.updateExercise(exercise);
     }
 
     @PutMapping("/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated training")
-    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit) {
+    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit) throws InvalidDateException {
         trainingService.updateTraining(exercisesWithTrainingToEdit.getTraining(), exercisesWithTrainingToEdit.getExercises());
     }
 }

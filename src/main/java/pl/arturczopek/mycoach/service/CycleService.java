@@ -1,15 +1,17 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.exception.DuplicatedNameException;
+import pl.arturczopek.mycoach.exception.InvalidDateException;
+import pl.arturczopek.mycoach.exception.InvalidFlowException;
+import pl.arturczopek.mycoach.exception.InvalidPropsException;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewSet;
 import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.repository.*;
 
-import javax.management.InvalidAttributeValueException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -68,18 +70,18 @@ public class CycleService {
     }
 
     @Transactional
-    public void addCycle(NewCycle newCycle) throws InvalidAttributeValueException {
+    public void addCycle(NewCycle newCycle) throws InvalidPropsException {
 
         if (!isNewCycleDateValid(newCycle)) {
-            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message").getValue());
         }
 
         if (!areNewSetsNamesValid(newCycle.getSets())) {
-            throw new DuplicateKeyException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message").getValue());
+            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message").getValue());
         }
 
         if (!canCycleBeActive()) {
-            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
         }
 
         Cycle cycle = new Cycle();
@@ -126,15 +128,15 @@ public class CycleService {
         cycleRepository.delete(cycle.getCycleId());
     }
 
-    public void updateCycle(Cycle cycle) throws InvalidAttributeValueException {
+    public void updateCycle(Cycle cycle) throws InvalidPropsException {
 
         if (!isCycleToUpdateDateValid(cycle)) {
-            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
         }
 
         // if we want to active cycle we need to make sure if there is any active cycle
         if (!cycle.isFinished() && !canCycleBeActive()) {
-            throw new InvalidAttributeValueException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
         }
 
         Cycle cycleToEdit = cycleRepository.findOne(cycle.getCycleId());
@@ -227,7 +229,7 @@ public class CycleService {
     private boolean areNewSetsNamesValid(List<NewSet> sets) {
         for (int i = 0; i < sets.size(); i++) {
             for (int j = i + 1; j < sets.size(); j++) {
-                if (sets.get(j).getSetName().equalsIgnoreCase(sets.get(i).getSetName())) {
+                if (sets.get(j).getSetName().trim().equalsIgnoreCase(sets.get(i).getSetName().trim())) {
                     return false;
                 }
             }

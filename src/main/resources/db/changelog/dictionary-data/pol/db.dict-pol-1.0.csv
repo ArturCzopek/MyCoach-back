@@ -143,6 +143,7 @@ page.trainings.delete.training.tooltip;Usuń trening;1
 page.trainings.edit.exercise.tooltip;Edytuj ćwiczenie;1
 page.trainings.edit.cycle.tooltip;Edytuj cykl;1
 page.trainings.edit.training.tooltip;Edytuj trening;1
+page.trainings.exercise.error.invalidExerciseName.message;Nazwa ćwiczenia w obrębie setu musi być unikalna!;1
 page.trainings.exercise.label;Ćwiczenie;1
 page.trainings.exerciseDesc.label;Opis;1
 page.trainings.loadFirst.tooltip;Wczytaj najpierw cykl!;1
@@ -168,6 +169,7 @@ page.trainings.repeats.label;Powtórzenia;1
 page.trainings.set.label;Set;1
 page.trainings.set.noExercises.info;Obecnie nie posiadasz żadnych ćwiczeń w tym secie;1
 page.trainings.set.noExercises.click.info;Dodaj pierwsze ćwiczenie!;1
+page.trainings.training.error.invalidDate.message;Data treningu musi zawierać się w ramach cyklu i musi być unikalna!;1
 page.weights.add.tooltip;Dodaj pomiar;1
 page.weights.chart.point.label;Waga [kg];1
 page.weights.delete.tooltip;Usuń pomiary;1

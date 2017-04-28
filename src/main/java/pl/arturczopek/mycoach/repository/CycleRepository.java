@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.arturczopek.mycoach.model.database.Cycle;
+import pl.arturczopek.mycoach.model.database.Set;
 
 import java.sql.Date;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface CycleRepository extends PagingAndSortingRepository<Cycle, Long>
     Cycle findFirstByEndDateBeforeOrderByEndDateDesc(Date startDate);
 
     Cycle findFirstByStartDateAfterOrderByStartDate(Date startDate);
+
+    Cycle findOneBySetsContains(Set set);
 }

@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.model.add.NewExercise;
 import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.repository.*;
@@ -24,22 +25,35 @@ public class ExerciseService {
     private SeriesRepository seriesRepository;
     private SetRepository setRepository;
     private TrainingRepository trainingRepository;
+    private DictionaryService dictionaryService;
+
+    private final static long NEW_EXERCISE_ID = -1;
 
     @Autowired
-    public ExerciseService(ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository) {
+    public ExerciseService(ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository, DictionaryService dictionaryService) {
         this.exerciseRepository = exerciseRepository;
         this.exerciseSessionRepository = exerciseSessionRepository;
         this.seriesRepository = seriesRepository;
         this.setRepository = setRepository;
         this.trainingRepository = trainingRepository;
+        this.dictionaryService = dictionaryService;
     }
 
     @Transactional
-    public void addExercises(List<NewExercise> exercises) {
+    public void addExercises(List<NewExercise> exercises) throws DuplicatedNameException {
+
         for (NewExercise newExercise : exercises) {
+            if (!isExerciseNameCorrect(newExercise.getExerciseName(), newExercise.getSetId(), null)) {
+                throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
+            }
+        }
+
+        for (NewExercise newExercise : exercises) {
+
             Exercise exercise = new Exercise();
             exercise.setExerciseName(newExercise.getExerciseName());
             exercise.setSetId(newExercise.getSetId());
+
             exerciseRepository.save(exercise);
 
             Set set = setRepository.findOne(newExercise.getSetId());
@@ -79,11 +93,36 @@ public class ExerciseService {
     }
 
     @Transactional
-    public void updateExercise(Exercise exercise) {
+    public void updateExercise(Exercise exercise) throws DuplicatedNameException {
+
+        if (!isExerciseNameCorrect(exercise.getExerciseName(), exercise.getSetId(), exercise.getExerciseId())) {
+            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
+        }
+
         Exercise exerciseToUpdate = exerciseRepository.findOne(exercise.getExerciseId());
         exerciseToUpdate.setExerciseName(exercise.getExerciseName());
         exerciseToUpdate.setExerciseDescription(exercise.getExerciseDescription());
 
         exerciseRepository.save(exerciseToUpdate);
+    }
+
+    // Long - because exerciseId can be nullable (in case if it's a new exercise)
+    private boolean isExerciseNameCorrect(String exerciseName, Long setId, Long exerciseId) {
+        List<Exercise> exercisesInSet = setRepository.findOne(setId).getExercises();
+
+        long validationExerciseId;
+
+        if (exerciseId == null) {
+            validationExerciseId = NEW_EXERCISE_ID;
+        } else {
+            validationExerciseId = exerciseId;
+        }
+
+        return !exercisesInSet
+                .stream()
+                .anyMatch(exerciseFromDb ->
+                        exerciseFromDb.getExerciseName().trim().equalsIgnoreCase(exerciseName.trim())
+                                && exerciseFromDb.getExerciseId() != validationExerciseId
+                );
     }
 }
