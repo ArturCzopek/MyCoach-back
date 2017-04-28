@@ -33,8 +33,6 @@ public class TrainingService {
     private CycleRepository cycleRepository;
     private DictionaryService dictionaryService;
 
-    private final static long NEW_TRAINING_ID = -1;
-
     @Autowired
     public TrainingService(ExerciseSessionRepository exerciseSessionRepository, ExerciseRepository exerciseRepository,
                            SeriesRepository seriesRepository, SetRepository setRepository,
@@ -52,7 +50,7 @@ public class TrainingService {
     @Transactional
     public void addTraining(NewTraining newTraining) throws InvalidDateException {
 
-        if (!isTrainingDateCorrect(newTraining.getTrainingDate(), newTraining.getSetId(), null)) {
+        if (!isNewTrainingDateCorrect(newTraining.getTrainingDate(), newTraining.getSetId())) {
             throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
         }
 
@@ -146,7 +144,7 @@ public class TrainingService {
 
     public void updateTraining(Training training, List<Exercise> exercises) throws InvalidDateException {
 
-        if (!isTrainingDateCorrect(training.getTrainingDate(), training.getSetId(), training.getTrainingId())) {
+        if (!isUpdateTrainingDateCorrect(training.getTrainingDate(), training.getSetId(), training.getTrainingId())) {
             throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
         }
 
@@ -225,35 +223,47 @@ public class TrainingService {
         return trainingIndex;
     }
 
-    // Long - because trainingId can be nullable (in case if it's a new training)
-    private boolean isTrainingDateCorrect(Date trainingDate, Long setId, Long trainingId) {
-        Cycle cycle = cycleRepository.findOneBySetsContains(
-                setRepository.findOne(setId)
-        );
 
-        if (cycle.getStartDate().after(trainingDate)) {
+    private boolean isNewTrainingDateCorrect(Date trainingDate, long setId) {
+        Set set = setRepository.findOne(setId);
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getStartDate().toLocalDate().isAfter(trainingDate.toLocalDate())) {
             return false;
         }
 
-        if (cycle.getEndDate() != null && cycle.getEndDate().before(trainingDate)) {
+        if (cycle.getEndDate() != null && cycle.getEndDate().toLocalDate().isBefore(trainingDate.toLocalDate())) {
             return false;
         }
 
-        List<Training> trainingsInSet = setRepository.findOne(setId).getTrainings();
-
-        long validationTrainingId;
-
-        if (trainingId == null) {
-            validationTrainingId = NEW_TRAINING_ID;
-        } else {
-            validationTrainingId = trainingId;
-        }
+        List<Training> trainingsInSet = set.getTrainings();
 
         return !trainingsInSet
                 .stream()
                 .anyMatch(
                         trainingFromDb -> trainingFromDb.getTrainingDate().toLocalDate().equals(trainingDate.toLocalDate())
-                                && trainingFromDb.getTrainingId() != validationTrainingId
+                );
+    }
+
+    private boolean isUpdateTrainingDateCorrect(Date trainingDate, long setId, long trainingId) {
+        Set set = setRepository.findOne(setId);
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getStartDate().toLocalDate().isAfter(trainingDate.toLocalDate())) {
+            return false;
+        }
+
+        if (cycle.getEndDate() != null && cycle.getEndDate().toLocalDate().isBefore(trainingDate.toLocalDate())) {
+            return false;
+        }
+
+        List<Training> trainingsInSet = set.getTrainings();
+
+        return !trainingsInSet
+                .stream()
+                .anyMatch(
+                        trainingFromDb -> trainingFromDb.getTrainingDate().toLocalDate().equals(trainingDate.toLocalDate())
+                                && trainingFromDb.getTrainingId() != trainingId
                 );
     }
 }

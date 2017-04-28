@@ -1,8 +1,9 @@
 package pl.arturczopek.mycoach.service;
 
+import lombok.Setter;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.arturczopek.mycoach.model.add.NewProduct;
@@ -23,21 +24,18 @@ import java.util.List;
  */
 
 @Service
+@Setter
+@ConfigurationProperties(prefix = "my-coach.images")
 public class ProductService {
 
-    @Value("${myCoach.default-product-image}")
-    private String noImageUrl;
+    private String defaultProductImage;
 
-    @Value("${myCoach.image-size}")
     private int imageSize;
 
-    @Value("${myCoach.tmp-product-sign}")
     private String tmpProductSign;
 
-    @Value("${myCoach.edited-product-sign-suffix}")
     private String editedProductSignSuffix;
 
-    @Value("${myCoach.image-extension}")
     private String imageExtension;
 
     private ProductRepository productRepository;
@@ -120,7 +118,7 @@ public class ProductService {
         }
 
         if (product.getScreen() == null) {
-            BufferedImage image = ImageIO.read(this.getClass().getResource(noImageUrl));
+            BufferedImage image = ImageIO.read(this.getClass().getResource(defaultProductImage));
 
             ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
             jpegOutputStream.reset();

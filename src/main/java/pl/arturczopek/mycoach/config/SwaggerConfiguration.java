@@ -28,7 +28,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @Setter
 @Configuration
 @EnableSwagger2
-@ConfigurationProperties(prefix = "myCoach.swagger")
+@ConfigurationProperties(prefix = "my-coach.swagger")
 public class SwaggerConfiguration {
 
     private String title;

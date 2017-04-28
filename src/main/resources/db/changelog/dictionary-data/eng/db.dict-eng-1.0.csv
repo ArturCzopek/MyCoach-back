@@ -175,6 +175,7 @@ page.weights.add.tooltip;Add measurement;2
 page.weights.chart.point.label;Weight [kg];2
 page.weights.delete.tooltip;Delete measurements;2
 page.weights.edit.tooltip;Edit measurements;2
+page.weights.error.invalidDate.message;Only one measurement per day!;2
 page.weights.list.noData.click.info;Add your first measurement;2
 page.weights.list.noData.info;Currently, you don't have any measurement;2
 page.weights.loadFirst.tooltip;Load measurements first!;2

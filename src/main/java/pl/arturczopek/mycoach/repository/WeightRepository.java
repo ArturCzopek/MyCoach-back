@@ -19,4 +19,8 @@ public interface WeightRepository extends PagingAndSortingRepository<Weight, Lon
     List<Weight> findAllByOrderByMeasurementDateDesc();
 
     List<Weight> findByMeasurementDateBetweenOrderByMeasurementDate(Date after, Date before);
+
+    Weight findOneByMeasurementDateAndWeightIdNot(Date measurementDate, long weightId);
+
+    Weight findOneByMeasurementDate(Date measurementDate);
 }

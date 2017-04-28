@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 //@EnableWebSecurity
 public class SecurityConfiguration{
 
-    @Value("${myCoach.client-address}")
+    @Value("${my-coach.client-address}")
     private String clientAddress;
 
     @Bean

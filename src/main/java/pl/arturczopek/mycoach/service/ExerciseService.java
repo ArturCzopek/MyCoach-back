@@ -27,8 +27,6 @@ public class ExerciseService {
     private TrainingRepository trainingRepository;
     private DictionaryService dictionaryService;
 
-    private final static long NEW_EXERCISE_ID = -1;
-
     @Autowired
     public ExerciseService(ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository, DictionaryService dictionaryService) {
         this.exerciseRepository = exerciseRepository;
@@ -43,7 +41,7 @@ public class ExerciseService {
     public void addExercises(List<NewExercise> exercises) throws DuplicatedNameException {
 
         for (NewExercise newExercise : exercises) {
-            if (!isExerciseNameCorrect(newExercise.getExerciseName(), newExercise.getSetId(), null)) {
+            if (!isNewExerciseNameCorrect(newExercise.getExerciseName(), newExercise.getSetId())) {
                 throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
             }
         }
@@ -95,7 +93,7 @@ public class ExerciseService {
     @Transactional
     public void updateExercise(Exercise exercise) throws DuplicatedNameException {
 
-        if (!isExerciseNameCorrect(exercise.getExerciseName(), exercise.getSetId(), exercise.getExerciseId())) {
+        if (!isUpdateExerciseNameCorrect(exercise.getExerciseName(), exercise.getSetId(), exercise.getExerciseId())) {
             throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
         }
 
@@ -106,23 +104,24 @@ public class ExerciseService {
         exerciseRepository.save(exerciseToUpdate);
     }
 
-    // Long - because exerciseId can be nullable (in case if it's a new exercise)
-    private boolean isExerciseNameCorrect(String exerciseName, Long setId, Long exerciseId) {
+    private boolean isNewExerciseNameCorrect(String exerciseName, long setId) {
         List<Exercise> exercisesInSet = setRepository.findOne(setId).getExercises();
-
-        long validationExerciseId;
-
-        if (exerciseId == null) {
-            validationExerciseId = NEW_EXERCISE_ID;
-        } else {
-            validationExerciseId = exerciseId;
-        }
 
         return !exercisesInSet
                 .stream()
                 .anyMatch(exerciseFromDb ->
                         exerciseFromDb.getExerciseName().trim().equalsIgnoreCase(exerciseName.trim())
-                                && exerciseFromDb.getExerciseId() != validationExerciseId
+                );
+    }
+
+    private boolean isUpdateExerciseNameCorrect(String exerciseName, long setId, long exerciseId) {
+        List<Exercise> exercisesInSet = setRepository.findOne(setId).getExercises();
+
+        return !exercisesInSet
+                .stream()
+                .anyMatch(exerciseFromDb ->
+                        exerciseFromDb.getExerciseName().trim().equalsIgnoreCase(exerciseName.trim())
+                        && exerciseFromDb.getExerciseId() != exerciseId
                 );
     }
 }

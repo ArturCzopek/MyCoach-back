@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.model.add.NewWeight;
 import pl.arturczopek.mycoach.model.database.Weight;
 import pl.arturczopek.mycoach.model.preview.WeightsPreview;
@@ -40,7 +41,7 @@ public class WeightController {
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added weight measurement")
-    public void addWeight(@RequestBody NewWeight weight) {
+    public void addWeight(@RequestBody NewWeight weight) throws InvalidDateException {
         weightService.addWeight(weight);
     }
 
@@ -52,7 +53,7 @@ public class WeightController {
 
     @PutMapping("/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated weight measurements")
-    public void updateWeights(@RequestBody List<Weight> weights) {
+    public void updateWeights(@RequestBody List<Weight> weights) throws InvalidDateException {
         weightService.updateWeights(weights);
     }
 }

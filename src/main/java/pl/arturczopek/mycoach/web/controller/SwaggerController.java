@@ -16,7 +16,7 @@ public class SwaggerController {
 
     private static final String SWAGGER_URL = "redirect:/swagger-ui.html";
 
-    @RequestMapping(value = "${myCoach.swagger.path}", method = RequestMethod.GET)
+    @RequestMapping(value = "${my-coach.swagger.path}", method = RequestMethod.GET)
     public String swaggerMapping() {
         return SWAGGER_URL;
     }

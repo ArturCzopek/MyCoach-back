@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.model.add.NewWeight;
 import pl.arturczopek.mycoach.model.database.Weight;
 import pl.arturczopek.mycoach.model.preview.WeightsPreview;
@@ -21,11 +22,13 @@ public class WeightService {
 
     private WeightRepository weightRepository;
     private DateService dateService;
+    private DictionaryService dictionaryService;
 
     @Autowired
-    public WeightService(WeightRepository weightRepository, DateService dateService) {
+    public WeightService(WeightRepository weightRepository, DateService dateService, DictionaryService dictionaryService) {
         this.weightRepository = weightRepository;
         this.dateService = dateService;
+        this.dictionaryService = dictionaryService;
     }
 
     public List<WeightsPreview> getWeightPreviews() {
@@ -55,7 +58,12 @@ public class WeightService {
         return weightRepository.findByMeasurementDateBetweenOrderByMeasurementDate(Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
-    public void addWeight(NewWeight weightToAdd) {
+    public void addWeight(NewWeight weightToAdd) throws InvalidDateException {
+
+        if (!isNewMeasurementDateValid(weightToAdd.getMeasurementDate())) {
+            throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+        }
+
         Weight weight = new Weight();
         weight.setValue(weightToAdd.getValue());
 
@@ -72,7 +80,35 @@ public class WeightService {
         weights.forEach((Weight weight) -> weightRepository.delete(weight.getWeightId()));
     }
 
-    public void updateWeights(List<Weight> weights) {
-        weights.forEach((Weight weight) -> weightRepository.save(weight));
+    public void updateWeights(List<Weight> weights) throws InvalidDateException {
+        for (Weight weight : weights) {
+            if (!isUpdateMeasurementDateValid(weight.getMeasurementDate(), weight.getWeightId())) {
+                throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+            }
+        }
+
+        for (Weight weight : weights) {
+            weightRepository.save(weight);
+        }
+    }
+
+    private boolean isUpdateMeasurementDateValid(Date measurementDate, long weightId) {
+        Weight otherWeightInTheSameDay = weightRepository.findOneByMeasurementDateAndWeightIdNot(measurementDate, weightId);
+
+        if (otherWeightInTheSameDay != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isNewMeasurementDateValid(Date measurementDate) {
+        Weight otherWeightInTheSameDay = weightRepository.findOneByMeasurementDate(measurementDate);
+
+        if (otherWeightInTheSameDay != null) {
+            return false;
+        }
+
+        return true;
     }
 }

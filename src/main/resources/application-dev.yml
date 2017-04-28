@@ -1,38 +1,33 @@
-  myCoach:
-    swagger:
-      title: My coach API
-      description: My coach rest API. If you cannot use it, contact admin
-      contact-name: Artur Czopek
-      contact-address: artur@simplecoding.pl
-      contact-url: http://simplecoding.pl
-      path: rest-api
+my-coach:
+  swagger:
+    title: My coach API
+    description: My coach rest API. If you cannot use it, contact admin
+    contact-name: Artur Czopek
+    contact-address: artur@simplecoding.pl
+    contact-url: http://simplecoding.pl
+    path: rest-api
 
-  spring:
-    profiles: dev
-    devtools:
-      livereload.enabled: true
+spring:
+  profiles: dev
+  devtools:
+    livereload.enabled: true
 
-    datasource:
-      name: my-coach
-      platform: h2
-      url: jdbc:h2:mem:my-coach;DATABASE_TO_UPPER=false;IGNORECASE=true;
-      dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+  datasource:
+    name: my-coach
+    platform: h2
+    url: jdbc:h2:mem:my-coach;DATABASE_TO_UPPER=false;IGNORECASE=true;
+    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
 
-    jpa:
-      database-platform: org.hibernate.dialect.H2Dialect
-      database: H2
-      openInView: false
-      show-sql: true
-      generate-ddl: false
-      hibernate:
-        ddl-auto: none
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    openInView: false
+    show-sql: true
 
-    h2:
-      console:
-        enabled: true
-        path: /db-console
+  h2:
+    console:
+      enabled: true
+      path: /db-console
 
   management.security.enabled: false
 
@@ -40,17 +35,20 @@
     address: localhost
     port: 8080
 
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-test.xml
-    enabled: true
+# without spring prefix
 
-  logging:
-    path: "src/main/resources/logs"
-    file: "src/main/resources/logs/my-coach-dev.log"
-    level:
-      org:
-        springframework.web: INFO
-        simplecoding.blog: DEBUG
-    pattern:
-      console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
-      level: "user:%X{user} %5p"
+liquibase:
+  enabled: true
+  change-log: classpath:/db/changelog/db.changelog-test.xml
+
+logging:
+  path: "logs"
+  file: "logs/my-coach-dev.log"
+  level:
+    org:
+      springframework.web: INFO
+    pl:
+      arturczopek.mycoach: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
+    level: "user:%X{user} %5p"
