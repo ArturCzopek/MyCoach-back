@@ -1,5 +1,5 @@
 my-coach:
-  client-address: http://simplecoding.pl/my-coach/
+  client-address: http://simplecoding.pl
 
 spring:
   profiles: prod
