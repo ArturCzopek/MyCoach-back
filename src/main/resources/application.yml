@@ -10,7 +10,7 @@ my-coach:
     image-extension: jpeg
 
 spring:
-  profiles.active: dev
+  profiles.active: prod
 
   http:
     multipart.max-file-size: 5MB

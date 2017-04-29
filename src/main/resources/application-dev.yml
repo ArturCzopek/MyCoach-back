@@ -9,8 +9,6 @@ my-coach:
 
 spring:
   profiles: dev
-  devtools:
-    livereload.enabled: true
 
   datasource:
     name: my-coach

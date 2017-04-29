@@ -6,25 +6,27 @@ spring:
     username: ${COACH_USERNAME}
     password: ${COACH_PASSWORD}
     url: ${COACH_DB_URL}
-    driver-class-name: org.postgresql.Driver
-    dialect: org.hibernate.dialect.PostgreSQLDialect
+    driver-class-name: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQLDialect
 
   jpa:
     show-sql: false
-    database: postgresql
+    database: mysql
 
-  server:
-    address: ${COACH_SERVER_IP}
-    port: 8090
+  h2:
+    console:
+      enabled: false
 
-# without spring prefix
+server:
+  address: 127.0.0.1
+  port: 5000
 
 liquibase:
   enabled: true
   change-log: classpath:db/changelog/db.changelog-master.xml
 
 logging:
-  path: "logs"
+  path: "/var/log/"
   level:
     org:
       springframework.web: INFO
@@ -33,4 +35,4 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
     level: "user:%X{user} %5p"
-    file: "$logs/my-coach.%d{yyyy-MM-dd}.%i.log"
+    file: "/var/log/my-coach.%d{yyyy-MM-dd}.%i.log"

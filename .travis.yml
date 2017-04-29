@@ -21,9 +21,17 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
- - echo Master
  - ./gradlew build
- - ./gradlew test
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAJHALE7UPWNUZEE4A
+  secret_access_key:
+    secure: "O/xH0ZbT/rYTZTURdtvDfrP6HKCaPgXh2rj3JrDB5JeB2SbJhSRnu/3+m2ncHf1i499VI0QLukwMZASCY68CVoxwQB7dGZ1kId/WD3L8CT67CBzpdQ2HXzck2OOFGdTbW7XsGm/y8cPxVy1VYmP4T9ygbQEIPa9DgjSQQtOxx03O6omhdp9eU5+Ei63sYW7XW3UwoZ8JbkwGM28W/t7VfYh6j1DACDYVPT8IsmYv88nHkvwaNFG8AcvYPi/h3MX4re6ZBoxoAtvLgroSfAQEDp2ya/XcO1hE5UlVfNftw7Uun0nbaOgel2AY04YUEV6kL98Rqi0zjfPVbVWjwsK4974dGF93RPbJi+/Zi4O7/ObJ90jo8b6bhsZuzaAY1lCjqUo2rtndzO/V9GkTrJVaBYZdJJddc7GpGq97c5NCLHsvLk/DS+tMOy3antzJbq5eXdXCWeGvXSL+J4s+3tLo0TzOL2nG0SwwRb1Z+u8gTltpOuMcAOQdBb7DNtoKeyx2qkCCszLTHDXRQgaHvPnp8DvY8DbL2RwQuRA2Y73OUMZlmK5swRv54J7fZgsgmLYHUH1Of7FNwFFpPDI1+yjmmSUHdSq3l7Q8Wl48hIqBt7bPzbf46AxVn3EG8eArvuHABTL0YMDnZYcmLKDZUmbEsZ/pir2R+YNovK9Z1Yv6Qjg="
+  region: "eu-central-1"
+  app: "My-Coach"
+  env: "My-Coach-jar"
+  bucket_name: "elasticbeanstalk-eu-central-1-712254298466"
 
 after_success:
  - ./gradlew jacocoTestReport
