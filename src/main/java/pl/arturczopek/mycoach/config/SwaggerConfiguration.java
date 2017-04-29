@@ -43,6 +43,7 @@ public class SwaggerConfiguration {
 
     private String contactUrl;
 
+
     private static final String NO_JSON_REGEX = "^(?!.*json).*$";
     private static final String NO_ERROR_REGEX = "(?!.*error).*$";
 
