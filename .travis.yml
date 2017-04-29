@@ -33,6 +33,7 @@ deploy:
   app: "My-Coach"
   env: "My-Coach-jar"
   bucket_name: "elasticbeanstalk-eu-central-1-712254298466"
+  zip_file: /build/libs/My-coach-1.0.0.jar
 
 after_success:
  - ./gradlew jacocoTestReport
