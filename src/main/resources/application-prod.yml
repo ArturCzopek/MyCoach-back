@@ -1,3 +1,6 @@
+my-coach:
+  client-address: http://simplecoding.pl/my-coach/
+
 spring:
   profiles: prod
 
