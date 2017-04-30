@@ -1,0 +1,41 @@
+my-coach:
+  client-address: http://raspberrypi
+
+spring:
+  profiles: integ
+
+  datasource:
+    name: my-coach
+    username: ${COACH_RASP_USERNAME}
+    password: ${COACH_RASP_PASSWORD}
+    url: ${COACH_RASP_DB_URL}
+    driver-class-name: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQLDialect
+
+  jpa:
+    show-sql: false
+    database: mysql
+
+  h2:
+    console:
+      enabled: false
+
+server:
+  address: 127.0.0.1
+  port: 8080
+
+liquibase:
+  enabled: true
+  change-log: classpath:db/changelog/db.changelog-master.xml
+
+logging:
+  path: "/var/log/"
+  level:
+    org:
+      springframework.web: INFO
+    pl:
+      arturczopek.mycoach: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
+    level: "user:%X{user} %5p"
+    file: "/var/log/my-coach.%d{yyyy-MM-dd}.%i.log"
