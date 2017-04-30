@@ -39,6 +39,7 @@ public class SecurityConfiguration{
         config.setMaxAge(3600l);
         config.setAllowCredentials(true);
         config.addAllowedOrigin(clientAddress);
+        config.addAllowedOrigin(clientAddress.replace("www.", ""));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
