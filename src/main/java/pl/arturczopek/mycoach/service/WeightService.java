@@ -47,6 +47,14 @@ public class WeightService {
             dates.add(preview);
         });
 
+        dates.stream().sorted((p1, p2) -> {
+            if (p1.getYear() == p2.getYear()) {
+                return p1.getMonth() - p2.getMonth();
+            } else {
+                return p1.getYear() - p2.getYear();
+            }
+        });
+
         return new LinkedList<>(dates);
     }
 

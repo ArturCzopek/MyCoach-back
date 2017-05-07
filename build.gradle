@@ -6,13 +6,15 @@ buildscript {
     dependencies {
         classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: spring_boot_version
         classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: sonar_version
+        classpath group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: kotlin_version
     }
 }
 
+apply plugin: 'kotlin'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'org.sonarqube'
 
 jar {
@@ -20,6 +22,10 @@ jar {
     baseName = 'My-coach'
     version = '1.0.0'
 //    mainClass = 'pl.arturczopek.mycoach.MyCoachInitializer'
+}
+
+springBoot {
+    executable = true
 }
 
 bootRun {
@@ -67,9 +73,11 @@ dependencies {
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
 
-
     compile group: 'org.projectlombok', name: 'lombok', version: lombok_version
     compile group: 'net.coobird', name: 'thumbnailator', version: thumbnailator_version
+
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }

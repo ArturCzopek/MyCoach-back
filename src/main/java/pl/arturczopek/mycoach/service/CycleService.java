@@ -158,6 +158,10 @@ public class CycleService {
     private boolean isNewCycleDateValid(NewCycle newCycle) {
         Cycle cycleFromDb = cycleRepository.findFirstByOrderByEndDateDesc();
 
+        if (cycleFromDb == null) {
+            return true;
+        }
+
         if (newCycle.getStartDate().toLocalDate().isBefore(cycleFromDb.getEndDate().toLocalDate())) {
             return false;
         }
