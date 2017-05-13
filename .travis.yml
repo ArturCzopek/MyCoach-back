@@ -22,7 +22,9 @@ cache:
 
 script:
  - ./gradlew build -Dspring.profiles.active=prod
- - zip ./My-coach.zip ./build/libs/application.jar
+ - cd build/libs
+ - zip ../../My-coach.zip application.jar
+ - cd ../..
 
 deploy:
   provider: elasticbeanstalk
