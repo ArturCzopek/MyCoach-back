@@ -22,6 +22,7 @@ cache:
 
 script:
  - ./gradlew build -Dspring.profiles.active=prod
+ - zip ./My-coach.zip ./build/libs/application.jar
 
 deploy:
   provider: elasticbeanstalk
@@ -35,7 +36,7 @@ deploy:
   bucket_name: "elasticbeanstalk-eu-central-1-712254298466"
   on:
     all_branches: true
-  zip_file: ./build/libs/My-coach-1.0.1.jar
+  zip_file: ./My-coach.zip
 
 after_success:
  - ./gradlew jacocoTestReport

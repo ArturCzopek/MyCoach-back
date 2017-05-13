@@ -133,7 +133,6 @@ page.trainings.cycle.finished;Skończony;1
 page.trainings.cycle.notActive.tooltip;Musisz posiadać aktywny cykl!;1
 page.trainings.cycle.error.cannotActivate.message;Nie możesz mieć kolejnego aktywnego cyklu, gdy już jest jeden;1
 page.trainings.cycle.error.coveringDates.message;Daty nie powinny pokrywać innych cykli;1
-page.trainings.cycle.error.earlyEndDate.message;Cykl nie może kończyć się przed jakimkolwiek treningiem!;1
 page.trainings.cycle.error.invalidDates.message;Data początkowa musi być późniejsza niż ostatnia data końcowa!;1
 page.trainings.cycle.error.invalidSetNames.message;Nazwy setów muszą być parami różne!;1
 page.trainings.cycle.isFinished;Cykl jest zakończony;1

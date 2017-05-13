@@ -3,9 +3,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="Insert polish dictionary first values" author="Artur Czopek">
         <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/pol/db.dict-pol-1.0.csv">
@@ -20,6 +18,28 @@
 
     <changeSet id="Insert english dictionary first values" author="Artur Czopek">
         <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/eng/db.dict-eng-1.0.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+        <rollback>
+            <sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'eng')</sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Insert polish dictionary for version 1.0.1" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/pol/db.dict-pol-1.0.1.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+        <rollback>
+            <sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'pol')</sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="Insert english dictionary for version 1.0.1" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/eng/db.dict-eng-1.0.1.csv">
             <column name="DCT_KEY" type="STRING"/>
             <column name="DCT_VAL" type="STRING"/>
             <column name="DCT_LNG_ID" type="NUMERIC"/>
