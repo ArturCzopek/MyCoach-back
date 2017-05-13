@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PriceRepository extends CrudRepository<Price, Long> {
 
-    List<Price> findByProductIdOrderByPriceDate(long productId);
+    List<Price> findByProductIdOrderByPriceDateAsc(long productId);
 
     void deleteByProductIdOrderByPriceDate(long productId);
 }

@@ -14,6 +14,7 @@ import pl.arturczopek.mycoach.repository.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +63,34 @@ public class CycleService {
     }
 
     public Cycle getCycleById(long id) {
-        return cycleRepository.findOne(id);
+        Cycle cycle = cycleRepository.findOne(id);
+        for (Set set : cycle.getSets()) {
+            List<Training> nonSortedTrainings = set.getTrainings();
+            List<Training> sortedTrainings = new ArrayList<>(nonSortedTrainings);
+
+            sortedTrainings.sort((t1, t2) -> trainingsCompare(t1, t2));
+
+            set.setTrainings(sortedTrainings);
+
+            for (int i = 0; i < set.getExercises().size(); i++) {
+                List<ExerciseSession> nonSortedSessions = set.getExercises().get(i).getExerciseSessions();
+                List<ExerciseSession> sortedSessions = new ArrayList<>(nonSortedSessions);
+
+                // we want to sort it by training date
+                // unfortunately, we don't have in session reference to training
+                sortedSessions.sort((s1, s2) -> {
+                    int s1Index = nonSortedSessions.indexOf(s1);
+                    int s2Index = nonSortedSessions.indexOf(s2);
+                    Training t1 = nonSortedTrainings.get(s1Index);
+                    Training t2 = nonSortedTrainings.get(s2Index);
+                    return trainingsCompare(t1, t2);
+                });
+
+                set.getExercises().get(i).setExerciseSessions(sortedSessions);
+            }
+        }
+
+        return cycle;
     }
 
     public boolean hashUserEveryCycleFinished() {
@@ -133,6 +161,10 @@ public class CycleService {
         if (!isCycleToUpdateDateValid(cycle)) {
             throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
         }
+        
+        if (!isCycleToCloseDateValid(cycle)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message").getValue());
+        }
 
         // if we want to active cycle we need to make sure if there is any active cycle
         if (!cycle.isFinished() && !canCycleBeActive()) {
@@ -155,8 +187,28 @@ public class CycleService {
         cycleRepository.save(cycleToEdit);
     }
 
+    private int trainingsCompare(Training t1, Training t2) {
+        if (t1.getTrainingDate().toLocalDate().isAfter(t2.getTrainingDate().toLocalDate())) {
+            return 1;
+        }
+
+        return -1;
+    }
+
+    private boolean isCycleToCloseDateValid(Cycle cycle) {
+        List<Set> sets = setRepository.findAllByCycleId(cycle.getCycleId());
+
+        return sets.stream()
+                .map(set -> trainingRepository.findFirstBySetIdOrderByTrainingDateDesc(set.getSetId()))
+                .noneMatch(lastTraining -> lastTraining.getTrainingDate().toLocalDate().isAfter(cycle.getEndDate().toLocalDate()));
+    }
+
     private boolean isNewCycleDateValid(NewCycle newCycle) {
         Cycle cycleFromDb = cycleRepository.findFirstByOrderByEndDateDesc();
+
+        if (cycleFromDb == null) {
+            return true;
+        }
 
         if (newCycle.getStartDate().toLocalDate().isBefore(cycleFromDb.getEndDate().toLocalDate())) {
             return false;
