@@ -10,4 +10,5 @@ import pl.arturczopek.mycoach.model.database.Training;
 
 public interface TrainingRepository extends CrudRepository<Training, Long> {
 
+    Training findFirstBySetIdOrderByTrainingDateDesc(long setId);
 }

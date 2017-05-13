@@ -133,6 +133,10 @@ public class CycleService {
         if (!isCycleToUpdateDateValid(cycle)) {
             throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
         }
+        
+        if (!isCycleToCloseDateValid(cycle)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message").getValue());
+        }
 
         // if we want to active cycle we need to make sure if there is any active cycle
         if (!cycle.isFinished() && !canCycleBeActive()) {
@@ -153,6 +157,14 @@ public class CycleService {
         }
 
         cycleRepository.save(cycleToEdit);
+    }
+
+    private boolean isCycleToCloseDateValid(Cycle cycle) {
+        List<Set> sets = setRepository.findAllByCycleId(cycle.getCycleId());
+
+        return sets.stream()
+                .map(set -> trainingRepository.findFirstBySetIdOrderByTrainingDateDesc(set.getSetId()))
+                .noneMatch(lastTraining -> lastTraining.getTrainingDate().toLocalDate().isAfter(cycle.getEndDate().toLocalDate()));
     }
 
     private boolean isNewCycleDateValid(NewCycle newCycle) {
@@ -229,7 +241,6 @@ public class CycleService {
 
         return true;
     }
-
     private boolean areNewSetsNamesValid(List<NewSet> sets) {
         for (int i = 0; i < sets.size(); i++) {
             for (int j = i + 1; j < sets.size(); j++) {
