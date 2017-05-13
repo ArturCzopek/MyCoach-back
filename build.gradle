@@ -78,6 +78,7 @@ dependencies {
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
+    compile group: 'io.github.microutils', name: 'kotlin-logging', version: kotlin_logging_version
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }

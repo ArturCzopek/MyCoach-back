@@ -27,7 +27,7 @@ public class PriceService {
     }
 
     public List<Price> getPricesByProductId(long productId) {
-        return priceRepository.findByProductIdOrderByPriceDate(productId);
+        return priceRepository.findByProductIdOrderByPriceDateAsc(productId);
     }
 
     public void addPrice(NewPrice newPrice) {
