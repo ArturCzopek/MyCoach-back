@@ -1,5 +1,6 @@
 package pl.arturczopek.mycoach.utils.http
 
+import mu.KLogging
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
