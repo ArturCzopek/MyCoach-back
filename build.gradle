@@ -20,7 +20,7 @@ apply plugin: 'org.sonarqube'
 jar {
     group 'build'
     baseName = 'My-coach'
-    version = '1.0.0'
+    version = '1.0.1'
 //    mainClass = 'pl.arturczopek.mycoach.MyCoachInitializer'
 }
 

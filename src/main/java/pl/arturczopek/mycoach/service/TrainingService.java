@@ -66,27 +66,28 @@ public class TrainingService {
             List<ExerciseSession> sessions = new LinkedList<>();
             ExerciseSession session = new ExerciseSession();
             session.setExerciseId(set.getExercises().get(i).getExerciseId());
-            session.setEmpty(newTraining.getExerciseSessions().get(i).getSeries().isEmpty());
+            session.setEmpty(newTraining.getExerciseSessions().get(i).isEmpty());
 
             exerciseSessionRepository.save(session);
 
-            List<Series> seriesList = new LinkedList<>();
+            if (!session.isEmpty()) {
 
-            List<NewSeries> newSeries = newTraining.getExerciseSessions().get(i).getSeries();
+                List<Series> seriesList = new LinkedList<>();
 
-            for (int j = 0; j < newSeries.size(); j++) {
+                List<NewSeries> newSeries = newTraining.getExerciseSessions().get(i).getSeries();
 
-                Series series = new Series();
-                series.setExerciseSessionId(session.getExerciseSessionId());
-                series.setComment(newSeries.get(j).getComment());
-                series.setRepeats(newSeries.get(j).getRepeats());
-                series.setWeight(newSeries.get(j).getWeight());
-                seriesList.add(series);
+                for (int j = 0; j < newSeries.size(); j++) {
+                    Series series = new Series();
+                    series.setExerciseSessionId(session.getExerciseSessionId());
+                    series.setComment(newSeries.get(j).getComment());
+                    series.setRepeats(newSeries.get(j).getRepeats());
+                    series.setWeight(newSeries.get(j).getWeight());
+                    seriesList.add(series);
+                }
+                session.setSeries(seriesList);
             }
 
-            session.setSeries(seriesList);
             sessions.add(session);
-
             set.getExercises().get(i).getExerciseSessions().addAll(sessions);
         }
 
@@ -130,11 +131,9 @@ public class TrainingService {
                 final int trainingIndex = i;
 
                 set.getExercises().forEach((Exercise exercise) -> {
-
                     ExerciseSession session = exercise.getExerciseSessions().get(trainingIndex);
                     session.getSeries().forEach((Series series) -> seriesRepository.delete(series.getSeriesId()));
                     exerciseSessionRepository.delete(session.getExerciseSessionId());
-
                 });
             }
         }
