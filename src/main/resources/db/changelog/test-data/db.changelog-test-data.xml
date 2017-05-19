@@ -6,14 +6,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <changeSet id="Insert test weights" author="Artur Czopek">
-        <loadData tableName="WEIGHTS" separator=";" file="db/changelog/test-data/db.weights-1.0.csv">
+        <loadData tableName="WEIGHTS" separator=";" file="db/changelog/test-data/db.weights.csv">
             <column name="WGH_VAL" type="NUMERIC"/>
             <column name="WGH_MSRM_DT" type="DATE"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test reports" author="Artur Czopek">
-        <loadData tableName="REPORTS" separator=";" file="db/changelog/test-data/db.reports-1.0.csv">
+        <loadData tableName="REPORTS" separator=";" file="db/changelog/test-data/db.reports.csv">
             <column name="REP_CONT" type="STRING"/>
             <column name="REP_STRT_DT" type="DATE"/>
             <column name="REP_END_DT" type="DATE"/>
@@ -21,13 +21,13 @@
     </changeSet>
 
     <changeSet id="Insert test products" author="Artur Czopek">
-        <loadData tableName="PRODUCTS" separator=";" file="db/changelog/test-data/db.products-1.0.csv">
+        <loadData tableName="PRODUCTS" separator=";" file="db/changelog/test-data/db.products.csv">
             <column name="PRD_NAME" type="STRING"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test prices" author="Artur Czopek">
-        <loadData tableName="PRICES" separator=";" file="db/changelog/test-data/db.prices-1.0.csv">
+        <loadData tableName="PRICES" separator=";" file="db/changelog/test-data/db.prices.csv">
             <column name="PRC_PRD_ID" type="NUMERIC"/>
             <column name="PRC_DT" type="DATE"/>
             <column name="PRC_VAL" type="NUMERIC"/>
@@ -37,7 +37,7 @@
     </changeSet>
 
     <changeSet id="Insert test cycles" author="Artur Czopek">
-        <loadData tableName="CYCLES" separator=";" file="db/changelog/test-data/db.cycles-1.0.csv">
+        <loadData tableName="CYCLES" separator=";" file="db/changelog/test-data/db.cycles.csv">
             <column name="CYC_FNSHD" type="BOOLEAN"/>
             <column name="CYC_STRT_DT" type="DATE"/>
             <column name="CYC_END_DT" type="DATE"/>
@@ -45,14 +45,14 @@
     </changeSet>
 
     <changeSet id="Insert test sets" author="Artur Czopek">
-        <loadData tableName="SETS" separator=";" file="db/changelog/test-data/db.sets-1.0.csv">
+        <loadData tableName="SETS" separator=";" file="db/changelog/test-data/db.sets.csv">
             <column name="SET_CYC_ID" type="NUMERIC"/>
             <column name="SET_NAME" type="STRING"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test exercises" author="Artur Czopek">
-        <loadData tableName="EXERCISES" separator=";" file="db/changelog/test-data/db.exercises-1.0.csv">
+        <loadData tableName="EXERCISES" separator=";" file="db/changelog/test-data/db.exercises.csv">
             <column name="EXR_SET_ID" type="NUMERIC"/>
             <column name="EXR_NAME" type="STRING"/>
             <column name="EXR_DSCP" type="STRING"/>
@@ -60,21 +60,21 @@
     </changeSet>
 
     <changeSet id="Insert test trainings" author="Artur Czopek">
-        <loadData tableName="TRAININGS" separator=";" file="db/changelog/test-data/db.trainings-1.0.csv">
+        <loadData tableName="TRAININGS" separator=";" file="db/changelog/test-data/db.trainings.csv">
             <column name="TRN_SET_ID" type="NUMERIC"/>
             <column name="TRN_DT" type="DATE"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test exercise sessions" author="Artur Czopek">
-        <loadData tableName="EXERCISESESSIONS" separator=";" file="db/changelog/test-data/db.exercisesessions-1.0.csv">
+        <loadData tableName="EXERCISESESSIONS" separator=";" file="db/changelog/test-data/db.exercisesessions.csv">
             <column name="EXS_EXR_ID" type="NUMERIC"/>
             <column name="EXS_EMP" type="BOOLEAN"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test series" author="Artur Czopek">
-        <loadData tableName="SERIES" separator=";" file="db/changelog/test-data/db.series-1.0.csv">
+        <loadData tableName="SERIES" separator=";" file="db/changelog/test-data/db.series.csv">
             <column name="SER_EXS_ID" type="NUMERIC"/>
             <column name="SER_WGH" type="NUMERIC"/>
             <column name="SER_REP" type="NUMERIC"/>
@@ -83,7 +83,7 @@
     </changeSet>
 
     <changeSet id="Insert test user settings" author="Artur Czopek">
-        <loadData tableName="USERSETTINGS" separator=";" file="db/changelog/test-data/db.usersettings-1.0.csv">
+        <loadData tableName="USERSETTINGS" separator=";" file="db/changelog/test-data/db.usersettings.csv">
             <column name="USS_MAIL" type="STRING"/>
             <column name="USS_LNG_ID" type="NUMERIC"/>
         </loadData>

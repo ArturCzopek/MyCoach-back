@@ -1,7 +1,7 @@
 package pl.arturczopek.mycoach.utils.http
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 07-05-2017
  */
 

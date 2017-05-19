@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException
 import javax.servlet.http.HttpServletRequest
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 07-05-2017
  */
 @ControllerAdvice

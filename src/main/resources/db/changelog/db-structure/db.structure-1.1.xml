@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="Create Users table" author="Artur Czopek">
+        <createTable tableName="USERS">
+            <column name="USR_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="USERS" unique="true"/>
+            </column>
+            <column name="USR_FB_ID" type="nvarchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USR_NAME" type="nvarchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USR_USS_ID" type="int">
+                <constraints nullable="false" foreignKeyName="FK_USER_USERSETTING" references="USERSETTINGS(USS_ID)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add default field values for User Settings" author="Artur Czopek">
+        <addDefaultValue tableName="USERSETTINGS" columnName="USS_LNG_ID" defaultValue="1"/>
+        <addDefaultValue tableName="USERSETTINGS" columnName="USS_MAIL" defaultValue="test@test.com"/>
+    </changeSet>
+</databaseChangeLog>
