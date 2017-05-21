@@ -17,7 +17,7 @@
                 $.get("/user/token", function (token) {
                     if (token && token !== '') {
                         setTokenInCookie(token);
-                        window.location = clientUrl + "/main";
+                        window.location = clientUrl + "/login";
                     } else {
                         window.location = "/login";
                     }

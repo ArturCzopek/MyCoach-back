@@ -16,7 +16,7 @@ class User {
     @Column(name = "USR_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "USERS_USR_ID_SEQ")
     @SequenceGenerator(name = "USERS_USR_ID_SEQ", sequenceName = "USERS_USR_ID_SEQ", allocationSize = 1)
-    var id: Long = 0
+    var userId: Long = 0
 
     @Column(name = "USR_FB_ID", nullable = false)
     var fbId: String = ""

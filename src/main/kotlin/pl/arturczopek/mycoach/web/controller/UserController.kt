@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import pl.arturczopek.mycoach.model.database.User
 import pl.arturczopek.mycoach.service.UserService
@@ -24,7 +24,7 @@ class UserController @Autowired constructor(val userService: UserService) {
     var clientAddress: String = ""
 
     @GetMapping("/")
-    fun getUser(@RequestParam("oauth_token") token: String): User {
+    fun getUser(@RequestHeader("oauth_token") token: String): User {
         var user: User? = userService.getFbUserByToken(token)
 
         if (user == null) {
@@ -37,7 +37,7 @@ class UserController @Autowired constructor(val userService: UserService) {
     }
 
     @GetMapping("/create")
-    fun create(@RequestParam("oauth_token") token: String): User {
+    fun create(@RequestHeader("oauth_token") token: String): User {
         userService.createUser(token)
         return userService.getFbUserByToken(token)
     }
@@ -57,7 +57,7 @@ class UserController @Autowired constructor(val userService: UserService) {
                     (principal.details as OAuth2AuthenticationDetails).tokenValue)
 
         } catch (ex: Exception) {
-            // no user or anonymous user, return forbidden status
+            // no user or anonymous user, return empty data
             return ResponseEntity.ok("")
         }
     }
