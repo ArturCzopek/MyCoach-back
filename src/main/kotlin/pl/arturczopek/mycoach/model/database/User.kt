@@ -19,12 +19,16 @@ class User {
     var userId: Long = 0
 
     @Column(name = "USR_FB_ID", nullable = false)
-    var fbId: String = ""
+    lateinit var fbId: String
 
-    @Column(name = "USR_NAME", nullable = false)
-    var name: String = ""
+    @Column(name = "USR_NM", nullable = false)
+    lateinit var name: String
 
     @OneToOne
     @JoinColumn(name = "USR_USS_ID")
-    var userSetting: UserSetting? = null
+    lateinit var userSetting: UserSetting
+
+    @ManyToOne
+    @JoinColumn(name = "USR_RL_ID")
+    lateinit var role: Role
 }

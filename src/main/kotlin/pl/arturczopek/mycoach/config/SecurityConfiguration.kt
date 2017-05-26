@@ -38,12 +38,12 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
                 .antMatcher("/**").authorizeRequests()
-//                .antMatchers("/", "/index.html", "/login**", "/user/**").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/", "/index.html", "/login**", "/user/**", "/db-console/**").permitAll()
+//                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/"))
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("$clientAddress/logout")
-                .and().csrf().disable()
+                .and().csrf().disable().headers().frameOptions().disable()
     }
 
     @Bean

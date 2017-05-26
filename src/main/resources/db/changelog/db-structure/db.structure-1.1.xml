@@ -3,6 +3,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
+    <changeSet id="Create Roles table" author="Artur Czopek">
+        <createTable tableName="ROLES">
+            <column name="RL_ID" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="ROLES" unique="true"/>
+            </column>
+            <column name="RL_NM" type="nvarchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet id="Create Users table" author="Artur Czopek">
         <createTable tableName="USERS">
             <column name="USR_ID" type="serial" autoIncrement="true">
@@ -11,10 +22,16 @@
             <column name="USR_FB_ID" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="USR_NAME" type="nvarchar(100)">
+            <column name="USR_NM" type="nvarchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="USR_USS_ID" type="int">
+            <column name="USR_ACT" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USR_RL_ID" type="integer">
+                <constraints nullable="false" foreignKeyName="FK_USER_ROLE" references="ROLES(RL_ID)"/>
+            </column>
+            <column name="USR_USS_ID" type="integer">
                 <constraints nullable="false" foreignKeyName="FK_USER_USERSETTING" references="USERSETTINGS(USS_ID)"/>
             </column>
         </createTable>
@@ -23,5 +40,13 @@
     <changeSet id="Add default field values for User Settings" author="Artur Czopek">
         <addDefaultValue tableName="USERSETTINGS" columnName="USS_LNG_ID" defaultValue="1"/>
         <addDefaultValue tableName="USERSETTINGS" columnName="USS_MAIL" defaultValue="test@test.com"/>
+    </changeSet>
+
+    <changeSet id="Add user id for weight" author="Artur Czopek">
+        <addColumn tableName="WEIGHTS">
+            <column name="WGH_USR_ID" type="integer"></column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="WEIGHTS" baseColumnNames="WGH_USR_ID" constraintName="FK_WEIGHT_USER" referencedTableName="USERS"
+                                 referencedColumnNames="USR_ID"/>
     </changeSet>
 </databaseChangeLog>

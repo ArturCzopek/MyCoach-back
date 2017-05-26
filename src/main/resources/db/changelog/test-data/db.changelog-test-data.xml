@@ -5,10 +5,34 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
+    <changeSet id="Insert test user settings" author="Artur Czopek">
+        <loadData tableName="USERSETTINGS" separator=";" file="db/changelog/test-data/db.usersettings.csv">
+            <column name="USS_MAIL" type="STRING"/>
+            <column name="USS_LNG_ID" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Insert test roles" author="Artur Czopek">
+        <loadData tableName="ROLES" separator=";" file="db/changelog/test-data/db.roles.csv">
+            <column name="RL_NM" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Insert test users" author="Artur Czopek">
+        <loadData tableName="USERS" separator=";" file="db/changelog/test-data/db.users.csv">
+            <column name="USR_FB_ID" type="STRING"/>
+            <column name="USR_NM" type="STRING"/>
+            <column name="USR_ACT" type="BOOLEAN"/>
+            <column name="USR_RL_ID" type="NUMERIC"/>
+            <column name="USR_USS_ID" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+
     <changeSet id="Insert test weights" author="Artur Czopek">
         <loadData tableName="WEIGHTS" separator=";" file="db/changelog/test-data/db.weights.csv">
             <column name="WGH_VAL" type="NUMERIC"/>
             <column name="WGH_MSRM_DT" type="DATE"/>
+            <column name="WGH_USR_ID" type="NUMERIC"/>
         </loadData>
     </changeSet>
 
@@ -79,13 +103,6 @@
             <column name="SER_WGH" type="NUMERIC"/>
             <column name="SER_REP" type="NUMERIC"/>
             <column name="SER_COM" type="STRING"/>
-        </loadData>
-    </changeSet>
-
-    <changeSet id="Insert test user settings" author="Artur Czopek">
-        <loadData tableName="USERSETTINGS" separator=";" file="db/changelog/test-data/db.usersettings.csv">
-            <column name="USS_MAIL" type="STRING"/>
-            <column name="USS_LNG_ID" type="NUMERIC"/>
         </loadData>
     </changeSet>
 
