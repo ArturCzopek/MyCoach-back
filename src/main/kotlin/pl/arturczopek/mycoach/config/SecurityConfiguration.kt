@@ -27,7 +27,7 @@ import org.springframework.web.filter.CorsFilter
 open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${my-coach.client-address}")
-    var clientAddress: String = ""
+    lateinit var clientAddress: String
 
     @Bean
     open fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()

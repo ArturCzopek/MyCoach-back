@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.model.database
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.io.Serializable
 import javax.persistence.*
 
 /**
@@ -10,7 +11,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "USERS")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
-class User {
+class User: Serializable {
 
     @Id
     @Column(name = "USR_ID", nullable = false)

@@ -41,12 +41,14 @@
             <column name="REP_CONT" type="STRING"/>
             <column name="REP_STRT_DT" type="DATE"/>
             <column name="REP_END_DT" type="DATE"/>
+            <column name="REP_USR_ID" type="NUMERIC"/>
         </loadData>
     </changeSet>
 
     <changeSet id="Insert test products" author="Artur Czopek">
         <loadData tableName="PRODUCTS" separator=";" file="db/changelog/test-data/db.products.csv">
             <column name="PRD_NAME" type="STRING"/>
+            <column name="PRD_USR_ID" type="NUMERIC"/>
         </loadData>
     </changeSet>
 
@@ -65,6 +67,7 @@
             <column name="CYC_FNSHD" type="BOOLEAN"/>
             <column name="CYC_STRT_DT" type="DATE"/>
             <column name="CYC_END_DT" type="DATE"/>
+            <column name="CYC_USR_ID" type="NUMERIC"/>
         </loadData>
     </changeSet>
 

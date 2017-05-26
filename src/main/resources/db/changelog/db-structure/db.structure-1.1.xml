@@ -42,11 +42,35 @@
         <addDefaultValue tableName="USERSETTINGS" columnName="USS_MAIL" defaultValue="test@test.com"/>
     </changeSet>
 
-    <changeSet id="Add user id for weight" author="Artur Czopek">
+    <changeSet id="Add user id for Weight" author="Artur Czopek">
         <addColumn tableName="WEIGHTS">
             <column name="WGH_USR_ID" type="integer"></column>
         </addColumn>
         <addForeignKeyConstraint baseTableName="WEIGHTS" baseColumnNames="WGH_USR_ID" constraintName="FK_WEIGHT_USER" referencedTableName="USERS"
+                                 referencedColumnNames="USR_ID"/>
+    </changeSet>
+
+    <changeSet id="Add user id for Product" author="Artur Czopek">
+        <addColumn tableName="PRODUCTS">
+            <column name="PRD_USR_ID" type="integer"></column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="PRODUCTS" baseColumnNames="PRD_USR_ID" constraintName="FK_PRODUCT_USER" referencedTableName="USERS"
+                                 referencedColumnNames="USR_ID"/>
+    </changeSet>
+
+    <changeSet id="Add user id for Report" author="Artur Czopek">
+        <addColumn tableName="REPORTS">
+            <column name="REP_USR_ID" type="integer"></column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="REPORTS" baseColumnNames="REP_USR_ID" constraintName="FK_REPORT_USER" referencedTableName="USERS"
+                                 referencedColumnNames="USR_ID"/>
+    </changeSet>
+
+    <changeSet id="Add user id for Cycle" author="Artur Czopek">
+        <addColumn tableName="CYCLES">
+            <column name="CYC_USR_ID" type="integer"></column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="CYCLES" baseColumnNames="CYC_USR_ID" constraintName="FK_CYCLE_USER" referencedTableName="USERS"
                                  referencedColumnNames="USR_ID"/>
     </changeSet>
 </databaseChangeLog>
