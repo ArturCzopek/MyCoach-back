@@ -1,6 +1,5 @@
 package pl.arturczopek.mycoach.service
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
@@ -10,6 +9,7 @@ import org.springframework.web.client.RestTemplate
 import pl.arturczopek.mycoach.model.database.User
 import pl.arturczopek.mycoach.model.database.UserSetting
 import pl.arturczopek.mycoach.repository.LanguageRepository
+import pl.arturczopek.mycoach.repository.RoleRepository
 import pl.arturczopek.mycoach.repository.UserRepository
 import pl.arturczopek.mycoach.repository.UserSettingRepository
 import java.net.URI
@@ -20,35 +20,45 @@ import java.net.URI
  */
 typealias FbData = HashMap<String, Any>
 
-@Service class UserService
-@Autowired constructor(
+@Service
+open class UserService(
         val restTemplate: RestTemplate,
         val userRepository: UserRepository,
         val userSettingRepository: UserSettingRepository,
-        val languageRepository: LanguageRepository) {
+        val roleRepository: RoleRepository,
+        val languageRepository: LanguageRepository,
+        val userStorage: UserStorage
+) {
 
-    fun getFbUserByToken(token: String): User {
-        val userMap: FbData = getUserFbData(token)
+    fun getUserByFbToken(token: String): User? {
+        val userMap: FbData = getUserFbData(token) ?: return null
 
-        val user = userRepository.findOneByFbId(userMap["id"] as String)
-        return user
+        return userRepository.findOneByFbId(userMap["id"] as String)
     }
 
     fun createUser(token: String) {
-        val userMap = getUserFbData(token)
+        val userMap = getUserFbData(token) ?: return
+
         val settings = getInitSettingsAndSave(userMap["id"] as String, token)
+        val role = roleRepository.findOneByRoleName("user")
 
         val user: User = User()
         user.fbId = userMap["id"] as String
         user.name = userMap["name"] as String
         user.userSetting = settings
+        user.role = role
         userRepository.save(user)
     }
 
-    private fun getUserFbData(token: String): FbData {
-        val response = createRequest("https://graph.facebook.com/me?access_token=$token")
-        val userMap: FbData = response.body
-        return userMap
+    private fun getUserFbData(token: String): FbData? {
+
+        if (userStorage.currentFbData == null) {
+            val response = createRequest("https://graph.facebook.com/me?access_token=$token")
+            val userMap: FbData = response.body
+            userStorage.currentFbData = userMap
+        }
+
+        return userStorage.currentFbData!!
     }
 
     private fun getInitSettingsAndSave(userId: String, token: String): UserSetting {

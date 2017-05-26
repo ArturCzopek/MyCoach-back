@@ -1,6 +1,5 @@
 package pl.arturczopek.mycoach.web.controller
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import pl.arturczopek.mycoach.model.database.User
 import pl.arturczopek.mycoach.service.UserService
+import pl.arturczopek.mycoach.service.UserStorage
 
 /**
  * @Author Artur Czopek
@@ -18,30 +18,26 @@ import pl.arturczopek.mycoach.service.UserService
  */
 @RestController
 @RequestMapping("/user")
-class UserController @Autowired constructor(val userService: UserService) {
+open class UserController(
+        val userService: UserService,
+        val userStorage: UserStorage) {
 
     @Value("\${my-coach.client-address}")
     var clientAddress: String = ""
 
     @GetMapping("/")
-    fun getUser(@RequestHeader("oauth_token") token: String): User {
-        var user: User? = userService.getFbUserByToken(token)
+    fun getUser(@RequestHeader("oauth_token") token: String): User? {
+        var user: User? = userService.getUserByFbToken(token)
 
         if (user == null) {
             userService.createUser(token)
         }
 
-        user = userService.getFbUserByToken(token)
+        user = userService.getUserByFbToken(token)
+        userStorage.currentUser = user
 
         return user
     }
-
-    @GetMapping("/create")
-    fun create(@RequestHeader("oauth_token") token: String): User {
-        userService.createUser(token)
-        return userService.getFbUserByToken(token)
-    }
-
 
     @GetMapping("/clientUrl")
     fun getClientUrl(): String {

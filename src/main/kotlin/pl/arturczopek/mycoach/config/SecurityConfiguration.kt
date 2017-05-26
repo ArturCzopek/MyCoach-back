@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
+import javax.servlet.Filter
 
 /**
  * @Author Artur Czopek
@@ -38,11 +39,12 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
                 .antMatcher("/**").authorizeRequests()
-                .antMatchers("/", "/index.html", "/login**", "/user/**", "/db-console/**").permitAll()
-//                .antMatchers("/**").permitAll()
+//                .antMatchers("/", "/index.html", "/login**", "/user/**", "/db-console/**", "/dictionary/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/"))
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("$clientAddress/logout")
+                .invalidateHttpSession(true).deleteCookies("oauth_token")
                 .and().csrf().disable().headers().frameOptions().disable()
     }
 
@@ -60,7 +62,7 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
             addAllowedMethod("*")
         }
         source.registerCorsConfiguration("/**", config)
-        val bean: FilterRegistrationBean = FilterRegistrationBean(CorsFilter(source))
+        val bean: FilterRegistrationBean = FilterRegistrationBean(CorsFilter(source) as Filter)
         bean.order = 0
         return bean
     }

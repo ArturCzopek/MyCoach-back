@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import pl.arturczopek.mycoach.exception.InvalidPropsException
+import pl.arturczopek.mycoach.exception.WrongPermissionException
 import java.io.IOException
 import javax.persistence.EntityNotFoundException
 import javax.servlet.http.HttpServletRequest
@@ -30,6 +31,10 @@ class GlobalExceptionHandler {
     @ExceptionHandler(IOException::class, InvalidPropsException::class)
     @ResponseBody
     fun duplicateKeyHandler(req: HttpServletRequest, ex: Exception) = getErrorMessage(req, ex, HttpStatus.NOT_ACCEPTABLE)
+
+    @ExceptionHandler(WrongPermissionException::class)
+    @ResponseBody
+    fun wrongPermissionHandler(req: HttpServletRequest, ex: Exception) = getErrorMessage(req, ex, HttpStatus.FORBIDDEN)
 
     private fun getErrorMessage(req: HttpServletRequest, ex: Exception, status: HttpStatus): ResponseEntity<ErrorMessage> {
         logger.error(req.method, req.requestURL.toString(), ex)

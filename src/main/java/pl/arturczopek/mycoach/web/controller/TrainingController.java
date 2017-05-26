@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.exception.InvalidPropsException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewExercise;
 import pl.arturczopek.mycoach.model.add.NewTraining;
 import pl.arturczopek.mycoach.model.database.Cycle;
 import pl.arturczopek.mycoach.model.database.Exercise;
 import pl.arturczopek.mycoach.model.database.Training;
+import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.model.request.dto.ExerciseForTrainingPreview;
 import pl.arturczopek.mycoach.model.request.dto.ExercisesWithTrainingToEdit;
@@ -44,23 +46,23 @@ public class TrainingController {
     }
 
     @GetMapping("/cycle/active")
-    public Cycle getActiveCycle() {
-        return cycleService.getActiveCycle();
+    public Cycle getActiveCycle(User user) {
+        return cycleService.getActiveCycle(user.getUserId());
     }
 
     @GetMapping("/cycle/previews")
-    public List<CyclePreview> getCyclePreviews() {
-        return cycleService.getCyclePreviews();
+    public List<CyclePreview> getCyclePreviews(User user) {
+        return cycleService.getCyclePreviews(user.getUserId());
     }
 
     @GetMapping("/cycle/finished")
-    public boolean hasUserEveryCycleFinished() {
-        return cycleService.hashUserEveryCycleFinished();
+    public boolean hasUserEveryCycleFinished(User user) {
+        return cycleService.hashUserEveryCycleFinished(user.getUserId());
     }
 
-    @GetMapping("/cycle/{id}")
-    public Cycle getCycleById(@PathVariable long id) {
-        return cycleService.getCycleById(id);
+    @GetMapping("/cycle/{cycleId}")
+    public Cycle getCycleById(@PathVariable long cycleId, User user) throws WrongPermissionException {
+        return cycleService.getCycleById(cycleId, user.getUserId());
     }
 
     @GetMapping("/exercise/{trainingId}")
@@ -70,8 +72,8 @@ public class TrainingController {
 
     @PostMapping("cycle/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added cycle")
-    public void addCycle(@RequestBody NewCycle cycle) throws InvalidPropsException {
-        cycleService.addCycle(cycle);
+    public void addCycle(@RequestBody NewCycle cycle, User user) throws InvalidPropsException {
+        cycleService.addCycle(cycle, user.getUserId());
     }
 
     @PostMapping("exercise/add")
@@ -88,8 +90,8 @@ public class TrainingController {
 
     @DeleteMapping("cycle/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed cycle")
-    public void deleteCycle(@RequestBody Cycle cycle) {
-        cycleService.deleteCycle(cycle);
+    public void deleteCycle(@RequestBody Cycle cycle, User user) throws WrongPermissionException {
+        cycleService.deleteCycle(cycle, user.getUserId());
     }
 
     @DeleteMapping("exercise/delete")
@@ -106,8 +108,8 @@ public class TrainingController {
 
     @PutMapping("cycle/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated cycle")
-    public void updateCycle(@RequestBody Cycle cycle) throws InvalidPropsException {
-        cycleService.updateCycle(cycle);
+    public void updateCycle(@RequestBody Cycle cycle, User user) throws InvalidPropsException, WrongPermissionException {
+        cycleService.updateCycle(cycle, user.getUserId());
     }
 
     @PutMapping("exercise/update")
