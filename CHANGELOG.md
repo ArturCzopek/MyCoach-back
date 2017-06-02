@@ -1,3 +1,14 @@
+## 1.1.0 (02-06-2017)
+
+#### Features
+- added whole security system. Now you can logged in by your facebook. Everyone has personalised data
+- added cache system for backend. For now, every request will be even faster!
+
+#### Bug fixes
+- fixed proper displaying prices
+- fixed adding cycles from empty list
+
+
 ## 1.0.1 (13-05-2017)
 
 ##### Features
