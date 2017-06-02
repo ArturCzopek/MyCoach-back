@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.arturczopek.mycoach.exception.InvalidImageExtension;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
+import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.service.ProductService;
 
 import javax.servlet.ServletOutputStream;
@@ -32,8 +34,8 @@ public class ImagesController {
     }
 
     @GetMapping(value = "/product/{productId}", produces = "image/jpeg")
-    public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response) throws IOException {
-        byte[] productPhoto = productService.getProductPhoto(productId);
+    public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response, User user) throws IOException, WrongPermissionException {
+        byte[] productPhoto = productService.getProductPhoto(productId, user.getUserId());
 
         HttpServletResponse configuredResponse = getResponseParams(response);
 
@@ -44,8 +46,8 @@ public class ImagesController {
     }
 
     @PostMapping("/product/upload")
-    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId) throws IOException, InvalidImageExtension {
-        Long updatedProductId = productService.uploadPhoto(file, productId);
+    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId, User user) throws IOException, InvalidImageExtension {
+        Long updatedProductId = productService.uploadPhoto(file, productId, user.getUserId());
         return ResponseEntity.ok(updatedProductId);
     }
 

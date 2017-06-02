@@ -133,6 +133,7 @@ page.trainings.cycle.notActive.tooltip;You have to own active cycle!;2
 page.trainings.cycle.finished;Finished;2
 page.trainings.cycle.error.cannotActivate.message;You cannot activate another cycle;2
 page.trainings.cycle.error.coveringDates.message;Dates shouldn't cover other cycles;2
+page.trainings.cycle.error.earlyEndDate.message;End date cannot be earlier than any training date!;2
 page.trainings.cycle.error.invalidDates;Start date must be later than last end date!;2
 page.trainings.cycle.error.invalidSetNames.message;Set names must be different!;2
 page.trainings.cycle.isFinished;Cycle is finished;2

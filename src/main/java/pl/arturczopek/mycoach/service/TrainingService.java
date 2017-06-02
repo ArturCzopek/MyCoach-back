@@ -1,8 +1,11 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewSeries;
 import pl.arturczopek.mycoach.model.add.NewTraining;
 import pl.arturczopek.mycoach.model.database.*;
@@ -48,10 +51,21 @@ public class TrainingService {
     }
 
     @Transactional
-    public void addTraining(NewTraining newTraining) throws InvalidDateException {
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
+    public void addTraining(NewTraining newTraining, long userId) throws InvalidDateException, WrongPermissionException {
 
         if (!isNewTrainingDateCorrect(newTraining.getTrainingDate(), newTraining.getSetId())) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message", userId).getValue());
+        }
+
+        Set set = setRepository.findOne(newTraining.getSetId());
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         Training training = new Training();
@@ -59,8 +73,6 @@ public class TrainingService {
         training.setTrainingDate(newTraining.getTrainingDate());
 
         trainingRepository.save(training);
-
-        Set set = setRepository.findOne(newTraining.getSetId());
 
         for (int i = 0; i < newTraining.getExerciseSessions().size(); i++) {
             List<ExerciseSession> sessions = new LinkedList<>();
@@ -95,9 +107,15 @@ public class TrainingService {
     }
 
     @Transactional
-    public List<ExerciseForTrainingPreview> findExercisesByTrainingId(long trainingId) {
+    public List<ExerciseForTrainingPreview> findExercisesByTrainingId(long trainingId, long userId) throws WrongPermissionException {
         Training training = trainingRepository.findOne(trainingId);
         Set set = setRepository.findOneByTrainingsContains(training);
+
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
 
         List<ExerciseForTrainingPreview> exercisesWithSessionsForTraining = new LinkedList<>();
 
@@ -122,9 +140,18 @@ public class TrainingService {
         return exercisesWithSessionsForTraining;
     }
 
-    public void deleteTraining(Training training) {
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
+    public void deleteTraining(Training training, long userId) throws WrongPermissionException {
 
         Set set = setRepository.findOneByTrainingsContains(training);
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
 
         for (int i = 0; i < set.getTrainings().size(); i++) {
             if (set.getTrainings().get(i).getTrainingId() == training.getTrainingId()) {
@@ -141,17 +168,27 @@ public class TrainingService {
         trainingRepository.delete(training.getTrainingId());
     }
 
-    public void updateTraining(Training training, List<Exercise> exercises) throws InvalidDateException {
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
+    public void updateTraining(Training training, List<Exercise> exercises, long userId) throws InvalidDateException, WrongPermissionException {
 
         if (!isUpdateTrainingDateCorrect(training.getTrainingDate(), training.getSetId(), training.getTrainingId())) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.training.error.invalidDate.message", userId).getValue());
+        }
+
+        Set set = setRepository.findOneByTrainingsContains(training);
+
+        Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         Training trainingToUpdate = trainingRepository.findOne(training.getTrainingId());
         trainingToUpdate.setTrainingDate(training.getTrainingDate());
         trainingRepository.save(training);
-
-        Set set = setRepository.findOneByTrainingsContains(training);
 
         int trainingIndex = findTrainingIndex(training, set);
 
@@ -179,7 +216,6 @@ public class TrainingService {
                             .filter(series -> idsForLeftSeries.contains(series.getSeriesId()))
                             .collect(Collectors.toList())
             );
-
 
             exerciseRepository.save(exerciseToUpdate);
         }
@@ -221,7 +257,6 @@ public class TrainingService {
         }
         return trainingIndex;
     }
-
 
     private boolean isNewTrainingDateCorrect(Date trainingDate, long setId) {
         Set set = setRepository.findOne(setId);

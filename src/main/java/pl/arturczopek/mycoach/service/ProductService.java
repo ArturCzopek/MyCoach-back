@@ -4,16 +4,21 @@ import lombok.Setter;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.exception.InvalidImageExtension;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewProduct;
 import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.repository.PriceRepository;
 import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,16 +58,18 @@ public class ProductService {
         this.dictionaryService = dictionaryService;
     }
 
-    public List<Product> getProductPreviews() {
-        List<Product> products = productRepository.findValidProducts(tmpProductSign, editedProductSignSuffix + "%");
+    @Cacheable(value = "productPreviews", key = "#userId")
+    public List<Product> getProductPreviews(long userId) {
+        List<Product> products = productRepository.findValidProducts(tmpProductSign, editedProductSignSuffix + "%", userId);
         products.forEach((Product product) -> product.countAveragePrice());
         return products;
     }
 
-    public void addProduct(NewProduct productToAdd) throws DuplicatedNameException {
+    @CacheEvict(value = "productPreviews", key = "#userId")
+    public void addProduct(NewProduct productToAdd, long userId) throws DuplicatedNameException {
 
-        if (!isNewProductNameValid(productToAdd.getProductName())) {
-            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message").getValue());
+        if (!isNewProductNameValid(productToAdd.getProductName(), userId)) {
+            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message", userId).getValue());
         }
 
         Product product;
@@ -76,13 +83,14 @@ public class ProductService {
         }
 
         product.setProductName(productToAdd.getProductName());
+        product.setUserId(userId);
 
         productRepository.save(product);
     }
 
-    public Long uploadPhoto(MultipartFile file, long productId) throws IOException, InvalidImageExtension {
+    public Long uploadPhoto(MultipartFile file, long productId, long userId) throws IOException, InvalidImageExtension {
         if (!("image/" + imageExtension).equalsIgnoreCase(file.getContentType())) {
-            throw new InvalidImageExtension(dictionaryService.translate("page.prices.product.error.wrongImageExtension.message").getValue());
+            throw new InvalidImageExtension(dictionaryService.translate("page.prices.product.error.wrongImageExtension.message", userId).getValue());
         }
 
         final ByteArrayOutputStream productPhotoOutputStream = new ByteArrayOutputStream();
@@ -99,36 +107,28 @@ public class ProductService {
         // Copy file will be when user want to really update photo
 
         if (productId > 0) {
-            product = getProperSpecialProductWithImage(editedProductSignSuffix + productId, product);
+            product = getProperSpecialProductWithImage(editedProductSignSuffix + productId, product, userId);
         } else {
-            product = getProperSpecialProductWithImage(tmpProductSign, product);
+            product = getProperSpecialProductWithImage(tmpProductSign, product, userId);
         }
 
         product.setScreen(productPhotoOutputStream.toByteArray());
+        product.setUserId(userId);
         productRepository.save(product);
 
         return product.getProductId();
     }
 
-    private Product getProperSpecialProductWithImage(String name, Product product) {
-        Product tmpProduct = productRepository.findOneByProductNameIgnoreCase(name);
-        Product productToReturn;
-
-        if (tmpProduct != null) {
-            productToReturn = tmpProduct;
-        } else {
-            productToReturn = product;
-            productToReturn.setProductName(name);
-        }
-
-        return productToReturn;
-    }
-
-    public byte[] getProductPhoto(long productId) throws IOException {
+    @Cacheable(value = "productPhoto", key ="#userId + ' ' + #productId")
+    public byte[] getProductPhoto(long productId, long userId) throws IOException, WrongPermissionException {
         Product product = productRepository.findOne(productId);
 
         if (product == null) {
             return new byte[]{};
+        }
+
+        if (product.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         if (product.getScreen() == null) {
@@ -146,15 +146,34 @@ public class ProductService {
         return product.getScreen();
     }
 
-    public void deleteProduct(Product product) {
+    @Caching(evict = {
+        @CacheEvict(value = "productPhoto", key ="#userId + ' ' + #productId"),
+        @CacheEvict(value = "productPreviews", key = "#userId")
+    })
+    @Transactional
+    public void deleteProduct(long productId, long userId) throws WrongPermissionException {
+        Product product = productRepository.findOne(productId);
+
+        if (product.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
         priceRepository.deleteByProductIdOrderByPriceDate(product.getProductId());
         productRepository.delete(product.getProductId());
     }
 
-    public void updateProduct(Product product) throws DuplicatedNameException {
+    @Caching(evict = {
+            @CacheEvict(value = "productPhoto", key ="#userId + ' ' + #productId"),
+            @CacheEvict(value = "productPreviews", key = "#userId")
+    })
+    public void updateProduct(Product product, long userId) throws DuplicatedNameException, WrongPermissionException {
 
-        if (!isUpdateProductNameValid(product.getProductName(), product.getProductId())) {
-            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message").getValue());
+        if (product.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
+        if (!isUpdateProductNameValid(product.getProductName(), product.getProductId(), userId)) {
+            throw new DuplicatedNameException(dictionaryService.translate("page.prices.product.error.duplicateName.message", userId).getValue());
         }
 
         Product productToUpdate = productRepository.findOne(product.getProductId());
@@ -162,7 +181,7 @@ public class ProductService {
 
         String editProductName = editedProductSignSuffix + product.getProductId();
 
-        Product productWithUpdatedImage = productRepository.findOneByProductNameIgnoreCase(editProductName);
+        Product productWithUpdatedImage = productRepository.findOneByProductNameIgnoreCaseAndUserId(editProductName, userId);
 
         if (productWithUpdatedImage != null) {
             productToUpdate.setScreen(productWithUpdatedImage.getScreen());
@@ -172,15 +191,29 @@ public class ProductService {
         productRepository.save(productToUpdate);
     }
 
-    public boolean isNewProductNameValid(String productName) {
-        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCase(productName.trim());
+    public boolean isNewProductNameValid(String productName, long userId) {
+        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCaseAndUserId(productName.trim(), userId);
 
         return duplicatedProduct == null;
     }
 
-    public boolean isUpdateProductNameValid(String productName, long productId) {
-        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCaseAndProductIdNot(productName.trim(), productId);
+    public boolean isUpdateProductNameValid(String productName, long productId, long userId) {
+        Product duplicatedProduct = productRepository.findOneByProductNameIgnoreCaseAndUserIdAndProductIdNot(productName.trim(), productId, userId);
 
         return duplicatedProduct == null;
+    }
+
+    private Product getProperSpecialProductWithImage(String name, Product product, long userId) {
+        Product tmpProduct = productRepository.findOneByProductNameIgnoreCaseAndUserId(name, userId);
+        Product productToReturn;
+
+        if (tmpProduct != null) {
+            productToReturn = tmpProduct;
+        } else {
+            productToReturn = product;
+            productToReturn.setProductName(name);
+        }
+
+        return productToReturn;
     }
 }

@@ -1,0 +1,9 @@
+DCT_KEY;DCT_VAL;DCT_LNG_ID
+global.error.wrongPermission.message;You don't have permission to do it!;2
+navbar.admin.label;Admin panel;2
+navbar.logout.label;Log out;2
+navbar.settings.label;Settings;2
+page.login.button.label;Log in;2
+page.login.hello.label;Hello;2
+page.login.goToApp.button.label;Go to application;2
+page.logout.info;You have been logout;2

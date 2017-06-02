@@ -1,8 +1,11 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewWeight;
 import pl.arturczopek.mycoach.model.database.Weight;
 import pl.arturczopek.mycoach.model.preview.WeightsPreview;
@@ -31,8 +34,9 @@ public class WeightService {
         this.dictionaryService = dictionaryService;
     }
 
-    public List<WeightsPreview> getWeightPreviews() {
-        List<Weight> weights = weightRepository.findAllByOrderByMeasurementDateDesc();
+    @Cacheable(value = "weightPreviews", key = "#userId")
+    public List<WeightsPreview> getWeightPreviews(long userId) {
+        List<Weight> weights = weightRepository.findAllByUserIdOrderByMeasurementDateDesc(userId);
 
         Set<WeightsPreview> dates = new HashSet<>();
 
@@ -58,18 +62,19 @@ public class WeightService {
         return new LinkedList<>(dates);
     }
 
-    public List<Weight> getWeightsByYearAndMonth(int year, int month) {
-
+    @Cacheable(value = "weightGrouped", key = "#userId + ' ' + #year + ' ' + #month")
+    public List<Weight> getWeightsByYearAndMonth(int year, int month, long userId) {
         LocalDate startDate = dateService.buildFirstMonthDay(year, month);
         LocalDate endDate = dateService.getLastDayOfTheMonth(startDate);
 
-        return weightRepository.findByMeasurementDateBetweenOrderByMeasurementDate(Date.valueOf(startDate), Date.valueOf(endDate));
+        return weightRepository.findByUserIdAndMeasurementDateBetweenOrderByMeasurementDate(userId, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
-    public void addWeight(NewWeight weightToAdd) throws InvalidDateException {
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
+    public void addWeight(NewWeight weightToAdd, long userId) throws InvalidDateException {
 
         if (!isNewMeasurementDateValid(weightToAdd.getMeasurementDate())) {
-            throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message", userId).getValue());
         }
 
         Weight weight = new Weight();
@@ -81,22 +86,43 @@ public class WeightService {
             weight.setMeasurementDate(dateService.getCurrentDate());
         }
 
+        weight.setUserId(userId);
         weightRepository.save(weight);
     }
 
-    public void deleteWeights(List<Weight> weights) {
-        weights.forEach((Weight weight) -> weightRepository.delete(weight.getWeightId()));
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
+    public void deleteWeights(List<Weight> weights, long userId) throws WrongPermissionException {
+        for (Weight weight : weights) {
+            Long weightId = weight.getWeightId();
+            Weight weightFromDb = weightRepository.findOne(weightId);
+
+            if (weightFromDb.getUserId() != userId) {
+                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+            }
+
+            weightRepository.delete(weightFromDb.getWeightId());
+        }
     }
 
-    public void updateWeights(List<Weight> weights) throws InvalidDateException {
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
+    public void updateWeights(List<Weight> weights, long userId) throws InvalidDateException, WrongPermissionException {
         for (Weight weight : weights) {
             if (!isUpdateMeasurementDateValid(weight.getMeasurementDate(), weight.getWeightId())) {
-                throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+                throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message", userId).getValue());
             }
         }
 
         for (Weight weight : weights) {
-            weightRepository.save(weight);
+            Weight weightFromDb = weightRepository.findOne(weight.getWeightId());
+
+            if (weightFromDb.getUserId() != userId) {
+                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+            }
+
+            weightFromDb.setMeasurementDate(weight.getMeasurementDate());
+            weightFromDb.setValue(weight.getValue());
+
+            weightRepository.save(weightFromDb);
         }
     }
 

@@ -2,9 +2,9 @@ package pl.arturczopek.mycoach.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.service.DictionaryService;
 
 import java.util.Map;
@@ -25,8 +25,8 @@ public class DictionaryController {
         this.dictionaryService = dictionaryService;
     }
 
-    @GetMapping("/{userId}")
-    public Map<String, String> getDictionary(@PathVariable long userId) {
-        return dictionaryService.getDictionary(userId);
+    @GetMapping("/")
+    public Map<String, String> getDictionary(User user) {
+        return dictionaryService.getDictionary(user);
     }
 }

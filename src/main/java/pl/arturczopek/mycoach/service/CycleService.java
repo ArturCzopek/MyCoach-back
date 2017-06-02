@@ -1,11 +1,11 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
-import pl.arturczopek.mycoach.exception.DuplicatedNameException;
-import pl.arturczopek.mycoach.exception.InvalidDateException;
-import pl.arturczopek.mycoach.exception.InvalidFlowException;
-import pl.arturczopek.mycoach.exception.InvalidPropsException;
+import pl.arturczopek.mycoach.exception.*;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewSet;
 import pl.arturczopek.mycoach.model.database.*;
@@ -50,20 +50,28 @@ public class CycleService {
         this.dictionaryService = dictionaryService;
     }
 
-    public Cycle getActiveCycle() {
-        return cycleRepository.findOneByIsFinishedFalse();
+    @Cacheable(value = "activeCycle", key = "#userId")
+    public Cycle getActiveCycle(long userId) {
+        return cycleRepository.findOneByUserIdAndIsFinishedFalse(userId);
     }
 
-    public List<CyclePreview> getCyclePreviews() {
-        List<Cycle> cycles = cycleRepository.findAllByOrderByIsFinishedDescEndDateAsc();
+    @Cacheable(value = "cyclePreviews", key = "#userId")
+    public List<CyclePreview> getCyclePreviews(long userId) {
+        List<Cycle> cycles = cycleRepository.findAllByUserIdOrderByIsFinishedDescEndDateAsc(userId);
 
         return cycles
                 .stream().map(CyclePreview::buildFromCycle)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public Cycle getCycleById(long id) {
-        Cycle cycle = cycleRepository.findOne(id);
+    @Cacheable(value = "cycle", key = "#userId + ' ' + #cycleId")
+    public Cycle getCycleById(long cycleId, long userId) throws WrongPermissionException {
+        Cycle cycle = cycleRepository.findOne(cycleId);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
         for (Set set : cycle.getSets()) {
             List<Training> nonSortedTrainings = set.getTrainings();
             List<Training> sortedTrainings = new ArrayList<>(nonSortedTrainings);
@@ -93,23 +101,27 @@ public class CycleService {
         return cycle;
     }
 
-    public boolean hashUserEveryCycleFinished() {
-        return cycleRepository.countByIsFinishedFalse() == 0;
+    public boolean hashUserEveryCycleFinished(long userId) {
+        return cycleRepository.countByUserIdAndIsFinishedFalse(userId) == 0;
     }
 
     @Transactional
-    public void addCycle(NewCycle newCycle) throws InvalidPropsException {
+    @Caching(evict = {
+            @CacheEvict(value = "cyclePreviews", key = "#userId"),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
+    public void addCycle(NewCycle newCycle, long userId) throws InvalidPropsException {
 
-        if (!isNewCycleDateValid(newCycle)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message").getValue());
+        if (!isNewCycleDateValid(newCycle, userId)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message", userId).getValue());
         }
 
         if (!areNewSetsNamesValid(newCycle.getSets())) {
-            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message").getValue());
+            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message", userId).getValue());
         }
 
-        if (!canCycleBeActive()) {
-            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+        if (!canCycleBeActive(userId)) {
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message", userId).getValue());
         }
 
         Cycle cycle = new Cycle();
@@ -122,6 +134,7 @@ public class CycleService {
 
         cycle.setEndDate(null);
 
+        cycle.setUserId(userId);
         cycleRepository.save(cycle);
 
         List<Set> sets = new LinkedList<>();
@@ -137,9 +150,20 @@ public class CycleService {
         cycleRepository.save(cycle);
     }
 
-    public void deleteCycle(Cycle cycle) {
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", key = "#userId + ' ' + #cycle.cycleId"),
+            @CacheEvict(value = "cyclePreviews", key = "#userId"),
+            @CacheEvict(value = "activeCycle", key = "#userId"),
+    })
+    public void deleteCycle(Cycle cycle, long userId) throws WrongPermissionException {
 
-        cycle.getSets().forEach((Set set) -> {
+        Cycle cycleFromDb = cycleRepository.findOne(cycle.getCycleId());
+
+        if (cycleFromDb.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
+        cycleFromDb.getSets().forEach((Set set) -> {
             set.getTrainings().forEach((Training training) -> trainingRepository.delete(training.getTrainingId()));
 
             set.getExercises().forEach((Exercise exercise) -> {
@@ -153,38 +177,48 @@ public class CycleService {
             setRepository.delete(set.getSetId());
         });
 
-        cycleRepository.delete(cycle.getCycleId());
+        cycleRepository.delete(cycleFromDb.getCycleId());
     }
 
-    public void updateCycle(Cycle cycle) throws InvalidPropsException {
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", key = "#userId + ' ' + #cycle.cycleId"),
+            @CacheEvict(value = "cyclePreviews", key = "#userId"),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
+    public void updateCycle(Cycle cycle, long userId) throws InvalidPropsException, WrongPermissionException {
 
-        if (!isCycleToUpdateDateValid(cycle)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
+        Cycle cycleFromDb = cycleRepository.findOne(cycle.getCycleId());
+
+        if (cycleFromDb.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
-        
-        if (!isCycleToCloseDateValid(cycle)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message").getValue());
+
+        if (!isCycleToUpdateDateValid(cycle, userId)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message", userId).getValue());
+        }
+
+        if (cycle.isFinished() && !isCycleToCloseDateValid(cycle)) {
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message", userId).getValue());
         }
 
         // if we want to active cycle we need to make sure if there is any active cycle
-        if (!cycle.isFinished() && !canCycleBeActive()) {
-            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+        if (!cycle.isFinished() && !canCycleBeActive(userId)) {
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message", userId).getValue());
         }
 
-        Cycle cycleToEdit = cycleRepository.findOne(cycle.getCycleId());
-        cycleToEdit.setStartDate(cycle.getStartDate());
+        cycleFromDb.setStartDate(cycle.getStartDate());
 
-        cycleToEdit.setFinished(cycle.isFinished());
+        cycleFromDb.setFinished(cycle.isFinished());
 
         if (cycle.isFinished() && cycle.getEndDate() != null) {
-            cycleToEdit.setEndDate(cycle.getEndDate());
+            cycleFromDb.setEndDate(cycle.getEndDate());
         } else if (cycle.isFinished()) {
-            cycleToEdit.setEndDate(dateService.getCurrentDate());
+            cycleFromDb.setEndDate(dateService.getCurrentDate());
         } else {
-            cycleToEdit.setEndDate(null);
+            cycleFromDb.setEndDate(null);
         }
 
-        cycleRepository.save(cycleToEdit);
+        cycleRepository.save(cycleFromDb);
     }
 
     private int trainingsCompare(Training t1, Training t2) {
@@ -203,8 +237,8 @@ public class CycleService {
                 .noneMatch(lastTraining -> lastTraining.getTrainingDate().toLocalDate().isAfter(cycle.getEndDate().toLocalDate()));
     }
 
-    private boolean isNewCycleDateValid(NewCycle newCycle) {
-        Cycle cycleFromDb = cycleRepository.findFirstByOrderByEndDateDesc();
+    private boolean isNewCycleDateValid(NewCycle newCycle, long userId) {
+        Cycle cycleFromDb = cycleRepository.findFirstByUserIdOrderByEndDateDesc(userId);
 
         if (cycleFromDb == null) {
             return true;
@@ -217,32 +251,24 @@ public class CycleService {
         LocalDate cycleStartDate = newCycle.getStartDate().toLocalDate();
         LocalDate cycleFromDbEndDate = cycleFromDb.getEndDate().toLocalDate();
 
-        if (cycleStartDate.equals(cycleFromDbEndDate)) {
-            return false;
-        }
-
-        return true;
+        return !cycleStartDate.equals(cycleFromDbEndDate);
     }
 
-    private boolean canCycleBeActive() {
-        Cycle currentActiveCycle = getActiveCycle();
+    private boolean canCycleBeActive(long userId) {
+        Cycle currentActiveCycle = getActiveCycle(userId);
 
-        if (currentActiveCycle != null) {
-            return false;
-        }
-
-        return true;
+        return currentActiveCycle == null;
     }
 
-    private boolean isCycleToUpdateDateValid(Cycle updateCycle) {
+    private boolean isCycleToUpdateDateValid(Cycle updateCycle, long userId) {
 
         Cycle currentCycle = cycleRepository.findOne(updateCycle.getCycleId());
 
-        Cycle currentPreviousCycle = cycleRepository.findFirstByEndDateBeforeOrderByEndDateDesc(currentCycle.getStartDate());
+        Cycle currentPreviousCycle = cycleRepository.findFirstByUserIdAndEndDateBeforeOrderByEndDateDesc(userId, currentCycle.getStartDate());
         Cycle currentNextCycle = null;
 
         if (currentCycle.getEndDate() != null) {
-            currentNextCycle = cycleRepository.findFirstByStartDateAfterOrderByStartDate(currentCycle.getEndDate());
+            currentNextCycle = cycleRepository.findFirstByUserIdAndStartDateAfterOrderByStartDate(userId, currentCycle.getEndDate());
         }
 
         // it's first cycle, we can set dates as we want
@@ -252,10 +278,10 @@ public class CycleService {
 
         // new next/previous cycles should be the same, otherwise we would have covering dates or swap cycles, but for now it
         // is not handled
-        Cycle newPreviousCycle = cycleRepository.findFirstByEndDateBeforeOrderByEndDateDesc(updateCycle.getStartDate());
+        Cycle newPreviousCycle = cycleRepository.findFirstByUserIdAndEndDateBeforeOrderByEndDateDesc(userId, updateCycle.getStartDate());
 
         if ((currentPreviousCycle == null && newPreviousCycle != null) ||
-            (currentPreviousCycle != null && newPreviousCycle == null)
+                (currentPreviousCycle != null && newPreviousCycle == null)
                 ) {
             return false;
         }
@@ -268,7 +294,7 @@ public class CycleService {
         Cycle newNextCycle = null;
 
         if (updateCycle.getEndDate() != null) {
-            newNextCycle = cycleRepository.findFirstByStartDateAfterOrderByStartDate(updateCycle.getEndDate());
+            newNextCycle = cycleRepository.findFirstByUserIdAndStartDateAfterOrderByStartDate(userId, updateCycle.getEndDate());
         }
 
         if (currentNextCycle != null && newNextCycle != null && currentNextCycle.getCycleId() != newNextCycle.getCycleId()) {
