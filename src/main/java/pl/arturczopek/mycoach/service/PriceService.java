@@ -44,7 +44,7 @@ public class PriceService {
             throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
-        return product.getPrices();
+        return priceRepository.findByProductIdOrderByPriceDateAsc(productId);
     }
 
     @CacheEvict(value = "prices", key = "#userId + ' ' + #newPrice.productId")
