@@ -2,6 +2,7 @@ package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.exception.WrongPermissionException;
@@ -44,7 +45,10 @@ public class ExerciseService {
     }
 
     @Transactional
-    @CacheEvict(value = "cycle", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key ="#userId")
+    })
     public void addExercises(List<NewExercise> exercises, long userId) throws DuplicatedNameException, WrongPermissionException {
 
         for (NewExercise newExercise : exercises) {
@@ -87,7 +91,10 @@ public class ExerciseService {
         }
     }
 
-    @CacheEvict(value = "cycle", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key ="#userId")
+    })
     public void deleteExercise(Exercise exercise, long userId) throws WrongPermissionException {
 
         Set setWithExercise = setRepository.findOne(exercise.getSetId());
@@ -112,7 +119,10 @@ public class ExerciseService {
     }
 
     @Transactional
-    @CacheEvict(value = "cycle", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "cycle", allEntries = true),
+            @CacheEvict(value = "activeCycle", key ="#userId")
+    })
     public void updateExercise(Exercise exercise, long userId) throws DuplicatedNameException, WrongPermissionException {
 
         if (!isUpdateExerciseNameCorrect(exercise.getExerciseName(), exercise.getSetId(), exercise.getExerciseId())) {
