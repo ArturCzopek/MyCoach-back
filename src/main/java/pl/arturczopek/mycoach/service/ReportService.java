@@ -44,7 +44,7 @@ public class ReportService {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    @Cacheable(value = "report", key = "#reportId")
+    @Cacheable(value = "report", key = "#userId + ' ' + #reportId")
     public Report getReportById(long reportId, long userId) throws WrongPermissionException {
         Report report = reportRepository.findOne(reportId);
 
@@ -78,7 +78,7 @@ public class ReportService {
 
     @Caching(evict = {
             @CacheEvict(value = "reportPreviews", key = "#userId"),
-            @CacheEvict(value = "report", key = "#report.reportId")
+            @CacheEvict(value = "report", key = "#userId + ' ' + #report.reportId")
     })
     public void updateReport(Report report, long userId) throws InvalidDateException, WrongPermissionException {
 
@@ -86,7 +86,17 @@ public class ReportService {
             throw new InvalidDateException(dictionaryService.translate("page.reports.error.invalidDate.message", userId).getValue());
         }
 
-        reportRepository.save(report);
+        Report reportFromDb = reportRepository.findOne(report.getReportId());
+
+        if (reportFromDb.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
+        reportFromDb.setContent(report.getContent());
+        reportFromDb.setStartDate(report.getStartDate());
+        reportFromDb.setEndDate(report.getEndDate());
+
+        reportRepository.save(reportFromDb);
     }
 
     @Caching(evict = {

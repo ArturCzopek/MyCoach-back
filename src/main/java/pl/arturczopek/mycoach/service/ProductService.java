@@ -18,6 +18,7 @@ import pl.arturczopek.mycoach.repository.PriceRepository;
 import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -118,7 +119,7 @@ public class ProductService {
         return product.getProductId();
     }
 
-    @Cacheable(value = "productPhoto", key ="#productId")
+    @Cacheable(value = "productPhoto", key ="#userId + ' ' + #productId")
     public byte[] getProductPhoto(long productId, long userId) throws IOException, WrongPermissionException {
         Product product = productRepository.findOne(productId);
 
@@ -146,9 +147,10 @@ public class ProductService {
     }
 
     @Caching(evict = {
-        @CacheEvict(value = "productPhoto", key ="#productId"),
+        @CacheEvict(value = "productPhoto", key ="#userId + ' ' + #productId"),
         @CacheEvict(value = "productPreviews", key = "#userId")
     })
+    @Transactional
     public void deleteProduct(long productId, long userId) throws WrongPermissionException {
         Product product = productRepository.findOne(productId);
 
@@ -161,7 +163,7 @@ public class ProductService {
     }
 
     @Caching(evict = {
-            @CacheEvict(value = "productPhoto", key ="#productId"),
+            @CacheEvict(value = "productPhoto", key ="#userId + ' ' + #productId"),
             @CacheEvict(value = "productPreviews", key = "#userId")
     })
     public void updateProduct(Product product, long userId) throws DuplicatedNameException, WrongPermissionException {

@@ -64,7 +64,7 @@ public class CycleService {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    @Cacheable(value = "cycle", key = "#cycleId")
+    @Cacheable(value = "cycle", key = "#userId + #cycleId")
     public Cycle getCycleById(long cycleId, long userId) throws WrongPermissionException {
         Cycle cycle = cycleRepository.findOne(cycleId);
 
@@ -106,7 +106,10 @@ public class CycleService {
     }
 
     @Transactional
-    @CacheEvict(value = {"cyclePreviews", "activeCycle"}, key = "#userId")
+    @Caching(evict = {
+            @CacheEvict(value = "cyclePreviews", key = "#userId"),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
     public void addCycle(NewCycle newCycle, long userId) throws InvalidPropsException {
 
         if (!isNewCycleDateValid(newCycle, userId)) {
@@ -148,7 +151,7 @@ public class CycleService {
     }
 
     @Caching(evict = {
-            @CacheEvict(value = "cycle", key = "#cycle.cycleId"),
+            @CacheEvict(value = "cycle", key = "#userId + #cycle.cycleId"),
             @CacheEvict(value = "cyclePreviews", key = "#userId")
     })
     public void deleteCycle(Cycle cycle, long userId) throws WrongPermissionException {
@@ -176,7 +179,10 @@ public class CycleService {
         cycleRepository.delete(cycleFromDb.getCycleId());
     }
 
-    @CacheEvict(value = {"cyclePreviews", "activeCycle"}, key = "#userId")
+    @Caching(evict = {
+            @CacheEvict(value = "cyclePreviews", key = "#userId + #cycle.cycleId"),
+            @CacheEvict(value = "activeCycle", key = "#userId")
+    })
     public void updateCycle(Cycle cycle, long userId) throws InvalidPropsException, WrongPermissionException {
 
         Cycle cycleFromDb = cycleRepository.findOne(cycle.getCycleId());

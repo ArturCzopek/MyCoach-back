@@ -16,7 +16,11 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     @Override
     List<Product> findAll();
 
-    @Query("select p from Product p where userId = :userId and UPPER(p.productName) not like upper(:tmpProduct) and upper(p.productName) not like upper(:editedProduct) order by p.productName desc")
+    @Query("select p from Product p where " +
+            "p.userId = :userId " +
+            "and UPPER(p.productName) not like UPPER(:tmpProduct) " +
+            "and UPPER(p.productName) not like UPPER(:editedProduct) " +
+            "order by p.productName desc")
     List<Product> findValidProducts(@Param("tmpProduct") String tmpProduct, @Param("editedProduct") String editedProduct, @Param("userId") long userId);
 
     Product findOneByProductNameIgnoreCaseAndUserId(String productName, long userId);

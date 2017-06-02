@@ -35,7 +35,7 @@ public class ReportController {
         return reportService.getReportPreviews(user.getUserId());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{reportId}")
     public Report getReportDetails(@PathVariable long reportId, User user) throws WrongPermissionException {
         return reportService.getReportById(reportId, user.getUserId());
     }

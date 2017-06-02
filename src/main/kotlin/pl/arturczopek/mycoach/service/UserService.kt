@@ -52,13 +52,13 @@ open class UserService(
 
     private fun getUserFbData(token: String): FbData? {
 
-        if (userStorage.currentFbData == null) {
+        if (userStorage.currentFbData == null && !token.isNullOrBlank()) {
             val response = createRequest("https://graph.facebook.com/me?access_token=$token")
             val userMap: FbData = response.body
             userStorage.currentFbData = userMap
         }
 
-        return userStorage.currentFbData!!
+        return userStorage.currentFbData
     }
 
     private fun getInitSettingsAndSave(userId: String, token: String): UserSetting {

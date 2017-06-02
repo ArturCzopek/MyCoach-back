@@ -1,5 +1,7 @@
 DCT_KEY;DCT_VAL;DCT_LNG_ID
 global.error.wrongPermission.message;Nie masz uprawnień do tej akcji!;1
+navbar.logout.label;Wyloguj się;1
+navbar.settings.label;Ustawienia;1
 page.login.button.label;Zaloguj się;1
 page.login.hello.label;Witaj;1
 page.login.goToApp.button.label;Przejdź do aplikacji;1

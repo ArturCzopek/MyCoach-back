@@ -62,7 +62,7 @@ public class WeightService {
         return new LinkedList<>(dates);
     }
 
-    @Cacheable(value = "weightGrouped", key = "#userId")
+    @Cacheable(value = "weightGrouped", key = "#userId + ' ' + #year + ' ' + #month")
     public List<Weight> getWeightsByYearAndMonth(int year, int month, long userId) {
         LocalDate startDate = dateService.buildFirstMonthDay(year, month);
         LocalDate endDate = dateService.getLastDayOfTheMonth(startDate);
@@ -70,7 +70,7 @@ public class WeightService {
         return weightRepository.findByUserIdAndMeasurementDateBetweenOrderByMeasurementDate(userId, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
-    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, key = "#userId")
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
     public void addWeight(NewWeight weightToAdd, long userId) throws InvalidDateException {
 
         if (!isNewMeasurementDateValid(weightToAdd.getMeasurementDate())) {
@@ -90,7 +90,7 @@ public class WeightService {
         weightRepository.save(weight);
     }
 
-    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, key = "#userId")
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
     public void deleteWeights(List<Weight> weights, long userId) throws WrongPermissionException {
         for (Weight weight : weights) {
             Long weightId = weight.getWeightId();
@@ -104,7 +104,7 @@ public class WeightService {
         }
     }
 
-    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, key = "#userId")
+    @CacheEvict(value = {"weightPreviews", "weightGrouped"}, allEntries = true)
     public void updateWeights(List<Weight> weights, long userId) throws InvalidDateException, WrongPermissionException {
         for (Weight weight : weights) {
             if (!isUpdateMeasurementDateValid(weight.getMeasurementDate(), weight.getWeightId())) {

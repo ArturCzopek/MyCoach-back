@@ -34,7 +34,7 @@ public class DictionaryService {
 
     @Cacheable(value = "dictionary", key = "#user.userId")
     public Map<String, String> getDictionary(User user) {
-        UserSetting userSetting = userSettingRepository.findOne(user != null ? user.getUserId() : 1l);
+        UserSetting userSetting = userSettingRepository.findOne(user != null && !user.equals(User.Companion.getEmptyUser()) ? user.getUserId() : 1l);
 
         List<DictionaryEntry> dictionaryEntries = dictionaryRepository.findAllByLanguage(userSetting.getLanguage());
 

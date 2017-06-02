@@ -28,8 +28,9 @@ class UserResolver(
     override fun resolveArgument(parameter: MethodParameter?, mavContainer: ModelAndViewContainer?, webRequest: NativeWebRequest?, binderFactory: WebDataBinderFactory?): Any {
 
         if (this.supportsParameter(parameter)) {
-            if (userStorage.currentUser == null) {
-                val user = userService.getUserByFbToken(webRequest!!.getHeader("oauth_token"))
+            if (userStorage.currentUser == null || userStorage.currentUser == User.emptyUser) {
+                val token = webRequest?.getHeader("oauth_token")
+                val user = userService.getUserByFbToken(token ?: "") ?: User.emptyUser
                 userStorage.currentUser = user
             }
 

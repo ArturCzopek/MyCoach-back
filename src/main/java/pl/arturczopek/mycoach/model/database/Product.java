@@ -47,7 +47,7 @@ public class Product implements Serializable {
     private List<Price> prices;
 
     @JsonIgnore
-    @Column(name = "CYC_PRD_ID")
+    @Column(name = "PRD_USR_ID")
     private long userId;
 
     public void countAveragePrice() {

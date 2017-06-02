@@ -36,7 +36,7 @@ public class PriceService {
         this.dateService = dateService;
     }
 
-    @Cacheable(value = "prices", key = "#productId")
+    @Cacheable(value = "prices", key = "#userId + ' ' + #productId")
     public List<Price> getPricesByProductId(long productId, long userId) throws WrongPermissionException {
         Product product = productRepository.findOne(productId);
 
@@ -47,7 +47,7 @@ public class PriceService {
         return product.getPrices();
     }
 
-    @CacheEvict(value = "prices", key = "#newPrice.productId")
+    @CacheEvict(value = "prices", key = "#userId + ' ' + #newPrice.productId")
     public void addPrice(NewPrice newPrice, long userId) throws WrongPermissionException {
 
         Product product = productRepository.findOne(newPrice.getProductId());

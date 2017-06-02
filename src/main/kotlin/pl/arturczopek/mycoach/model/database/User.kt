@@ -11,25 +11,30 @@ import javax.persistence.*
 @Entity
 @Table(name = "USERS")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
-class User: Serializable {
+data class User(
 
-    @Id
-    @Column(name = "USR_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "USERS_USR_ID_SEQ")
-    @SequenceGenerator(name = "USERS_USR_ID_SEQ", sequenceName = "USERS_USR_ID_SEQ", allocationSize = 1)
-    var userId: Long = 0
+        @Id
+        @Column(name = "USR_ID", nullable = false)
+        @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "USERS_USR_ID_SEQ")
+        @SequenceGenerator(name = "USERS_USR_ID_SEQ", sequenceName = "USERS_USR_ID_SEQ", allocationSize = 1)
+        var userId: Long = 0,
 
-    @Column(name = "USR_FB_ID", nullable = false)
-    lateinit var fbId: String
+        @Column(name = "USR_FB_ID", nullable = false)
+        var fbId: String = "",
 
-    @Column(name = "USR_NM", nullable = false)
-    lateinit var name: String
+        @Column(name = "USR_NM", nullable = false)
+        var name: String = "",
 
-    @OneToOne
-    @JoinColumn(name = "USR_USS_ID")
-    lateinit var userSetting: UserSetting
+        @OneToOne
+        @JoinColumn(name = "USR_USS_ID")
+        var userSetting: UserSetting = UserSetting(),
 
-    @ManyToOne
-    @JoinColumn(name = "USR_RL_ID")
-    lateinit var role: Role
+        @ManyToOne
+        @JoinColumn(name = "USR_RL_ID")
+        var role: Role = Role()
+) : Serializable {
+
+    companion object {
+        val emptyUser = User()
+    }
 }

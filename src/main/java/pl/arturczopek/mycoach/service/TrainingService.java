@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.exception.WrongPermissionException;
@@ -49,6 +50,7 @@ public class TrainingService {
     }
 
     @Transactional
+    @CacheEvict(value = "cycle", allEntries = true)
     public void addTraining(NewTraining newTraining, long userId) throws InvalidDateException, WrongPermissionException {
 
         if (!isNewTrainingDateCorrect(newTraining.getTrainingDate(), newTraining.getSetId())) {
@@ -134,6 +136,7 @@ public class TrainingService {
         return exercisesWithSessionsForTraining;
     }
 
+    @CacheEvict(value = "cycle", allEntries = true)
     public void deleteTraining(Training training, long userId) throws WrongPermissionException {
 
         Set set = setRepository.findOneByTrainingsContains(training);
@@ -158,6 +161,7 @@ public class TrainingService {
         trainingRepository.delete(training.getTrainingId());
     }
 
+    @CacheEvict(value = "cycle", allEntries = true)
     public void updateTraining(Training training, List<Exercise> exercises, long userId) throws InvalidDateException, WrongPermissionException {
 
         if (!isUpdateTrainingDateCorrect(training.getTrainingDate(), training.getSetId(), training.getTrainingId())) {
@@ -243,7 +247,6 @@ public class TrainingService {
         }
         return trainingIndex;
     }
-
 
     private boolean isNewTrainingDateCorrect(Date trainingDate, long setId) {
         Set set = setRepository.findOne(setId);
