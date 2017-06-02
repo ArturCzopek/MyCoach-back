@@ -2,8 +2,10 @@ package pl.arturczopek.mycoach.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.database.DictionaryEntry;
+import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.model.database.UserSetting;
 import pl.arturczopek.mycoach.repository.DictionaryRepository;
 import pl.arturczopek.mycoach.repository.UserSettingRepository;
@@ -30,8 +32,9 @@ public class DictionaryService {
         this.dictionaryRepository = dictionaryRepository;
     }
 
-    public Map<String, String> getDictionary(long userId) {
-        UserSetting userSetting = userSettingRepository.findOne(userId);
+    @Cacheable(value = "dictionary", key = "#user.userId")
+    public Map<String, String> getDictionary(User user) {
+        UserSetting userSetting = userSettingRepository.findOne(user != null ? user.getUserId() : 1l);
 
         List<DictionaryEntry> dictionaryEntries = dictionaryRepository.findAllByLanguage(userSetting.getLanguage());
 
@@ -41,13 +44,14 @@ public class DictionaryService {
             dictionary.put(entry.getKey(), entry.getValue());
         }
 
-        log.debug("Created dictionary for {} language, size: {}", userId, dictionary.size());
+        log.debug("Created dictionary for {} language, size: {}", user != null ? user.getUserId() : 1l, dictionary.size());
 
         return dictionary;
     }
 
-    public DictionaryEntry translate(String key) {
-        UserSetting userSetting = userSettingRepository.findOne(1l);
+    @Cacheable(value = "dictionaryKey", key = "#key + #userId")
+    public DictionaryEntry translate(String key, long userId) {
+        UserSetting userSetting = userSettingRepository.findOne(userId);
         return dictionaryRepository.findOneByLanguageAndAndKey(userSetting.getLanguage(), key);
     }
 }

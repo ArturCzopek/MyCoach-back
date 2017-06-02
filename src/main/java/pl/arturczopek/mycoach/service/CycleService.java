@@ -69,7 +69,7 @@ public class CycleService {
         Cycle cycle = cycleRepository.findOne(cycleId);
 
         if (cycle.getUserId() != userId) {
-            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message").getValue());
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         for (Set set : cycle.getSets()) {
@@ -110,15 +110,15 @@ public class CycleService {
     public void addCycle(NewCycle newCycle, long userId) throws InvalidPropsException {
 
         if (!isNewCycleDateValid(newCycle, userId)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.invalidDates.message", userId).getValue());
         }
 
         if (!areNewSetsNamesValid(newCycle.getSets())) {
-            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message").getValue());
+            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.cycle.error.invalidSetNames.message", userId).getValue());
         }
 
         if (!canCycleBeActive(userId)) {
-            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message", userId).getValue());
         }
 
         Cycle cycle = new Cycle();
@@ -156,7 +156,7 @@ public class CycleService {
         Cycle cycleFromDb = cycleRepository.findOne(cycle.getCycleId());
 
         if (cycleFromDb.getUserId() != userId) {
-            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message").getValue());
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         cycleFromDb.getSets().forEach((Set set) -> {
@@ -182,20 +182,20 @@ public class CycleService {
         Cycle cycleFromDb = cycleRepository.findOne(cycle.getCycleId());
 
         if (cycleFromDb.getUserId() != userId) {
-            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message").getValue());
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         if (!isCycleToUpdateDateValid(cycle, userId)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.coveringDates.message", userId).getValue());
         }
 
         if (cycle.isFinished() && !isCycleToCloseDateValid(cycle)) {
-            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.trainings.cycle.error.earlyEndDate.message", userId).getValue());
         }
 
         // if we want to active cycle we need to make sure if there is any active cycle
         if (!cycle.isFinished() && !canCycleBeActive(userId)) {
-            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message").getValue());
+            throw new InvalidFlowException(dictionaryService.translate("page.trainings.cycle.error.cannotActivate.message", userId).getValue());
         }
 
         cycleFromDb.setStartDate(cycle.getStartDate());
@@ -243,21 +243,13 @@ public class CycleService {
         LocalDate cycleStartDate = newCycle.getStartDate().toLocalDate();
         LocalDate cycleFromDbEndDate = cycleFromDb.getEndDate().toLocalDate();
 
-        if (cycleStartDate.equals(cycleFromDbEndDate)) {
-            return false;
-        }
-
-        return true;
+        return !cycleStartDate.equals(cycleFromDbEndDate);
     }
 
     private boolean canCycleBeActive(long userId) {
         Cycle currentActiveCycle = getActiveCycle(userId);
 
-        if (currentActiveCycle != null) {
-            return false;
-        }
-
-        return true;
+        return currentActiveCycle == null;
     }
 
     private boolean isCycleToUpdateDateValid(Cycle updateCycle, long userId) {

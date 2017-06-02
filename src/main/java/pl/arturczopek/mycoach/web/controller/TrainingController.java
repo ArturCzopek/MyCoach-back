@@ -66,8 +66,8 @@ public class TrainingController {
     }
 
     @GetMapping("/exercise/{trainingId}")
-    public List<ExerciseForTrainingPreview> getExercisesWithSessionsForTraining(@PathVariable long trainingId) {
-        return trainingService.findExercisesByTrainingId(trainingId);
+    public List<ExerciseForTrainingPreview> getExercisesWithSessionsForTraining(@PathVariable long trainingId, User user) throws WrongPermissionException {
+        return trainingService.findExercisesByTrainingId(trainingId, user.getUserId());
     }
 
     @PostMapping("cycle/add")
@@ -78,14 +78,14 @@ public class TrainingController {
 
     @PostMapping("exercise/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added exercises")
-    public void addExercise(@RequestBody List<NewExercise> exercises) throws DuplicatedNameException {
-        exerciseService.addExercises(exercises);
+    public void addExercise(@RequestBody List<NewExercise> exercises, User user) throws DuplicatedNameException, WrongPermissionException {
+        exerciseService.addExercises(exercises, user.getUserId());
     }
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added training")
-    public void addTraining(@RequestBody NewTraining training) throws InvalidDateException {
-        trainingService.addTraining(training);
+    public void addTraining(@RequestBody NewTraining training, User user) throws InvalidDateException, WrongPermissionException {
+        trainingService.addTraining(training, user.getUserId());
     }
 
     @DeleteMapping("cycle/delete")
@@ -96,14 +96,14 @@ public class TrainingController {
 
     @DeleteMapping("exercise/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed exercise")
-    public void deleteExercise(@RequestBody Exercise exercise) {
-        exerciseService.deleteExercise(exercise);
+    public void deleteExercise(@RequestBody Exercise exercise, User user) throws WrongPermissionException {
+        exerciseService.deleteExercise(exercise, user.getUserId());
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed training")
-    public void deleteTraining(@RequestBody Training training) {
-        trainingService.deleteTraining(training);
+    public void deleteTraining(@RequestBody Training training, User user) throws WrongPermissionException {
+        trainingService.deleteTraining(training, user.getUserId());
     }
 
     @PutMapping("cycle/update")
@@ -114,13 +114,13 @@ public class TrainingController {
 
     @PutMapping("exercise/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated exercise")
-    public void updateExercise(@RequestBody Exercise exercise) throws DuplicatedNameException {
-        exerciseService.updateExercise(exercise);
+    public void updateExercise(@RequestBody Exercise exercise, User user) throws DuplicatedNameException, WrongPermissionException {
+        exerciseService.updateExercise(exercise, user.getUserId());
     }
 
     @PutMapping("/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated training")
-    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit) throws InvalidDateException {
-        trainingService.updateTraining(exercisesWithTrainingToEdit.getTraining(), exercisesWithTrainingToEdit.getExercises());
+    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit, User user) throws InvalidDateException, WrongPermissionException {
+        trainingService.updateTraining(exercisesWithTrainingToEdit.getTraining(), exercisesWithTrainingToEdit.getExercises(), user.getUserId());
     }
 }

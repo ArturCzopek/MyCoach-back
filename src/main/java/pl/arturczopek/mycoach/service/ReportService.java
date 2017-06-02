@@ -1,8 +1,12 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.database.Report;
 import pl.arturczopek.mycoach.model.preview.ReportPreview;
 import pl.arturczopek.mycoach.repository.ReportRepository;
@@ -31,22 +35,31 @@ public class ReportService {
         this.dictionaryService = dictionaryService;
     }
 
-    public List<ReportPreview> getReportPreviews() {
-        List<Report> reports = reportRepository.findAllByOrderByEndDate();
+    @Cacheable(value = "reportPreviews", key = "#userId")
+    public List<ReportPreview> getReportPreviews(long userId) {
+        List<Report> reports = reportRepository.findAllByUserIdOrderByEndDate(userId);
 
         return reports
                 .stream().map(ReportPreview::buildFromReport)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public Report getReportById(long id) {
-        return reportRepository.findOne(id);
+    @Cacheable(value = "report", key = "#reportId")
+    public Report getReportById(long reportId, long userId) throws WrongPermissionException {
+        Report report = reportRepository.findOne(reportId);
+
+        if (report.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
+        return report;
     }
 
-    public void addReport(Report report) throws InvalidDateException {
+    @CacheEvict(value = "reportPreviews", key = "#userId")
+    public void addReport(Report report, long userId) throws InvalidDateException {
 
-        if (!areNewReportDatesValid(report.getStartDate(), report.getEndDate())) {
-            throw new InvalidDateException(dictionaryService.translate("page.reports.error.invalidDate.message").getValue());
+        if (!areNewReportDatesValid(report.getStartDate(), report.getEndDate(), userId)) {
+            throw new InvalidDateException(dictionaryService.translate("page.reports.error.invalidDate.message", userId).getValue());
         }
 
         Report reportToAdd = new Report();
@@ -59,26 +72,39 @@ public class ReportService {
             reportToAdd.setEndDate(dateService.getCurrentDate());
         }
 
+        reportToAdd.setUserId(userId);
         reportRepository.save(reportToAdd);
-
     }
 
-    public void updateReport(Report report) throws InvalidDateException {
+    @Caching(evict = {
+            @CacheEvict(value = "reportPreviews", key = "#userId"),
+            @CacheEvict(value = "report", key = "#report.reportId")
+    })
+    public void updateReport(Report report, long userId) throws InvalidDateException, WrongPermissionException {
 
-        if (!areUpdateReportDatesValid(report.getStartDate(), report.getEndDate(), report.getReportId())) {
-            throw new InvalidDateException(dictionaryService.translate("page.reports.error.invalidDate.message").getValue());
+        if (!areUpdateReportDatesValid(report.getStartDate(), report.getEndDate(), report.getReportId(), userId)) {
+            throw new InvalidDateException(dictionaryService.translate("page.reports.error.invalidDate.message", userId).getValue());
         }
 
         reportRepository.save(report);
     }
 
-    public void deleteReport(Report report) {
-        reportRepository.delete(report.getReportId());
+    @Caching(evict = {
+            @CacheEvict(value = "reportPreviews", key = "#userId"),
+            @CacheEvict(value = "report", key = "#report.reportId")
+    })
+    public void deleteReport(Report report, long userId) throws WrongPermissionException {
+        Report reportFromDb = this.getReportById(report.getReportId(), userId);
+        reportRepository.delete(reportFromDb.getReportId());
     }
 
-    private boolean areUpdateReportDatesValid(Date startDate, Date endDate, long reportId) {
+    private boolean areUpdateReportDatesValid(Date startDate, Date endDate, long reportId, long userId) throws WrongPermissionException {
 
         Report reportFromDb = reportRepository.findOne(reportId);
+
+        if (reportFromDb.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
 
         // nothing has changed, everything is ok
         if (reportFromDb.getStartDate().toLocalDate().equals(startDate.toLocalDate())
@@ -103,8 +129,8 @@ public class ReportService {
         return true;
     }
 
-    private boolean areNewReportDatesValid(Date startDate, Date endDate) {
-        List<Report> reports = reportRepository.findAll();
+    private boolean areNewReportDatesValid(Date startDate, Date endDate, long userId) {
+        List<Report> reports = reportRepository.findAllByUserId(userId);
 
         for (Report reportFromDb : reports) {
 

@@ -74,7 +74,7 @@ public class WeightService {
     public void addWeight(NewWeight weightToAdd, long userId) throws InvalidDateException {
 
         if (!isNewMeasurementDateValid(weightToAdd.getMeasurementDate())) {
-            throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+            throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message", userId).getValue());
         }
 
         Weight weight = new Weight();
@@ -97,7 +97,7 @@ public class WeightService {
             Weight weightFromDb = weightRepository.findOne(weightId);
 
             if (weightFromDb.getUserId() != userId) {
-                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message").getValue());
+                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
             }
 
             weightRepository.delete(weightFromDb.getWeightId());
@@ -108,7 +108,7 @@ public class WeightService {
     public void updateWeights(List<Weight> weights, long userId) throws InvalidDateException, WrongPermissionException {
         for (Weight weight : weights) {
             if (!isUpdateMeasurementDateValid(weight.getMeasurementDate(), weight.getWeightId())) {
-                throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message").getValue());
+                throw new InvalidDateException(dictionaryService.translate("page.weights.error.invalidDate.message", userId).getValue());
             }
         }
 
@@ -116,7 +116,7 @@ public class WeightService {
             Weight weightFromDb = weightRepository.findOne(weight.getWeightId());
 
             if (weightFromDb.getUserId() != userId) {
-                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message").getValue());
+                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
             }
 
             weightFromDb.setMeasurementDate(weight.getMeasurementDate());

@@ -3,6 +3,7 @@ package pl.arturczopek.mycoach.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewExercise;
 import pl.arturczopek.mycoach.model.database.*;
 import pl.arturczopek.mycoach.repository.*;
@@ -25,24 +26,37 @@ public class ExerciseService {
     private SeriesRepository seriesRepository;
     private SetRepository setRepository;
     private TrainingRepository trainingRepository;
+    private CycleRepository cycleRepository;
     private DictionaryService dictionaryService;
 
     @Autowired
-    public ExerciseService(ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository, SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository, DictionaryService dictionaryService) {
+    public ExerciseService(ExerciseRepository exerciseRepository, ExerciseSessionRepository exerciseSessionRepository,
+                           SeriesRepository seriesRepository, SetRepository setRepository, TrainingRepository trainingRepository,
+                           DictionaryService dictionaryService, CycleRepository cycleRepository) {
         this.exerciseRepository = exerciseRepository;
         this.exerciseSessionRepository = exerciseSessionRepository;
         this.seriesRepository = seriesRepository;
         this.setRepository = setRepository;
         this.trainingRepository = trainingRepository;
         this.dictionaryService = dictionaryService;
+        this.cycleRepository = cycleRepository;
     }
 
     @Transactional
-    public void addExercises(List<NewExercise> exercises) throws DuplicatedNameException {
+    public void addExercises(List<NewExercise> exercises, long userId) throws DuplicatedNameException, WrongPermissionException {
 
         for (NewExercise newExercise : exercises) {
             if (!isNewExerciseNameCorrect(newExercise.getExerciseName(), newExercise.getSetId())) {
-                throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
+                throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message", userId).getValue());
+            }
+        }
+
+        for (NewExercise newExercise: exercises) {
+            Set set = setRepository.findOne(newExercise.getSetId());
+            Cycle cycle = cycleRepository.findOneBySetsContains(set);
+
+            if (cycle.getUserId() != userId) {
+                throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
             }
         }
 
@@ -51,7 +65,6 @@ public class ExerciseService {
             Exercise exercise = new Exercise();
             exercise.setExerciseName(newExercise.getExerciseName());
             exercise.setSetId(newExercise.getSetId());
-
             exerciseRepository.save(exercise);
 
             Set set = setRepository.findOne(newExercise.getSetId());
@@ -72,9 +85,14 @@ public class ExerciseService {
         }
     }
 
-    public void deleteExercise(Exercise exercise) {
+    public void deleteExercise(Exercise exercise, long userId) throws WrongPermissionException {
 
         Set setWithExercise = setRepository.findOne(exercise.getSetId());
+        Cycle cycle = cycleRepository.findOneBySetsContains(setWithExercise);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
 
         boolean isLastExercise = setWithExercise.getExercises().size() == 1;
 
@@ -91,10 +109,17 @@ public class ExerciseService {
     }
 
     @Transactional
-    public void updateExercise(Exercise exercise) throws DuplicatedNameException {
+    public void updateExercise(Exercise exercise, long userId) throws DuplicatedNameException, WrongPermissionException {
 
         if (!isUpdateExerciseNameCorrect(exercise.getExerciseName(), exercise.getSetId(), exercise.getExerciseId())) {
-            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message").getValue());
+            throw new DuplicatedNameException(dictionaryService.translate("page.trainings.exercise.error.invalidExerciseName.message", userId).getValue());
+        }
+
+        Set setWithExercise = setRepository.findOne(exercise.getSetId());
+        Cycle cycle = cycleRepository.findOneBySetsContains(setWithExercise);
+
+        if (cycle.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         Exercise exerciseToUpdate = exerciseRepository.findOne(exercise.getExerciseId());
@@ -121,7 +146,7 @@ public class ExerciseService {
                 .stream()
                 .anyMatch(exerciseFromDb ->
                         exerciseFromDb.getExerciseName().trim().equalsIgnoreCase(exerciseName.trim())
-                        && exerciseFromDb.getExerciseId() != exerciseId
+                                && exerciseFromDb.getExerciseId() != exerciseId
                 );
     }
 }
