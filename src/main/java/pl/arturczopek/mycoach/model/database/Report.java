@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.model.database;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -37,4 +38,9 @@ public class Report implements Serializable {
     @Column(name = "REP_END_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date endDate;
+    
+    @JsonIgnore
+    @Column(name = "REP_USR_ID")
+    private long userId;
+
 }

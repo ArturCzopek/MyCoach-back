@@ -21,7 +21,7 @@ spring:
       enabled: false
 
 server:
-  address: 127.0.0.1
+  address: 192.168.1.149
   port: 8080
 
 liquibase:
@@ -38,4 +38,4 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
     level: "user:%X{user} %5p"
-    file: "/var/log/my-coach.%d{yyyy-MM-dd}.%i.log"
+    file: "/var/log/my-coach-log.log"

@@ -37,7 +37,6 @@ public class Product implements Serializable {
     @Lob
     private byte[] screen;
 
-    // not column!!
     @Transient
     private float average = 0;
 
@@ -46,6 +45,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "PRC_PRD_ID")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Price> prices;
+
+    @JsonIgnore
+    @Column(name = "PRD_USR_ID")
+    private long userId;
 
     public void countAveragePrice() {
 

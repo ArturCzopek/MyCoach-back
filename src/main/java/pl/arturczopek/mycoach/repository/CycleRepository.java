@@ -17,17 +17,17 @@ public interface CycleRepository extends PagingAndSortingRepository<Cycle, Long>
     @Override
     List<Cycle> findAll();
 
-    List<Cycle> findAllByOrderByIsFinishedDescEndDateAsc();
+    List<Cycle> findAllByUserIdOrderByIsFinishedDescEndDateAsc(long userId);
 
-    long countByIsFinishedFalse();
+    long countByUserIdAndIsFinishedFalse(long userId);
 
-    Cycle findOneByIsFinishedFalse();
+    Cycle findOneByUserIdAndIsFinishedFalse(long userId);
 
-    Cycle findFirstByOrderByEndDateDesc();
+    Cycle findFirstByUserIdOrderByEndDateDesc(long userId);
 
-    Cycle findFirstByEndDateBeforeOrderByEndDateDesc(Date startDate);
+    Cycle findFirstByUserIdAndEndDateBeforeOrderByEndDateDesc(long userId, Date startDate);
 
-    Cycle findFirstByStartDateAfterOrderByStartDate(Date startDate);
+    Cycle findFirstByUserIdAndStartDateAfterOrderByStartDate(long userId, Date startDate);
 
     Cycle findOneBySetsContains(Set set);
 }

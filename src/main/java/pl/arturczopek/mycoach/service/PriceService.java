@@ -1,11 +1,16 @@
 package pl.arturczopek.mycoach.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewPrice;
 import pl.arturczopek.mycoach.model.add.ShoppingList;
 import pl.arturczopek.mycoach.model.database.Price;
+import pl.arturczopek.mycoach.model.database.Product;
 import pl.arturczopek.mycoach.repository.PriceRepository;
+import pl.arturczopek.mycoach.repository.ProductRepository;
 
 import java.util.List;
 
@@ -18,19 +23,38 @@ import java.util.List;
 public class PriceService {
 
     private PriceRepository priceRepository;
+    private ProductRepository productRepository;
+    private DictionaryService dictionaryService;
     private DateService dateService;
 
     @Autowired
-    public PriceService(PriceRepository priceRepository,  DateService dateService) {
+    public PriceService(PriceRepository priceRepository, ProductRepository productRepository,
+                        DictionaryService dictionaryService, DateService dateService) {
         this.priceRepository = priceRepository;
+        this.productRepository = productRepository;
+        this.dictionaryService = dictionaryService;
         this.dateService = dateService;
     }
 
-    public List<Price> getPricesByProductId(long productId) {
+    @Cacheable(value = "prices", key = "#userId + ' ' + #productId")
+    public List<Price> getPricesByProductId(long productId, long userId) throws WrongPermissionException {
+        Product product = productRepository.findOne(productId);
+
+        if (product.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
         return priceRepository.findByProductIdOrderByPriceDateAsc(productId);
     }
 
-    public void addPrice(NewPrice newPrice) {
+    @CacheEvict(value = "prices", key = "#userId + ' ' + #newPrice.productId")
+    public void addPrice(NewPrice newPrice, long userId) throws WrongPermissionException {
+
+        Product product = productRepository.findOne(newPrice.getProductId());
+
+        if (product.getUserId() != userId) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
 
         Price price = new Price();
         price.setProductId(newPrice.getProductId());
@@ -47,19 +71,57 @@ public class PriceService {
         priceRepository.save(price);
     }
 
-    public void addShoppingList(ShoppingList shoppingList) {
+    @CacheEvict(value = "prices", allEntries = true)
+    public void addShoppingList(ShoppingList shoppingList, long userId) throws WrongPermissionException {
 
-        shoppingList.getPrices().stream()
-                .map(position -> new NewPrice(position.getProductId(), position.getValue(), position.getQuantity(),
-                        shoppingList.getPlace(), shoppingList.getShoppingDate()))
-                .forEach((NewPrice price) -> this.addPrice(price));
+        boolean arePricesValid = !shoppingList.getPrices().stream().anyMatch((NewPrice price) -> {
+            Product product = productRepository.findOne(price.getProductId());
+            if (product.getUserId() != userId) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if (!arePricesValid) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
+        for (NewPrice position : shoppingList.getPrices()) {
+            NewPrice price = new NewPrice(position.getProductId(), position.getValue(), position.getQuantity(),
+                    shoppingList.getPlace(), shoppingList.getShoppingDate());
+            this.addPrice(price, userId);
+        }
     }
 
-    public void deletePrices(List<Price> prices) {
+    @CacheEvict(value = "prices", allEntries = true)
+    public void deletePrices(List<Price> prices, long userId) throws WrongPermissionException {
+
+        if (!arePricesValid(prices, userId)) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
         prices.forEach((Price price) -> priceRepository.delete(price.getPriceId()));
     }
 
-    public void updatePrices(List<Price> prices) {
+    @CacheEvict(value = "prices", allEntries = true)
+    public void updatePrices(List<Price> prices, long userId) throws WrongPermissionException {
+
+        if (!arePricesValid(prices, userId)) {
+            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
+        }
+
         prices.forEach((Price price) -> priceRepository.save(price));
+    }
+
+    private boolean arePricesValid(List<Price> prices, long userId) {
+        return !prices.stream().anyMatch((Price price) -> {
+            Product product = productRepository.findOne(price.getProductId());
+            if (product.getUserId() != userId) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }

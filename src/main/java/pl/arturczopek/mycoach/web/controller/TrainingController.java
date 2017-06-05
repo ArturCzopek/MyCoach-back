@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
 import pl.arturczopek.mycoach.exception.InvalidDateException;
 import pl.arturczopek.mycoach.exception.InvalidPropsException;
+import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewCycle;
 import pl.arturczopek.mycoach.model.add.NewExercise;
 import pl.arturczopek.mycoach.model.add.NewTraining;
 import pl.arturczopek.mycoach.model.database.Cycle;
 import pl.arturczopek.mycoach.model.database.Exercise;
 import pl.arturczopek.mycoach.model.database.Training;
+import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.model.preview.CyclePreview;
 import pl.arturczopek.mycoach.model.request.dto.ExerciseForTrainingPreview;
 import pl.arturczopek.mycoach.model.request.dto.ExercisesWithTrainingToEdit;
@@ -44,81 +46,81 @@ public class TrainingController {
     }
 
     @GetMapping("/cycle/active")
-    public Cycle getActiveCycle() {
-        return cycleService.getActiveCycle();
+    public Cycle getActiveCycle(User user) {
+        return cycleService.getActiveCycle(user.getUserId());
     }
 
     @GetMapping("/cycle/previews")
-    public List<CyclePreview> getCyclePreviews() {
-        return cycleService.getCyclePreviews();
+    public List<CyclePreview> getCyclePreviews(User user) {
+        return cycleService.getCyclePreviews(user.getUserId());
     }
 
     @GetMapping("/cycle/finished")
-    public boolean hasUserEveryCycleFinished() {
-        return cycleService.hashUserEveryCycleFinished();
+    public boolean hasUserEveryCycleFinished(User user) {
+        return cycleService.hashUserEveryCycleFinished(user.getUserId());
     }
 
-    @GetMapping("/cycle/{id}")
-    public Cycle getCycleById(@PathVariable long id) {
-        return cycleService.getCycleById(id);
+    @GetMapping("/cycle/{cycleId}")
+    public Cycle getCycleById(@PathVariable long cycleId, User user) throws WrongPermissionException {
+        return cycleService.getCycleById(cycleId, user.getUserId());
     }
 
     @GetMapping("/exercise/{trainingId}")
-    public List<ExerciseForTrainingPreview> getExercisesWithSessionsForTraining(@PathVariable long trainingId) {
-        return trainingService.findExercisesByTrainingId(trainingId);
+    public List<ExerciseForTrainingPreview> getExercisesWithSessionsForTraining(@PathVariable long trainingId, User user) throws WrongPermissionException {
+        return trainingService.findExercisesByTrainingId(trainingId, user.getUserId());
     }
 
     @PostMapping("cycle/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added cycle")
-    public void addCycle(@RequestBody NewCycle cycle) throws InvalidPropsException {
-        cycleService.addCycle(cycle);
+    public void addCycle(@RequestBody NewCycle cycle, User user) throws InvalidPropsException {
+        cycleService.addCycle(cycle, user.getUserId());
     }
 
     @PostMapping("exercise/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added exercises")
-    public void addExercise(@RequestBody List<NewExercise> exercises) throws DuplicatedNameException {
-        exerciseService.addExercises(exercises);
+    public void addExercise(@RequestBody List<NewExercise> exercises, User user) throws DuplicatedNameException, WrongPermissionException {
+        exerciseService.addExercises(exercises, user.getUserId());
     }
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Added training")
-    public void addTraining(@RequestBody NewTraining training) throws InvalidDateException {
-        trainingService.addTraining(training);
+    public void addTraining(@RequestBody NewTraining training, User user) throws InvalidDateException, WrongPermissionException {
+        trainingService.addTraining(training, user.getUserId());
     }
 
     @DeleteMapping("cycle/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed cycle")
-    public void deleteCycle(@RequestBody Cycle cycle) {
-        cycleService.deleteCycle(cycle);
+    public void deleteCycle(@RequestBody Cycle cycle, User user) throws WrongPermissionException {
+        cycleService.deleteCycle(cycle, user.getUserId());
     }
 
     @DeleteMapping("exercise/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed exercise")
-    public void deleteExercise(@RequestBody Exercise exercise) {
-        exerciseService.deleteExercise(exercise);
+    public void deleteExercise(@RequestBody Exercise exercise, User user) throws WrongPermissionException {
+        exerciseService.deleteExercise(exercise, user.getUserId());
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(value = HttpStatus.OK, reason = "Removed training")
-    public void deleteTraining(@RequestBody Training training) {
-        trainingService.deleteTraining(training);
+    public void deleteTraining(@RequestBody Training training, User user) throws WrongPermissionException {
+        trainingService.deleteTraining(training, user.getUserId());
     }
 
     @PutMapping("cycle/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated cycle")
-    public void updateCycle(@RequestBody Cycle cycle) throws InvalidPropsException {
-        cycleService.updateCycle(cycle);
+    public void updateCycle(@RequestBody Cycle cycle, User user) throws InvalidPropsException, WrongPermissionException {
+        cycleService.updateCycle(cycle, user.getUserId());
     }
 
     @PutMapping("exercise/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated exercise")
-    public void updateExercise(@RequestBody Exercise exercise) throws DuplicatedNameException {
-        exerciseService.updateExercise(exercise);
+    public void updateExercise(@RequestBody Exercise exercise, User user) throws DuplicatedNameException, WrongPermissionException {
+        exerciseService.updateExercise(exercise, user.getUserId());
     }
 
     @PutMapping("/update")
     @ResponseStatus(value = HttpStatus.OK, reason = "Updated training")
-    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit) throws InvalidDateException {
-        trainingService.updateTraining(exercisesWithTrainingToEdit.getTraining(), exercisesWithTrainingToEdit.getExercises());
+    public void updateTraining(@RequestBody ExercisesWithTrainingToEdit exercisesWithTrainingToEdit, User user) throws InvalidDateException, WrongPermissionException {
+        trainingService.updateTraining(exercisesWithTrainingToEdit.getTraining(), exercisesWithTrainingToEdit.getExercises(), user.getUserId());
     }
 }

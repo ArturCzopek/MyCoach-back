@@ -1,5 +1,6 @@
 my-coach:
   client-address: http://simplecoding.pl
+  redirect-address: http://simplecoding.pl/my-coach
 
 spring:
   profiles: prod
@@ -39,3 +40,18 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} %logger{25}.%M - %msg%n"
     level: "user:%X{user} %5p"
     file: "/var/log/my-coach.%d{yyyy-MM-dd}.%i.log"
+
+
+security:
+  oauth2:
+    client:
+      clientId: 348442748892032
+      clientSecret: ${COACH_OAUTH_SECRET}
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+      scope: public_profile, email, user_about_me
+    resource:
+      userInfoUri: https://graph.facebook.com/me
