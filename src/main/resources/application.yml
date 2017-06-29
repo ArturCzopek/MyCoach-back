@@ -2,6 +2,7 @@ my-coach:
   version: 1.0.0-SANPSHOT
   application-name: My coach
   client-address: http://localhost:4200
+  redirect-address: http://localhost:4200
   images:
     default-product-image: /images/DEFAULT_PLACEHOLDER.jpeg
     image-size: 400

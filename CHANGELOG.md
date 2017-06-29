@@ -20,6 +20,7 @@
 - fixed problem with adding inactive series
 - fixed closing cycle before last training date
 
+
 ## 1.0.0 (30-04-2017)
 
 ##### Features

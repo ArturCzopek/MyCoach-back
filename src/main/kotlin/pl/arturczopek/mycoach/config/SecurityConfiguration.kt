@@ -28,7 +28,10 @@ import javax.servlet.Filter
 open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${my-coach.client-address}")
-    lateinit var clientAddress: String
+    var clientAddress: String = ""
+
+    @Value("\${my-coach.redirect-address}")
+    var redirectAddress: String = ""
 
     @Bean
     open fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()

@@ -25,6 +25,9 @@ open class UserController(
     @Value("\${my-coach.client-address}")
     var clientAddress: String = ""
 
+    @Value("\${my-coach.redirect-address}")
+    var redirectAddress: String = ""
+
     @GetMapping("/")
     fun getUser(@RequestHeader("oauth_token") token: String): User? {
         var user: User? = userService.getUserByFbToken(token)
@@ -42,6 +45,11 @@ open class UserController(
     @GetMapping("/clientUrl")
     fun getClientUrl(): String {
         return clientAddress
+    }
+
+    @GetMapping("/redirectUrl")
+    fun getRedirectUrl(): String {
+        return redirectAddress
     }
 
     @GetMapping("/token")

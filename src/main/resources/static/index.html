@@ -13,11 +13,11 @@
     <base href="/">
     <script>
         $(document).ready(function () {
-            $.get("/user/clientUrl", function (clientUrl) {
+            $.get("/user/redirectUrl", function (redirectUrl) {
                 $.get("/user/token", function (token) {
                     if (token && token !== '') {
                         setTokenInCookie(token);
-                        window.location = clientUrl + "/login";
+                        window.location = redirectUrl;
                     } else {
                         window.location = "/login";
                     }
@@ -26,9 +26,9 @@
         });
         function setTokenInCookie(tokenValue) {
             var cookieTime = new Date();
-            var tokenLifeSeconds = 5;
+            var tokenLifeSeconds = 10;
             cookieTime.setTime(cookieTime.getTime() + (tokenLifeSeconds * 1000));
-            document.cookie = "oauth_token=" + tokenValue + "; expires=" + cookieTime.toGMTString() + "; path=/";
+            document.cookie = "oauth_token=" + tokenValue + "; expires=" + cookieTime.toGMTString();
         }
     </script>
 </head>
