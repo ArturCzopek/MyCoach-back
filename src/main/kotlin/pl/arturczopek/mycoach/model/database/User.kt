@@ -25,6 +25,9 @@ data class User(
         @Column(name = "USR_NM", nullable = false)
         var name: String = "",
 
+        @Column(name = "USR_ACT")
+        var active: Boolean = true,
+
         @OneToOne
         @JoinColumn(name = "USR_USS_ID")
         var userSetting: UserSetting = UserSetting(),

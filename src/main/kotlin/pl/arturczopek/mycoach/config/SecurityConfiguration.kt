@@ -56,14 +56,18 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
         logger.info("Allowed client: $clientAddress")
         val source: UrlBasedCorsConfigurationSource = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
+
         config.run {
             maxAge = 3600L
             allowCredentials = true
             addAllowedOrigin(clientAddress)
             addAllowedOrigin(clientAddress.replace("www.", ""))
+            addAllowedOrigin(redirectAddress)
+            addAllowedOrigin(redirectAddress.replace("www.", ""))
             addAllowedHeader("*")
             addAllowedMethod("*")
         }
+
         source.registerCorsConfiguration("/**", config)
         val bean: FilterRegistrationBean = FilterRegistrationBean(CorsFilter(source) as Filter)
         bean.order = 0

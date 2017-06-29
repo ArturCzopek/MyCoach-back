@@ -20,7 +20,8 @@ import pl.arturczopek.mycoach.service.UserStorage
 @RequestMapping("/user")
 open class UserController(
         val userService: UserService,
-        val userStorage: UserStorage) {
+        val userStorage: UserStorage
+) {
 
     @Value("\${my-coach.client-address}")
     var clientAddress: String = ""
@@ -43,14 +44,10 @@ open class UserController(
     }
 
     @GetMapping("/clientUrl")
-    fun getClientUrl(): String {
-        return clientAddress
-    }
+    fun getClientUrl(): String = clientAddress
 
     @GetMapping("/redirectUrl")
-    fun getRedirectUrl(): String {
-        return redirectAddress
-    }
+    fun getRedirectUrl(): String = redirectAddress
 
     @GetMapping("/token")
     fun getToken(): ResponseEntity<String> {

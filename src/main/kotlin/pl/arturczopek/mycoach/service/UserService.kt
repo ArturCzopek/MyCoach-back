@@ -50,6 +50,20 @@ open class UserService(
         userRepository.save(user)
     }
 
+    fun isLoggedInUserAdmin(): Boolean {
+        return this.userStorage.currentUser?.role?.roleName == "Admin"
+    }
+
+    // ADMIN FUNCTIONS
+
+    fun getAllUsers(): MutableIterable<User> = userRepository.findAll()
+
+    fun toggleActiveUserStatus(userId: Long) {
+        val user = this.userRepository.findOne(userId)
+        user.active = !user.active
+        userRepository.save(user)
+    }
+
     private fun getUserFbData(token: String): FbData? {
 
         if (userStorage.currentFbData == null && !token.isNullOrBlank()) {
