@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
+import pl.arturczopek.mycoach.exception.InactiveUserException
 import pl.arturczopek.mycoach.exception.InvalidPropsException
 import pl.arturczopek.mycoach.exception.WrongPermissionException
 import java.io.IOException
@@ -32,7 +33,7 @@ class GlobalExceptionHandler {
     @ResponseBody
     fun duplicateKeyHandler(req: HttpServletRequest, ex: Exception) = getErrorMessage(req, ex, HttpStatus.NOT_ACCEPTABLE)
 
-    @ExceptionHandler(WrongPermissionException::class)
+    @ExceptionHandler(WrongPermissionException::class, InactiveUserException::class)
     @ResponseBody
     fun wrongPermissionHandler(req: HttpServletRequest, ex: Exception) = getErrorMessage(req, ex, HttpStatus.FORBIDDEN)
 

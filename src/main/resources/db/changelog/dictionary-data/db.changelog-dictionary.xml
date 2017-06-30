@@ -71,26 +71,26 @@
         </rollback>
     </changeSet>
 
-    <!--<changeSet id="Insert polish dictionary for version 2.0.0" author="Artur Czopek">-->
-        <!--<loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/pol/db.dict-pol-2.0.csv">-->
-            <!--<column name="DCT_KEY" type="STRING"/>-->
-            <!--<column name="DCT_VAL" type="STRING"/>-->
-            <!--<column name="DCT_LNG_ID" type="NUMERIC"/>-->
-        <!--</loadData>-->
-        <!--<rollback>-->
-            <!--<sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'pol')</sql>-->
-        <!--</rollback>-->
-    <!--</changeSet>-->
+    <changeSet id="Insert polish dictionary for version 2.0.0" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/pol/db.dict-pol-2.0.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+        <rollback>
+            <sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'pol')</sql>
+        </rollback>
+    </changeSet>
 
-    <!--<changeSet id="Insert english dictionary for version 2.0.0" author="Artur Czopek">-->
-        <!--<loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/eng/db.dict-eng-2.0.csv">-->
-            <!--<column name="DCT_KEY" type="STRING"/>-->
-            <!--<column name="DCT_VAL" type="STRING"/>-->
-            <!--<column name="DCT_LNG_ID" type="NUMERIC"/>-->
-        <!--</loadData>-->
-        <!--<rollback>-->
-            <!--<sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'eng')</sql>-->
-        <!--</rollback>-->
-    <!--</changeSet>-->
+    <changeSet id="Insert english dictionary for version 2.0.0" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/eng/db.dict-eng-2.0.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+        <rollback>
+            <sql>delete from dictionaries where languageid = (SELECT languageid from languages where shortname = 'eng')</sql>
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>

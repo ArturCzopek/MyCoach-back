@@ -3,19 +3,17 @@ package pl.arturczopek.mycoach.config;
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso
-import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter
-import javax.servlet.Filter
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+
 
 /**
  * @Author Artur Czopek
@@ -23,7 +21,7 @@ import javax.servlet.Filter
  */
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @EnableOAuth2Sso
 open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
@@ -34,16 +32,14 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     var redirectAddress: String = ""
 
     @Bean
-    open fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
-    @Bean
     open fun restTemplate(): RestTemplate = RestTemplate()
 
     override fun configure(http: HttpSecurity) {
         http
-                .antMatcher("/**").authorizeRequests()
+                .authorizeRequests()
 //                .antMatchers("/", "/index.html", "/login**", "/user/**", "/db-console/**", "/dictionary/**").permitAll()
                 .antMatchers("/**").permitAll()
+                .antMatchers("/admin/**").hasRole("Admin")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/"))
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("$clientAddress/logout")
@@ -52,26 +48,23 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    open fun corsFilter(): FilterRegistrationBean {
-        logger.info("Allowed client: $clientAddress")
-        val source: UrlBasedCorsConfigurationSource = UrlBasedCorsConfigurationSource()
-        val config = CorsConfiguration()
+    open fun corsConfigurer(): WebMvcConfigurer {
+        return object : WebMvcConfigurerAdapter() {
+            override fun addCorsMappings(registry: CorsRegistry?) {
+                registry!!.addMapping("/**")
+                        .allowedOrigins(
+                                clientAddress,
+                                clientAddress.replace("www.", ""),
+                                redirectAddress,
+                                redirectAddress.replace("www.", "")
+                        )
+                        .allowedHeaders("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .maxAge(3600)
 
-        config.run {
-            maxAge = 3600L
-            allowCredentials = true
-            addAllowedOrigin(clientAddress)
-            addAllowedOrigin(clientAddress.replace("www.", ""))
-            addAllowedOrigin(redirectAddress)
-            addAllowedOrigin(redirectAddress.replace("www.", ""))
-            addAllowedHeader("*")
-            addAllowedMethod("*")
+                logger.info { "Allowed origins: $clientAddress, $redirectAddress" }
+            }
         }
-
-        source.registerCorsConfiguration("/**", config)
-        val bean: FilterRegistrationBean = FilterRegistrationBean(CorsFilter(source) as Filter)
-        bean.order = 0
-        return bean
     }
 
     companion object : KLogging()
