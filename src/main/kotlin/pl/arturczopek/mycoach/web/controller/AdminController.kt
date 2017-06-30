@@ -31,4 +31,13 @@ class AdminController(
     @PostMapping("/toggleRole")
     @ResponseStatus(value = HttpStatus.OK, reason = "Changed active status")
     fun toggleUserRole(@RequestParam userId: Long) = userService.toggleUserRole(userId)
+
+    @PostMapping("/email")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Sent email")
+    fun sendEmail(@RequestBody email: Email) = appDataService.sendEmail(email.title, email.content)
 }
+
+class Email(
+        var title: String = "",
+        var content: String = ""
+)

@@ -1,2 +1,19 @@
 DCT_KEY;DCT_VAL;DCT_LNG_ID
 global.error.inactiveUser.message;Your account is inactive!;2
+page.admin.users.title;Users;2
+page.admin.users.admin.label;Admin;2
+page.admin.users.active.label;Active;2
+page.admin.data.title;Data;2
+page.admin.data.version.label;Version;2
+page.admin.data.RAM.label;Memory;2
+page.admin.data.users.label;Users;2
+page.admin.email.title;Send an e-mail;2
+page.admin.email.title.label;Title;2
+page.admin.email.text.label;Content;2
+page.admin.email.send.label;Send;2
+page.admin.email.message.success;Success!;2
+page.admin.email.message.error;Error! Try again;2
+page.admin.change.success.tooltip;User's status has been changed successfully;2
+page.settings.language.label;Language;2
+page.settings.weightmeasure.label;Weight measure;2
+page.settings.currency.label;Currency (shortcut);2
