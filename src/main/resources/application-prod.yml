@@ -1,6 +1,6 @@
 my-coach:
   client-address: http://simplecoding.pl
-  redirect-address: http://simplecoding.pl/my-coach
+  redirect-address: http://simplecoding.pl/my-coach/
 
 spring:
   profiles: prod
