@@ -1,8 +1,10 @@
 my-coach:
-  version: 1.0.0-SANPSHOT
+  version: 1.2.0-SANPSHOT
   application-name: My coach
   client-address: http://localhost:4200
   redirect-address: http://localhost:4200
+  mail: my-coach@simplecoding.pl
+  mail-footer: My Coach team
   images:
     default-product-image: /images/DEFAULT_PLACEHOLDER.jpeg
     image-size: 400
@@ -11,7 +13,7 @@ my-coach:
     image-extension: jpeg
 
 spring:
-  profiles.active: dev
+  profiles.active: prod
 
   http:
     multipart.max-file-size: 5MB
@@ -27,3 +29,14 @@ spring:
   security:
     basic:
       enabled: false
+
+  mail:
+    host: smtp.zenbox.pl
+    port: 587
+    username: my-coach@simplecoding.pl
+    password: ${COACH_MAIL_PASS}
+    properties.mail.smtp:
+      auth: true
+      starttils:
+        enable: true
+        requried: true

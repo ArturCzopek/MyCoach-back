@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository
 import pl.arturczopek.mycoach.model.database.Role
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 26-05-2017
  */
 interface RoleRepository: CrudRepository<Role, Int> {
