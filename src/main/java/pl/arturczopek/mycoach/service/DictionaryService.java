@@ -49,7 +49,7 @@ public class DictionaryService {
         return dictionary;
     }
 
-    @Cacheable(value = "dictionaryKey", key = "#key + #userId")
+    @Cacheable(value = "dictionaryKey", key = "#key + ' ' + #userId")
     public DictionaryEntry translate(String key, long userId) {
         UserSetting userSetting = userSettingRepository.findOne(userId);
         return dictionaryRepository.findOneByLanguageAndAndKey(userSetting.getLanguage(), key);

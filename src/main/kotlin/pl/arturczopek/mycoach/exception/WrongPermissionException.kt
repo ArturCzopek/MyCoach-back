@@ -1,7 +1,7 @@
 package pl.arturczopek.mycoach.exception
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 26-05-2017
  */
 class WrongPermissionException(message: String) : Exception(message) {

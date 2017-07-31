@@ -1,3 +1,9 @@
+## 1.2.0 (31-07-2017)
+
+### Featured
+- added admin panel
+
+
 ## 1.1.0 (02-06-2017)
 
 #### Features

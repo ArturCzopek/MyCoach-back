@@ -34,4 +34,8 @@ public class DictionaryEntry implements Serializable {
     @JsonIgnore
     @JoinColumn(name = "DCT_LNG_ID")
     private Language language;
+
+    public String getValue() {
+        return value;
+    }
 }

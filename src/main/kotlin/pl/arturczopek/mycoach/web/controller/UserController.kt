@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import pl.arturczopek.mycoach.exception.InactiveUserException
 import pl.arturczopek.mycoach.model.database.User
+import pl.arturczopek.mycoach.service.DictionaryService
 import pl.arturczopek.mycoach.service.UserService
 import pl.arturczopek.mycoach.service.UserStorage
 
@@ -20,7 +22,9 @@ import pl.arturczopek.mycoach.service.UserStorage
 @RequestMapping("/user")
 open class UserController(
         val userService: UserService,
-        val userStorage: UserStorage) {
+        val userStorage: UserStorage,
+        val dictionaryService: DictionaryService
+) {
 
     @Value("\${my-coach.client-address}")
     var clientAddress: String = ""
@@ -37,20 +41,22 @@ open class UserController(
         }
 
         user = userService.getUserByFbToken(token)
+
+
+        if (user?.active == false) {
+            throw InactiveUserException(dictionaryService.translate("global.error.inactiveUser.message", userStorage.currentUser!!.userId).value)
+        }
+
         userStorage.currentUser = user
 
         return user
     }
 
     @GetMapping("/clientUrl")
-    fun getClientUrl(): String {
-        return clientAddress
-    }
+    fun getClientUrl(): String = clientAddress
 
     @GetMapping("/redirectUrl")
-    fun getRedirectUrl(): String {
-        return redirectAddress
-    }
+    fun getRedirectUrl(): String = redirectAddress
 
     @GetMapping("/token")
     fun getToken(): ResponseEntity<String> {

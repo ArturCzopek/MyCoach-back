@@ -1,0 +1,19 @@
+DCT_KEY;DCT_VAL;DCT_LNG_ID
+global.error.inactiveUser.message;Twoje konto jest nieaktywne!;1
+page.admin.users.title;Użytkownicy;1
+page.admin.users.admin.label;Admin;1
+page.admin.users.active.label;Aktywny;1
+page.admin.data.title;Dane;1
+page.admin.data.version.label;Wersja;1
+page.admin.data.RAM.label;Pamięć;1
+page.admin.data.users.label;Użytkownicy;1
+page.admin.email.title;Wyślij e-Maila;1
+page.admin.email.title.label;Tytuł wiadomości;1
+page.admin.email.text.label;Treść;1
+page.admin.email.send.label;Wyślij;1
+page.admin.email.message.success;Pomyślnie wysłano maila;1
+page.admin.email.message.error;Coś się nie udało! Spróbuj ponownie;1
+page.admin.change.success.tooltip;Pomyślnie zmieniono status;1
+page.settings.language.label;Język;1
+page.settings.weightmeasure.label;Jednostka wagi;1
+page.settings.currency.label;Waluta (skrótowo);1

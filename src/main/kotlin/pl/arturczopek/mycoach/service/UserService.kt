@@ -1,5 +1,6 @@
 package pl.arturczopek.mycoach.service
 
+import mu.KLogging
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
@@ -50,6 +51,28 @@ open class UserService(
         userRepository.save(user)
     }
 
+    // ADMIN FUNCTIONS
+
+    fun getAllUsers(): MutableIterable<User> = userRepository.findAll()
+
+    fun toggleActiveUserStatus(userId: Long) {
+        val user = this.userRepository.findOne(userId)
+        user.active = !user.active
+        userRepository.save(user)
+    }
+
+    fun toggleUserRole(userId: Long) {
+        val user = this.userRepository.findOne(userId)
+
+        when (user.role.roleName) {
+            "User" -> user.role = roleRepository.findOneByRoleName("Admin")
+            "Admin" -> user.role = roleRepository.findOneByRoleName("User")
+            else -> logger.error { "User $userId has not role 'User' or 'Admin' but ${user.role.roleName}" }
+        }
+
+        userRepository.save(user)
+    }
+
     private fun getUserFbData(token: String): FbData? {
 
         if (userStorage.currentFbData == null && !token.isNullOrBlank()) {
@@ -79,4 +102,6 @@ open class UserService(
         val response = restTemplate.exchange(request, respType)
         return response
     }
+
+    companion object : KLogging()
 }
