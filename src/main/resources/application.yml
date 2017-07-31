@@ -34,7 +34,7 @@ spring:
     host: smtp.zenbox.pl
     port: 587
     username: my-coach@simplecoding.pl
-    password: 4%q1cl*yUP75q77Ot
+    password: ${COACH_MAIL_PASS}
     properties.mail.smtp:
       auth: true
       starttils:
