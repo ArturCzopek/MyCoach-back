@@ -16,20 +16,13 @@
             $.get("/user/redirectUrl", function (redirectUrl) {
                 $.get("/user/token", function (token) {
                     if (token && token !== '') {
-                        setTokenInCookie(token);
-                        window.location = redirectUrl;
+                        window.location = redirectUrl + "login/" + token;
                     } else {
                         window.location = "/login";
                     }
                 });
             });
         });
-        function setTokenInCookie(tokenValue) {
-            var cookieTime = new Date();
-            var tokenLifeSeconds = 30;
-            cookieTime.setTime(cookieTime.getTime() + (tokenLifeSeconds * 1000));
-            document.cookie = "oauth_token=" + tokenValue + "; expires=" + cookieTime.toGMTString() + "; path=/";
-        }
     </script>
 </head>
 <body>

@@ -2,7 +2,7 @@ my-coach:
   version: 1.2.0-SANPSHOT
   application-name: My coach
   client-address: http://localhost:4200
-  redirect-address: http://localhost:4200
+  redirect-address: http://localhost:4200/
   mail: my-coach@simplecoding.pl
   mail-footer: My Coach team
   images:
