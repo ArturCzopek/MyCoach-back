@@ -1,6 +1,12 @@
+## 1.2.1 (06-08-2017)
+
+#### Bug fixes
+- fixed login mechanism
+
+
 ## 1.2.0 (31-07-2017)
 
-### Featured
+### Features
 - added admin panel
 
 
