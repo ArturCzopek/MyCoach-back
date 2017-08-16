@@ -93,4 +93,21 @@
         </rollback>
     </changeSet>
 
+
+    <changeSet id="Insert polish dictionary for version 1.3.0" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/pol/db.dict-pol-1.3.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Insert english dictionary for version 1.3.0" author="Artur Czopek">
+        <loadData tableName="DICTIONARIES" separator=";" file="db/changelog/dictionary-data/eng/db.dict-eng-1.3.csv">
+            <column name="DCT_KEY" type="STRING"/>
+            <column name="DCT_VAL" type="STRING"/>
+            <column name="DCT_LNG_ID" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+
 </databaseChangeLog>

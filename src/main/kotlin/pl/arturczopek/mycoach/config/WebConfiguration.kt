@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import pl.arturczopek.mycoach.utils.resolver.UserResolver
 
 
-//@EnableWebMvc
 @Configuration
 open class WebConfiguration(val userResolver: UserResolver) : WebMvcConfigurerAdapter() {
 
