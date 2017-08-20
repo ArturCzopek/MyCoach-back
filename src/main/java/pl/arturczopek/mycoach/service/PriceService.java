@@ -3,6 +3,7 @@ package pl.arturczopek.mycoach.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewPrice;
@@ -47,7 +48,10 @@ public class PriceService {
         return priceRepository.findByProductIdOrderByPriceDateAsc(productId);
     }
 
-    @CacheEvict(value = "prices", key = "#userId + ' ' + #newPrice.productId")
+    @Caching(evict = {
+            @CacheEvict(value = "prices", key = "#userId + ' ' + #newPrice.productId"),
+            @CacheEvict(value = "productPreviews", key = "#userId")
+    })
     public void addPrice(NewPrice newPrice, long userId) throws WrongPermissionException {
 
         Product product = productRepository.findOne(newPrice.getProductId());

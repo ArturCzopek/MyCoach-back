@@ -1,5 +1,5 @@
 my-coach:
-  version: 1.2.0-SANPSHOT
+  version: 1.3.1
   application-name: My coach
   client-address: ${COACH_CLI_URL}
   redirect-address: ${COACH_RED_URL}
