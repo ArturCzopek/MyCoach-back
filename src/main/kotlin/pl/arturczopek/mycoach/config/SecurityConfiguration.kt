@@ -1,6 +1,7 @@
 package pl.arturczopek.mycoach.config;
 
 import mu.KLogging
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso
 import org.springframework.context.annotation.Bean
@@ -13,6 +14,8 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import pl.arturczopek.mycoach.service.LogoutUserHandler
+import pl.arturczopek.mycoach.service.UserStorage
 
 
 /**
@@ -26,13 +29,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${my-coach.client-address}")
-    var clientAddress: String = ""
+    lateinit var clientAddress: String
 
     @Value("\${my-coach.redirect-address}")
-    var redirectAddress: String = ""
+    lateinit var redirectAddress: String
 
     @Bean
     open fun restTemplate(): RestTemplate = RestTemplate()
+
+    @Autowired
+    lateinit var userStorage: UserStorage
 
     override fun configure(http: HttpSecurity) {
         http
@@ -42,8 +48,7 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .antMatchers("/admin/**").hasRole("Admin")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(LoginUrlAuthenticationEntryPoint("/"))
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("$clientAddress/logout")
-                .invalidateHttpSession(true).deleteCookies("oauth_token")
+                .and().logout().logoutUrl("/logout").addLogoutHandler(LogoutUserHandler(userStorage, "$clientAddress/#/logout"))
                 .and().csrf().disable().headers().frameOptions().disable()
     }
 

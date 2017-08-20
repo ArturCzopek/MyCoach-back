@@ -5,10 +5,13 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import pl.arturczopek.mycoach.exception.NotFoundUserException
 import pl.arturczopek.mycoach.model.database.User
-import pl.arturczopek.mycoach.model.database.UserSetting
+import pl.arturczopek.mycoach.model.database.UserSettings
 import pl.arturczopek.mycoach.repository.LanguageRepository
 import pl.arturczopek.mycoach.repository.RoleRepository
 import pl.arturczopek.mycoach.repository.UserRepository
@@ -32,23 +35,46 @@ open class UserService(
 ) {
 
     fun getUserByFbToken(token: String): User? {
-        val userMap: FbData = getUserFbData(token) ?: return null
 
+        if (token.isNullOrBlank()) return User.emptyUser
+
+        val userMap: FbData = getUserFbData(token)
+        this.userStorage.addUserFbData(token, userMap)
         return userRepository.findOneByFbId(userMap["id"] as String)
     }
 
-    fun createUser(token: String) {
-        val userMap = getUserFbData(token) ?: return
+    fun getToken(): String {
+        val principal = SecurityContextHolder.getContext().authentication
 
-        val settings = getInitSettingsAndSave(userMap["id"] as String, token)
-        val role = roleRepository.findOneByRoleName("user")
+        try {
+            return (principal.details as OAuth2AuthenticationDetails).tokenValue
+        } catch (e: Exception) {
+            return ""
+        }
+    }
 
-        val user: User = User()
-        user.fbId = userMap["id"] as String
-        user.name = userMap["name"] as String
-        user.userSetting = settings
-        user.role = role
-        userRepository.save(user)
+    fun createUser(token: String?) {
+
+        if (token.isNullOrBlank()) return
+
+        token?.let {
+            val userMap = getUserFbData(token)
+
+            if (userMap["id"] == null || userMap["name"] == null) {
+                logger.warn("Not found FbData for token $token")
+                return
+            }
+
+            val settings = getInitSettingsAndSave(userMap["id"] as String, token)
+            val role = roleRepository.findOneByRoleName("user")
+
+            val user: User = User()
+            user.fbId = userMap["id"] as String
+            user.name = userMap["name"] as String
+            user.userSettings = settings
+            user.role = role
+            userRepository.save(user)
+        }
     }
 
     // ADMIN FUNCTIONS
@@ -73,22 +99,26 @@ open class UserService(
         userRepository.save(user)
     }
 
-    private fun getUserFbData(token: String): FbData? {
+    private fun getUserFbData(token: String): FbData {
 
-        if (userStorage.currentFbData == null && !token.isNullOrBlank()) {
-            val response = createRequest("https://graph.facebook.com/me?access_token=$token")
-            val userMap: FbData = response.body
-            userStorage.currentFbData = userMap
+        try {
+            userStorage.getUserFbDataByToken(token)
+        } catch (e: NotFoundUserException) {
+            token?.let {
+                val response = createRequest("https://graph.facebook.com/me?access_token=$token")
+                val userMap: FbData = response.body
+                userStorage.addUserFbData(token, userMap)
+            }
+        } finally {
+            return userStorage.getUserFbDataByToken(token)
         }
-
-        return userStorage.currentFbData
     }
 
-    private fun getInitSettingsAndSave(userId: String, token: String): UserSetting {
+    private fun getInitSettingsAndSave(userId: String, token: String): UserSettings {
         val response = createRequest("https://graph.facebook.com/v2.9/$userId?fields=email&access_token=$token")
         val userMap: FbData = response.body
 
-        val userSetting = UserSetting()
+        val userSetting = UserSettings()
         userSetting.infoMail = userMap["email"] as String
         userSetting.language = languageRepository.findOne(1) // POLISH FOR NOW
         userSettingRepository.save(userSetting)

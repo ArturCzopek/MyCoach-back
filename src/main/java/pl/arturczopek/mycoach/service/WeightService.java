@@ -13,7 +13,11 @@ import pl.arturczopek.mycoach.repository.WeightRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Author Artur Czopek
@@ -51,15 +55,14 @@ public class WeightService {
             dates.add(preview);
         });
 
-        dates.stream().sorted((p1, p2) -> {
+
+        return dates.stream().sorted((p1, p2) -> {
             if (p1.getYear() == p2.getYear()) {
                 return p1.getMonth() - p2.getMonth();
             } else {
                 return p1.getYear() - p2.getYear();
             }
-        });
-
-        return new LinkedList<>(dates);
+        }).collect(Collectors.toList());
     }
 
     @Cacheable(value = "weightGrouped", key = "#userId + ' ' + #year + ' ' + #month")

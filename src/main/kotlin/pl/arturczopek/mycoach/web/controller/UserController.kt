@@ -34,7 +34,10 @@ open class UserController(
     var redirectAddress: String = ""
 
     @GetMapping("/")
-    fun getUser(@RequestHeader("oauth_token") token: String): User? {
+    fun getUser(@RequestHeader(value = "oauth-token", required = false, defaultValue = "") token: String): User? {
+
+        if (token.isNullOrBlank()) return null
+
         var user: User? = userService.getUserByFbToken(token)
 
         if (user == null) {
@@ -43,12 +46,11 @@ open class UserController(
 
         user = userService.getUserByFbToken(token)
 
-
-        if (user?.active == false) {
-            throw InactiveUserException(dictionaryService.translate("global.error.inactiveUser.message", userStorage.currentUser!!.userId).value)
+        if (!user!!.active) {
+            throw InactiveUserException(dictionaryService.translate("global.error.inactiveUser.message", userStorage.getUserByToken(token).userId).value)
         }
 
-        userStorage.currentUser = user
+        userStorage.addUser(token, user)
 
         return user
     }

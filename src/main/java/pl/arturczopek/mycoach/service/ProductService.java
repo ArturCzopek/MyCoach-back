@@ -119,16 +119,12 @@ public class ProductService {
         return product.getProductId();
     }
 
-    @Cacheable(value = "productPhoto", key ="#userId + ' ' + #productId")
-    public byte[] getProductPhoto(long productId, long userId) throws IOException, WrongPermissionException {
+    @Cacheable(value = "productPhoto", key ="#productId")
+    public byte[] getProductPhoto(long productId) throws IOException, WrongPermissionException {
         Product product = productRepository.findOne(productId);
 
         if (product == null) {
             return new byte[]{};
-        }
-
-        if (product.getUserId() != userId) {
-            throw new WrongPermissionException(dictionaryService.translate("global.error.wrongPermission.message", userId).getValue());
         }
 
         if (product.getScreen() == null) {

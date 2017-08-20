@@ -34,8 +34,8 @@ public class ImagesController {
     }
 
     @GetMapping(value = "/product/{productId}", produces = "image/jpeg")
-    public void getProductPhoto(@PathVariable("productId") long productId, HttpServletResponse response, User user) throws IOException, WrongPermissionException {
-        byte[] productPhoto = productService.getProductPhoto(productId, user.getUserId());
+    public void getProductPhoto(@PathVariable("productId") int productId, HttpServletResponse response) throws IOException, WrongPermissionException {
+        byte[] productPhoto = productService.getProductPhoto(productId);
 
         HttpServletResponse configuredResponse = getResponseParams(response);
 

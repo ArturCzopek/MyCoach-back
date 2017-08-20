@@ -30,7 +30,7 @@ data class User(
 
         @OneToOne
         @JoinColumn(name = "USR_USS_ID")
-        var userSetting: UserSetting = UserSetting(),
+        var userSettings: UserSettings = UserSettings(),
 
         @ManyToOne
         @JoinColumn(name = "USR_RL_ID")

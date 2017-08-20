@@ -6,7 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.arturczopek.mycoach.model.database.DictionaryEntry;
 import pl.arturczopek.mycoach.model.database.User;
-import pl.arturczopek.mycoach.model.database.UserSetting;
+import pl.arturczopek.mycoach.model.database.UserSettings;
 import pl.arturczopek.mycoach.repository.DictionaryRepository;
 import pl.arturczopek.mycoach.repository.UserSettingRepository;
 
@@ -34,9 +34,9 @@ public class DictionaryService {
 
     @Cacheable(value = "dictionary", key = "#user.userId")
     public Map<String, String> getDictionary(User user) {
-        UserSetting userSetting = userSettingRepository.findOne(user != null && !user.equals(User.Companion.getEmptyUser()) ? user.getUserId() : 1l);
+        UserSettings userSettings = userSettingRepository.findOne(user != null && !user.equals(User.Companion.getEmptyUser()) ? user.getUserId() : 1l);
 
-        List<DictionaryEntry> dictionaryEntries = dictionaryRepository.findAllByLanguage(userSetting.getLanguage());
+        List<DictionaryEntry> dictionaryEntries = dictionaryRepository.findAllByLanguage(userSettings.getLanguage());
 
         Map<String, String> dictionary = new HashMap<>();
 
@@ -51,7 +51,7 @@ public class DictionaryService {
 
     @Cacheable(value = "dictionaryKey", key = "#key + ' ' + #userId")
     public DictionaryEntry translate(String key, long userId) {
-        UserSetting userSetting = userSettingRepository.findOne(userId);
-        return dictionaryRepository.findOneByLanguageAndAndKey(userSetting.getLanguage(), key);
+        UserSettings userSettings = userSettingRepository.findOne(userId);
+        return dictionaryRepository.findOneByLanguageAndAndKey(userSettings.getLanguage(), key);
     }
 }
