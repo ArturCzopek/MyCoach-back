@@ -1,8 +1,20 @@
+## 1.3.0 (20-08-2017)
+
+#### Bug fixes
+- Improved security mechanisms
+- Changed db system
+
+
+## 1.2.1 (06-08-2017)
+
+#### Bug fixes
+- fixed login mechanism
+
+
 ## 1.2.0 (31-07-2017)
 
-### Featured
+### Features
 - added admin panel
-
 
 ## 1.1.0 (02-06-2017)
 
