@@ -1,9 +1,12 @@
 package pl.arturczopek.mycoach.web.controller
 
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import pl.arturczopek.mycoach.exception.InactiveUserException
@@ -30,8 +33,8 @@ open class UserController(
     @Value("\${my-coach.redirect-address}")
     var redirectAddress: String = ""
 
-    @GetMapping("/{oauth_token}")
-    fun getUser(@PathVariable("oauth_token") token: String): User? {
+    @GetMapping("/")
+    fun getUser(@RequestHeader(value = "oauth-token", required = false, defaultValue = "") token: String): User? {
 
         if (token.isNullOrBlank()) return null
 
@@ -59,5 +62,20 @@ open class UserController(
     fun getRedirectUrl(): String = redirectAddress
 
     @GetMapping("/token")
-    fun getToken(): ResponseEntity<String> = ResponseEntity.ok(userService.getToken())
+    fun getToken(): ResponseEntity<String> {
+        val principal = SecurityContextHolder.getContext().authentication
+
+        try {
+            logger.info("Try to return token: ${(principal.details as OAuth2AuthenticationDetails).tokenValue}")
+            return ResponseEntity.ok(
+                    (principal.details as OAuth2AuthenticationDetails).tokenValue)
+
+        } catch (ex: Exception) {
+            // no user or anonymous user, return empty data
+            logger.warn("Problem with token! Return empty")
+            return ResponseEntity.ok("EMPTY")
+        }
+    }
+
+    companion object: KLogging()
 }

@@ -11,6 +11,7 @@ import pl.arturczopek.mycoach.model.database.User
 import pl.arturczopek.mycoach.service.UserService
 import pl.arturczopek.mycoach.service.UserStorage
 
+
 /**
  * @Author Artur Czopek]
  * @Date 26-05-2017
@@ -27,9 +28,10 @@ class UserResolver(
 
     override fun resolveArgument(parameter: MethodParameter?, mavContainer: ModelAndViewContainer?, webRequest: NativeWebRequest?, binderFactory: WebDataBinderFactory?): Any {
 
-        val token = webRequest?.getHeader("oauth_token")
+        val token = webRequest?.getHeader("oauth-token")
 
         if (this.supportsParameter(parameter) && token != null) {
+
             if (userStorage.getUserByToken(token) == User.emptyUser) {
                 val user = userService.getUserByFbToken(token) ?: User.emptyUser
                 userStorage.addUser(token, user)

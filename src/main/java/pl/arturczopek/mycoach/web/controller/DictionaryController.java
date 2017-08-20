@@ -31,7 +31,7 @@ public class DictionaryController {
     }
 
     @GetMapping("/")
-    public Map<String, String> getDictionary(@RequestHeader(value = "oauth_token", required = false) String token) {
+    public Map<String, String> getDictionary(@RequestHeader(value = "oauth-token", required = false) String token) {
 
         User user;
 

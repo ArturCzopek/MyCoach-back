@@ -15,6 +15,8 @@ open class UserStorage(
     @Autowired
     constructor(dictionaryService: DictionaryService) : this(mutableMapOf<String, User>(), mutableMapOf<String, FbData>(), dictionaryService)
 
+    fun getUsers() = currentUsers
+
     @Throws(NotFoundUserException::class)
     fun getUserByToken(token: String?): User {
         if (token.isNullOrBlank()) return User.emptyUser
