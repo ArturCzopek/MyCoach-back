@@ -1,19 +1,15 @@
 EXR_SET_ID;EXR_NAME;EXR_DSCP
-1;Wyciskanie leżąc;Pamiętaj o grubym wycisku
-1;Wyciskanie w skosie;
-1;Wyciskanie siedząc;Sranie w banie
-2;Wiosłowanie;
-2;Podciąganie hantli;
-2;Uginanie ramion;hahahahahahahahahahahahahahahahahaha
-3;Przysiady;
-3;Martwy na prostych;
-3;Wypady na nogę;
-4;Wyciskanie hantli leżąc;
-4;Wyciskanie hantli w skosie;
-4;Wznosy boczne;
-5;Wiosłowanie hantli;
-5;Podciąganie na drązku;
-5;Uginanie ramion na modlitewniku;
-6;Przysiad front;
-6;Martwy na prostych nogach ze sztangą;
-6;Wypady ze sztangą na barkach;
+1;'Podciąganie nachwytem';'5x5, progres +1, do 8 powtórzeń'
+1;'Skłony prostownik';'3x15, progres +1'
+1;'Dipy';'4x10, progres +1, do 13'
+1;'Wyciskanie żołnierskie stojąc';'5x8, progres w ciężarze'
+1;'Face pulls';'3x15, progres w ciężarze'
+1;'Ergometr (interwał)';'20sz/10w, 8 interwałów, progres +1'
+1;'Wznosy nóg w zwisie';'3x8, progres +1'
+2;'Hip thrust';'5x10, progres w ciężarze'
+2;'Wyciskanie sztangi w skosie';'4x10, progres w ciężarze'
+2;'Rozpiętki na wyciągu z góry';'3x12, progres w ciężarze'
+2;'Wiosłowanie hantli w oparciu - SZEROKO';'5x8, progres w ciężarze'
+2;'Odwrotne rozpiętki';'2x20, progres w ciężarze'
+2;'Rowerek - interwał';'20sz/10w, 8 interwałów, progres +1'
+2;'Plank - interwał';'20sz/10w, 4 interwały, progres +1'
