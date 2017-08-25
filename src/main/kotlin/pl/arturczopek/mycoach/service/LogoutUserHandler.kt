@@ -16,9 +16,10 @@ import javax.servlet.http.HttpServletResponse
  * @Author Artur Czopek
  * @Date 10-08-2017
  */
-open class LogoutUserHandler(
-        val userStorage: UserStorage,
-        val logoutUrl: String
+
+class LogoutUserHandler(
+        private val userStorage: UserStorage,
+        private val logoutUrl: String
 ) : SimpleUrlLogoutSuccessHandler(), LogoutHandler {
 
     @Throws(IOException::class, ServletException::class)
@@ -28,7 +29,7 @@ open class LogoutUserHandler(
             authentication: Authentication?
     ) {
 
-        var token: String = "MISSING_TOKEN"
+        var token = "MISSING_TOKEN"
 
         try {
             response?.sendRedirect(logoutUrl)

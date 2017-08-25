@@ -26,7 +26,7 @@ import pl.arturczopek.mycoach.service.UserStorage
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
-open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
+class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${my-coach.client-address}")
     lateinit var clientAddress: String
@@ -35,7 +35,7 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     lateinit var redirectAddress: String
 
     @Bean
-    open fun restTemplate(): RestTemplate = RestTemplate()
+    fun restTemplate(): RestTemplate = RestTemplate()
 
     @Autowired
     lateinit var userStorage: UserStorage
@@ -53,10 +53,10 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    open fun corsConfigurer(): WebMvcConfigurer {
+    fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurerAdapter() {
-            override fun addCorsMappings(registry: CorsRegistry?) {
-                registry!!.addMapping("/**")
+            override fun addCorsMappings(registry: CorsRegistry) {
+                registry.addMapping("/**")
                         .allowedOrigins(
                                 clientAddress,
                                 clientAddress.replace("www.", ""),

@@ -13,7 +13,7 @@ import pl.arturczopek.mycoach.service.UserStorage
 
 
 /**
- * @Author Artur Czopek]
+ * @Author Artur Czopek
  * @Date 26-05-2017
  */
 @Component
@@ -30,16 +30,16 @@ class UserResolver(
 
         val token = webRequest?.getHeader("oauth-token")
 
-        if (this.supportsParameter(parameter) && token != null) {
+        return if (this.supportsParameter(parameter) && token != null) {
 
             if (userStorage.getUserByToken(token) == User.emptyUser) {
                 val user = userService.getUserByFbToken(token) ?: User.emptyUser
                 userStorage.addUser(token, user)
             }
 
-            return userStorage.getUserByToken(token)
+            userStorage.getUserByToken(token)
         } else {
-            return WebArgumentResolver.UNRESOLVED
+            WebArgumentResolver.UNRESOLVED
         }
     }
 }

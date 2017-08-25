@@ -9,15 +9,14 @@ import pl.arturczopek.mycoach.utils.resolver.UserResolver
 
 
 @Configuration
-open class WebConfiguration(val userResolver: UserResolver) : WebMvcConfigurerAdapter() {
+class WebConfiguration(private val userResolver: UserResolver) : WebMvcConfigurerAdapter() {
 
-    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>?) {
-        logger.info("adding user resolver")
-        argumentResolvers?.add(userResolver)
+    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
+        argumentResolvers.add(userResolver)
     }
 
-    override fun addViewControllers(registry: ViewControllerRegistry?) {
-        registry?.run {
+    override fun addViewControllers(registry: ViewControllerRegistry) {
+        registry.run {
             addViewController("/").setViewName("home")
             addViewController("/login").setViewName("login")
             addViewController("/logout").setViewName("logout")

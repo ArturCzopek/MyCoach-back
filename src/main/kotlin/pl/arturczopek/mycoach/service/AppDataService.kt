@@ -14,18 +14,19 @@ import pl.arturczopek.mycoach.repository.UserSettingRepository
 
 @Service
 class AppDataService(
-        val userRepository: UserRepository,
-        val userSettingRepository: UserSettingRepository,
-        val mailSender: MailSender) {
+        private val userRepository: UserRepository,
+        private val userSettingRepository: UserSettingRepository,
+        private val mailSender: MailSender
+) {
 
     @Value("\${my-coach.version}")
-    var version = ""
+    lateinit var version: String
 
     @Value("\${my-coach.mail}")
-    var mail = ""
+    lateinit var mail: String
 
     @Value("\${my-coach.mail-footer}")
-    var mailFooter = ""
+    lateinit var mailFooter: String
 
     fun getAppData() = mapOf(
             "version" to version,
@@ -35,10 +36,11 @@ class AppDataService(
 
     fun sendEmail(title: String, content: String) {
         val emails = userSettingRepository.findAllEmails()
-        val message = SimpleMailMessage()
-        message.from = mail
-        message.subject = title
-        message.text = getEmailText(content)
+        val message = SimpleMailMessage().apply {
+            from = mail
+            subject = title
+            text = getEmailText(content)
+        }
 
         emails.forEach {
             message.to = arrayOf(it)
@@ -48,8 +50,9 @@ class AppDataService(
 
     private fun getMemory() = "${Math.round(Runtime.getRuntime().totalMemory() / 10e6)} Mb"
 
-    private fun  getEmailText(content: String) =
-//            """
+    // TODO: thymeleaf
+    private fun getEmailText(content: String) =
+            //            """
 //            |<html>
 //            |<head>
 //            |</head>

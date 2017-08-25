@@ -3,8 +3,6 @@ package pl.arturczopek.mycoach.web.controller
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,7 +19,7 @@ import pl.arturczopek.mycoach.service.UserStorage
  */
 @RestController
 @RequestMapping("/user")
-open class UserController(
+class UserController(
         val userService: UserService,
         val userStorage: UserStorage,
         val dictionaryService: DictionaryService
@@ -33,12 +31,12 @@ open class UserController(
     @Value("\${my-coach.redirect-address}")
     var redirectAddress: String = ""
 
-    @GetMapping("/")
-    fun getUser(@RequestHeader(value = "oauth-token", required = false, defaultValue = "") token: String): User? {
+    @GetMapping(value = *arrayOf("/", ""))
+    fun getUser(@RequestHeader(value = "oauth-token", required = false) token: String?): User? {
 
         if (token.isNullOrBlank()) return null
 
-        var user: User? = userService.getUserByFbToken(token)
+        var user: User? = userService.getUserByFbToken(token!!)
 
         if (user == null) {
             userService.createUser(token)
@@ -63,18 +61,9 @@ open class UserController(
 
     @GetMapping("/token")
     fun getToken(): ResponseEntity<String> {
-        val principal = SecurityContextHolder.getContext().authentication
+        val token = userService.getToken()
 
-        try {
-            logger.info("Try to return token: ${(principal.details as OAuth2AuthenticationDetails).tokenValue}")
-            return ResponseEntity.ok(
-                    (principal.details as OAuth2AuthenticationDetails).tokenValue)
-
-        } catch (ex: Exception) {
-            // no user or anonymous user, return empty data
-            logger.warn("Problem with token! Return empty")
-            return ResponseEntity.ok("EMPTY")
-        }
+        return if (token.isNullOrBlank()) ResponseEntity.status(401).body("Cannot find token") else ResponseEntity.ok(token)
     }
 
     companion object: KLogging()

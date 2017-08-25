@@ -22,13 +22,14 @@ import java.net.URI
  * @Author Artur Czopek
  * @Date 19-05-2017
  */
+
 typealias FbData = HashMap<String, Any>
 
 @Service
-open class UserService(
+class UserService(
         val restTemplate: RestTemplate,
         val userRepository: UserRepository,
-        val userSettingRepository: UserSettingRepository,
+        val userSettingsRepository: UserSettingRepository,
         val roleRepository: RoleRepository,
         val languageRepository: LanguageRepository,
         val userStorage: UserStorage
@@ -46,10 +47,11 @@ open class UserService(
     fun getToken(): String {
         val principal = SecurityContextHolder.getContext().authentication
 
-        try {
-            return (principal.details as OAuth2AuthenticationDetails).tokenValue
+        return try {
+            (principal.details as OAuth2AuthenticationDetails).tokenValue
         } catch (e: Exception) {
-            return ""
+            logger.warn("Problem with fetching token: ${e.message}")
+            ""
         }
     }
 
@@ -57,24 +59,25 @@ open class UserService(
 
         if (token.isNullOrBlank()) return
 
-        token?.let {
-            val userMap = getUserFbData(token)
+        val userMap = getUserFbData(token!!)
 
-            if (userMap["id"] == null || userMap["name"] == null) {
-                logger.warn("Not found FbData for token $token")
-                return
-            }
-
-            val settings = getInitSettingsAndSave(userMap["id"] as String, token)
-            val role = roleRepository.findOneByRoleName("user")
-
-            val user: User = User()
-            user.fbId = userMap["id"] as String
-            user.name = userMap["name"] as String
-            user.userSettings = settings
-            user.role = role
-            userRepository.save(user)
+        if (userMap["id"] == null || userMap["name"] == null) {
+            logger.warn("Not found FbData for token $token")
+            return
         }
+
+        val settings = getInitSettingsAndSave(userMap["id"] as String, token)
+        val userRole = roleRepository.findOneByRoleName("user")
+
+        val user = User().apply {
+            fbId = userMap["id"] as String
+            name = userMap["name"] as String
+            userSettings = settings
+            role = userRole
+        }
+
+        userRepository.save(user)
+
     }
 
     // ADMIN FUNCTIONS
@@ -118,19 +121,20 @@ open class UserService(
         val response = createRequest("https://graph.facebook.com/v2.9/$userId?fields=email&access_token=$token")
         val userMap: FbData = response.body
 
-        val userSetting = UserSettings()
-        userSetting.infoMail = userMap["email"] as String
-        userSetting.language = languageRepository.findOne(1) // POLISH FOR NOW
-        userSettingRepository.save(userSetting)
-        return userSetting
+        val userSettings = UserSettings().apply {
+            infoMail = userMap["email"] as String
+            language = languageRepository.findOne(1) // POLISH FOR NOW
+        }
+
+        userSettingsRepository.save(userSettings)
+        return userSettings
     }
 
     private fun createRequest(url: String): ResponseEntity<FbData> {
         val endpoint = URI.create(url)
         val request = RequestEntity<Any>(HttpMethod.GET, endpoint)
         val respType = object : ParameterizedTypeReference<FbData>() {}
-        val response = restTemplate.exchange(request, respType)
-        return response
+        return restTemplate.exchange(request, respType)
     }
 
     companion object : KLogging()

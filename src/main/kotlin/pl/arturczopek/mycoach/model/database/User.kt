@@ -8,6 +8,7 @@ import javax.persistence.*
  * @Author Artur Czopek
  * @Date 19-05-2017
  */
+
 @Entity
 @Table(name = "USERS")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")

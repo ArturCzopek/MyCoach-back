@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest
  * @Author Artur Czopek
  * @Date 07-05-2017
  */
+
 @ControllerAdvice
 class GlobalExceptionHandler {
 

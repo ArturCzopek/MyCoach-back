@@ -5,13 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import lombok.Data
 import java.io.Serializable
-import java.sql.Date
+import java.time.LocalDate
 import javax.persistence.*
 
 /**
  * @Author Artur Czopek
  * @Date 09-10-2016
  */
+
 @Data
 @Entity
 @Table(name = "WEIGHTS")
@@ -29,7 +30,7 @@ class Weight : Serializable {
 
     @Column(name = "WGH_MSRM_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    lateinit var measurementDate: Date
+    lateinit var measurementDate: LocalDate
 
     @JsonIgnore
     @Column(name = "WGH_USR_ID")
