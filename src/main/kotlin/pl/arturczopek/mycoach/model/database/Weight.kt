@@ -29,14 +29,10 @@ data class Weight(
 
     @Column(name = "WGH_MSRM_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    var measurementDate: Date = Date.valueOf("0"),
+    var measurementDate: Date = Date.valueOf("1970-01-01"),
 
     @JsonIgnore
     @Column(name = "WGH_USR_ID")
     var userId: Long = 0
 
-) {
-    companion object {
-        val serialVersionUID = -4251427345815202610L
-    }
-}
+)

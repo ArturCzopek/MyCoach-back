@@ -11,19 +11,19 @@ import java.util.List;
  * @Author Artur Czopek
  * @Date 09-10-2016
  */
-public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 
-    @Override
-    List<Product> findAll();
+interface ProductRepository : PagingAndSortingRepository<Product, Long> {
+
+    override fun findAll(): List<Product>
 
     @Query("select p from Product p where " +
             "p.userId = :userId " +
             "and UPPER(p.productName) not like UPPER(:tmpProduct) " +
             "and UPPER(p.productName) not like UPPER(:editedProduct) " +
             "order by p.productName desc")
-    List<Product> findValidProducts(@Param("tmpProduct") String tmpProduct, @Param("editedProduct") String editedProduct, @Param("userId") long userId);
+    fun findValidProducts(@Param("tmpProduct") tmpProduct: String, @Param("editedProduct") editedProduct: String, @Param("userId") userId: Long): List<Product>
 
-    Product findOneByProductNameIgnoreCaseAndUserId(String productName, long userId);
+    fun findOneByProductNameIgnoreCaseAndUserId(productName: String, userId: Long): Product
 
-    Product findOneByProductNameIgnoreCaseAndUserIdAndProductIdNot(String productName, long userId, long productId);
+    fun findOneByProductNameIgnoreCaseAndUserIdAndProductIdNot(productName: String, userId: Long, productId: Long): Product
 }
