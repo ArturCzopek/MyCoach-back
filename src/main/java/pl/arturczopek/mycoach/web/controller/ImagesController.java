@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.arturczopek.mycoach.exception.InvalidImageExtension;
+import pl.arturczopek.mycoach.exception.InvalidImageExtensionException;
 import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.database.User;
 import pl.arturczopek.mycoach.service.ProductService;
@@ -46,7 +46,7 @@ public class ImagesController {
     }
 
     @PostMapping("/product/upload")
-    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId, User user) throws IOException, InvalidImageExtension {
+    public ResponseEntity<Long> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("productId") long productId, User user) throws IOException, InvalidImageExtensionException {
         Long updatedProductId = productService.uploadPhoto(file, productId, user.getUserId());
         return ResponseEntity.ok(updatedProductId);
     }

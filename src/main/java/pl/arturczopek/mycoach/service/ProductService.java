@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.arturczopek.mycoach.exception.DuplicatedNameException;
-import pl.arturczopek.mycoach.exception.InvalidImageExtension;
+import pl.arturczopek.mycoach.exception.InvalidImageExtensionException;
 import pl.arturczopek.mycoach.exception.WrongPermissionException;
 import pl.arturczopek.mycoach.model.add.NewProduct;
 import pl.arturczopek.mycoach.model.database.Product;
@@ -88,9 +88,9 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public Long uploadPhoto(MultipartFile file, long productId, long userId) throws IOException, InvalidImageExtension {
+    public Long uploadPhoto(MultipartFile file, long productId, long userId) throws IOException, InvalidImageExtensionException {
         if (!("image/" + imageExtension).equalsIgnoreCase(file.getContentType())) {
-            throw new InvalidImageExtension(dictionaryService.translate("page.prices.product.error.wrongImageExtension.message", userId).getValue());
+            throw new InvalidImageExtensionException(dictionaryService.translate("page.prices.product.error.wrongImageExtension.message", userId).getValue());
         }
 
         final ByteArrayOutputStream productPhotoOutputStream = new ByteArrayOutputStream();
