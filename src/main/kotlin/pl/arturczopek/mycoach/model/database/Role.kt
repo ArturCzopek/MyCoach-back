@@ -11,14 +11,13 @@ import javax.persistence.*
 @Entity
 @Table(name = "ROLES")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
-class Role {
+data class Role(
+        @Id
+        @Column(name = "RL_ID", nullable = false)
+        @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "ROLES_RL_ID_SEQ")
+        @SequenceGenerator(name = "ROLES_RL_ID_SEQ", sequenceName = "ROLES_RL_ID_SEQ", allocationSize = 1)
+        var roleId: Long = 0,
 
-    @Id
-    @Column(name = "RL_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "ROLES_RL_ID_SEQ")
-    @SequenceGenerator(name = "ROLES_RL_ID_SEQ", sequenceName = "ROLES_RL_ID_SEQ", allocationSize = 1)
-    var roleId: Long = 0
-
-    @Column(name = "RL_NM", nullable = false)
-    lateinit var roleName: String
-}
+        @Column(name = "RL_NM", nullable = false)
+        var roleName: String = ""
+)

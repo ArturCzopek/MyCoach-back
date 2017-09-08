@@ -4,7 +4,6 @@ import mu.KLogging
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
-import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails
 import org.springframework.stereotype.Service
@@ -27,12 +26,12 @@ typealias FbData = HashMap<String, Any>
 
 @Service
 class UserService(
-        val restTemplate: RestTemplate,
-        val userRepository: UserRepository,
-        val userSettingsRepository: UserSettingRepository,
-        val roleRepository: RoleRepository,
-        val languageRepository: LanguageRepository,
-        val userStorage: UserStorage
+        private val restTemplate: RestTemplate,
+        private val userRepository: UserRepository,
+        private val userSettingsRepository: UserSettingRepository,
+        private val roleRepository: RoleRepository,
+        private val languageRepository: LanguageRepository,
+        private val userStorage: UserStorage
 ) {
 
     fun getUserByFbToken(token: String): User? {
@@ -108,9 +107,9 @@ class UserService(
             userStorage.getUserFbDataByToken(token)
         } catch (e: NotFoundUserException) {
             token?.let {
-                val response = createRequest("https://graph.facebook.com/me?access_token=$token")
-                val userMap: FbData = response.body
-                userStorage.addUserFbData(token, userMap)
+                createRequest("https://graph.facebook.com/me?access_token=$token")
+                        .run { this.body}
+                        .run { userStorage.addUserFbData(token, this) }
             }
         } finally {
             return userStorage.getUserFbDataByToken(token)
@@ -118,8 +117,7 @@ class UserService(
     }
 
     private fun getInitSettingsAndSave(userId: String, token: String): UserSettings {
-        val response = createRequest("https://graph.facebook.com/v2.9/$userId?fields=email&access_token=$token")
-        val userMap: FbData = response.body
+        val userMap: FbData = createRequest("https://graph.facebook.com/v2.9/$userId?fields=email&access_token=$token").run { this.body }
 
         val userSettings = UserSettings().apply {
             infoMail = userMap["email"] as String
@@ -130,12 +128,9 @@ class UserService(
         return userSettings
     }
 
-    private fun createRequest(url: String): ResponseEntity<FbData> {
-        val endpoint = URI.create(url)
-        val request = RequestEntity<Any>(HttpMethod.GET, endpoint)
-        val respType = object : ParameterizedTypeReference<FbData>() {}
-        return restTemplate.exchange(request, respType)
-    }
+    private fun createRequest(url: String) = URI.create(url)
+                .run { RequestEntity<Any>(HttpMethod.GET, this) }
+                .run { restTemplate.exchange(this, object : ParameterizedTypeReference<FbData>() {}) }
 
     companion object : KLogging()
 }

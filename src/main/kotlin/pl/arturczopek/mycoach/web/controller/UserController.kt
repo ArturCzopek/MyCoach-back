@@ -20,9 +20,9 @@ import pl.arturczopek.mycoach.service.UserStorage
 @RestController
 @RequestMapping("/user")
 class UserController(
-        val userService: UserService,
-        val userStorage: UserStorage,
-        val dictionaryService: DictionaryService
+        private val userService: UserService,
+        private val userStorage: UserStorage,
+        private val dictionaryService: DictionaryService
 ) {
 
     @Value("\${my-coach.client-address}")

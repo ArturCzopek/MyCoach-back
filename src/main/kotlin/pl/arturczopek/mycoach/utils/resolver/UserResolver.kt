@@ -18,8 +18,8 @@ import pl.arturczopek.mycoach.service.UserStorage
  */
 @Component
 class UserResolver(
-        val userService: UserService,
-        val userStorage: UserStorage
+        private val userService: UserService,
+        private val userStorage: UserStorage
 ) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter?): Boolean {

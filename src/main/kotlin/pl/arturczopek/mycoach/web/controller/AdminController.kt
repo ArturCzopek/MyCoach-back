@@ -13,9 +13,9 @@ import pl.arturczopek.mycoach.service.UserService
 @RestController
 @RequestMapping("/admin")
 class AdminController(
-        val userService: UserService,
-        val dictionaryService: DictionaryService,
-        val appDataService: AppDataService
+        private val userService: UserService,
+        private val dictionaryService: DictionaryService,
+        private val appDataService: AppDataService
 ) {
 
     @GetMapping("/users")

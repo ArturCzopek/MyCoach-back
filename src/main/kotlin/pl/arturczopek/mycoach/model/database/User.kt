@@ -1,7 +1,6 @@
 package pl.arturczopek.mycoach.model.database
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import java.io.Serializable
 import javax.persistence.*
 
 /**
@@ -36,7 +35,7 @@ data class User(
         @ManyToOne
         @JoinColumn(name = "USR_RL_ID")
         var role: Role = Role()
-) : Serializable {
+) {
 
     companion object {
         val emptyUser = User()

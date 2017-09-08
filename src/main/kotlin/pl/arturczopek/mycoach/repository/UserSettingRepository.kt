@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import pl.arturczopek.mycoach.model.database.UserSettings
 
 /**
- * @Author arturczopek
+ * @Author Artur Czopek
  * @Date 30-06-2017
  */
 
