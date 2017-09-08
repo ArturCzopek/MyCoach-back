@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import lombok.Data
 import java.io.Serializable
-import java.time.LocalDate
+import java.sql.Date
 import javax.persistence.*
 
 /**
@@ -30,7 +30,7 @@ class Weight : Serializable {
 
     @Column(name = "WGH_MSRM_DT", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    lateinit var measurementDate: LocalDate
+    lateinit var measurementDate: Date
 
     @JsonIgnore
     @Column(name = "WGH_USR_ID")
