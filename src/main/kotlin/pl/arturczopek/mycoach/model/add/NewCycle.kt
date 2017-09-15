@@ -9,6 +9,6 @@ import java.sql.Date
  */
 
 data class NewCycle(
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") val startDate: Date,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") val startDate: Date?,
     val sets: List<NewSet>
 )

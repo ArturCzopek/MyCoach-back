@@ -21,7 +21,7 @@ interface CycleRepository : PagingAndSortingRepository<Cycle, Long> {
 
     fun findOneByUserIdAndIsFinishedFalse(userId: Long): Cycle
 
-    fun findFirstByUserIdOrderByEndDateDesc(userId: Long): Cycle
+    fun findFirstByUserIdOrderByEndDateDesc(userId: Long): Cycle?
 
     fun findFirstByUserIdAndEndDateBeforeOrderByEndDateDesc(userId: Long, startDate: Date): Cycle
 

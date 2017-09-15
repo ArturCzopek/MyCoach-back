@@ -57,7 +57,7 @@ public class TrainingController {
 
     @GetMapping("/cycle/finished")
     public boolean hasUserEveryCycleFinished(User user) {
-        return cycleService.hashUserEveryCycleFinished(user.getUserId());
+        return cycleService.hasUserEveryCycleFinished(user.getUserId());
     }
 
     @GetMapping("/cycle/{cycleId}")
